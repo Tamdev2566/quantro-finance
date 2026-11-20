@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { apiClient } from '../../api/client';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 import {
   Dialog,
   DialogTitle,
@@ -162,23 +164,45 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
               </TextField>
             </Grid>
             <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                type="date"
-                label="Bill Date"
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                {...register('billDate', { required: true })}
+              <Controller
+                name="billDate"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <DatePicker
+                    label="Bill Date"
+                    value={field.value ? dayjs(field.value) : null}
+                    onChange={(val) => field.onChange(val && val.isValid() ? val.format('YYYY-MM-DD') : '')}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        size: 'small',
+                        required: true,
+                        error: !!errors.billDate
+                      }
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                type="date"
-                label="Due Date"
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                {...register('dueDate')}
+              <Controller
+                name="dueDate"
+                control={control}
+                render={({ field }) => (
+                  <DatePicker
+                    label="Due Date"
+                    value={field.value ? dayjs(field.value) : null}
+                    onChange={(val) => field.onChange(val && val.isValid() ? val.format('YYYY-MM-DD') : '')}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        size: 'small',
+                        error: !!errors.dueDate
+                      }
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={3}>

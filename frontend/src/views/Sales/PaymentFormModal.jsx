@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { apiClient } from '../../api/client';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 import {
   Dialog,
   DialogTitle,
@@ -27,7 +29,7 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
   const [allocations, setAllocations] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+  const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
       customerId: '',
       paymentDate: new Date().toISOString().slice(0, 10),
@@ -139,13 +141,25 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
               </TextField>
             </Grid>
             <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                type="date"
-                label="Payment Date"
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                {...register('paymentDate', { required: true })}
+              <Controller
+                name="paymentDate"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <DatePicker
+                    label="Payment Date"
+                    value={field.value ? dayjs(field.value) : null}
+                    onChange={(val) => field.onChange(val && val.isValid() ? val.format('YYYY-MM-DD') : '')}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        size: 'small',
+                        required: true,
+                        error: !!errors.paymentDate
+                      }
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={3}>

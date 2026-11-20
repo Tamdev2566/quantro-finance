@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { apiClient } from '../../api/client';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 import {
   Dialog,
   DialogTitle,
@@ -103,23 +105,47 @@ export default function JournalFormModal({ open, onClose, onSuccess }) {
         <DialogContent dividers sx={{ p: 3 }}>
           <Grid container spacing={2.5} sx={{ mb: 3 }}>
             <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                size="small"
-                type="date"
-                label="Transaction Date"
-                InputLabelProps={{ shrink: true }}
-                {...register('transactionDate', { required: true })}
+              <Controller
+                name="transactionDate"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <DatePicker
+                    label="Transaction Date"
+                    value={field.value ? dayjs(field.value) : null}
+                    onChange={(val) => field.onChange(val && val.isValid() ? val.format('YYYY-MM-DD') : '')}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        size: 'small',
+                        required: true,
+                        error: !!errors.transactionDate
+                      }
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                size="small"
-                type="date"
-                label="Posting Date"
-                InputLabelProps={{ shrink: true }}
-                {...register('postingDate', { required: true })}
+              <Controller
+                name="postingDate"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <DatePicker
+                    label="Posting Date"
+                    value={field.value ? dayjs(field.value) : null}
+                    onChange={(val) => field.onChange(val && val.isValid() ? val.format('YYYY-MM-DD') : '')}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        size: 'small',
+                        required: true,
+                        error: !!errors.postingDate
+                      }
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={3}>

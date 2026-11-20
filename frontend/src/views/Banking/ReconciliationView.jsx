@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 import {
   Box,
   Typography,
@@ -132,25 +134,29 @@ export default function ReconciliationView() {
             </TextField>
           </Grid>
           <Grid item xs={12} sm={2.5}>
-            <TextField
-              fullWidth
-              size="small"
-              type="date"
+            <DatePicker
               label="Statement Start"
-              InputLabelProps={{ shrink: true }}
-              value={periodStart}
-              onChange={(e) => setPeriodStart(e.target.value)}
+              value={periodStart ? dayjs(periodStart) : null}
+              onChange={(val) => setPeriodStart(val && val.isValid() ? val.format('YYYY-MM-DD') : '')}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  size: 'small'
+                }
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={2.5}>
-            <TextField
-              fullWidth
-              size="small"
-              type="date"
+            <DatePicker
               label="Statement End"
-              InputLabelProps={{ shrink: true }}
-              value={periodEnd}
-              onChange={(e) => setPeriodEnd(e.target.value)}
+              value={periodEnd ? dayjs(periodEnd) : null}
+              onChange={(val) => setPeriodEnd(val && val.isValid() ? val.format('YYYY-MM-DD') : '')}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  size: 'small'
+                }
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={2}>

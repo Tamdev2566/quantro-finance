@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 import {
   Box,
   Typography,
@@ -28,6 +30,7 @@ export default function CreditNotesView() {
 
   // Form state
   const [invoiceId, setInvoiceId] = useState('');
+  const [noteDate, setNoteDate] = useState(new Date().toISOString().slice(0, 10));
   const [reason, setReason] = useState('Sales Return');
   const [itemDesc, setItemDesc] = useState('Return / Rate Adjustment');
   const [amount, setAmount] = useState('');
@@ -67,6 +70,7 @@ export default function CreditNotesView() {
     try {
       await apiClient.createCreditNote({
         invoiceId,
+        date: noteDate,
         reason,
         items: [
           {
@@ -173,7 +177,7 @@ export default function CreditNotesView() {
         <DialogTitle sx={{ fontWeight: 800 }}>Issue Sales Credit Note</DialogTitle>
         <DialogContent dividers sx={{ p: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={8}>
               <TextField
                 select
                 fullWidth
@@ -188,6 +192,19 @@ export default function CreditNotesView() {
                   </MenuItem>
                 ))}
               </TextField>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <DatePicker
+                label="Credit Note Date"
+                value={noteDate ? dayjs(noteDate) : null}
+                onChange={(val) => setNoteDate(val && val.isValid() ? val.format('YYYY-MM-DD') : '')}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: 'small'
+                  }
+                }}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField

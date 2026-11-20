@@ -13,9 +13,14 @@ import {
   DialogActions,
   Grid,
   TextField,
-  Chip
+  Chip,
+  IconButton,
+  Tooltip,
+  FormControlLabel,
+  Switch
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/EditOutlined';
 
 export default function VendorsView() {
   const dispatch = useDispatch();
@@ -23,6 +28,7 @@ export default function VendorsView() {
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
+  const [editingVendor, setEditingVendor] = useState(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -32,7 +38,8 @@ export default function VendorsView() {
     gstin: '',
     state: 'Maharashtra',
     stateCode: '27',
-    address: ''
+    address: '',
+    isActive: true
   });
 
   const fetchVendors = async () => {
@@ -51,22 +58,50 @@ export default function VendorsView() {
     fetchVendors();
   }, [refreshKey]);
 
+  const handleOpenCreate = () => {
+    setEditingVendor(null);
+    setFormData({
+      name: '',
+      contactPerson: '',
+      email: '',
+      phone: '',
+      gstin: '',
+      state: 'Maharashtra',
+      stateCode: '27',
+      address: '',
+      isActive: true
+    });
+    setOpenModal(true);
+  };
+
+  const handleOpenEdit = (vendor) => {
+    setEditingVendor(vendor);
+    setFormData({
+      name: vendor.name || '',
+      contactPerson: vendor.contactPerson || '',
+      email: vendor.email || '',
+      phone: vendor.phone || '',
+      gstin: vendor.gstin || '',
+      state: vendor.state || 'Maharashtra',
+      stateCode: vendor.stateCode || (vendor.gstin ? vendor.gstin.slice(0, 2) : '27'),
+      address: vendor.address || '',
+      isActive: vendor.isActive !== undefined ? vendor.isActive : true
+    });
+    setOpenModal(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await apiClient.createVendor(formData);
-      dispatch(showNotification({ message: 'Vendor added successfully', severity: 'success' }));
+      if (editingVendor) {
+        await apiClient.updateVendor(editingVendor.id, formData);
+        dispatch(showNotification({ message: 'Vendor updated successfully', severity: 'success' }));
+      } else {
+        await apiClient.createVendor(formData);
+        dispatch(showNotification({ message: 'Vendor added successfully', severity: 'success' }));
+      }
       setOpenModal(false);
-      setFormData({
-        name: '',
-        contactPerson: '',
-        email: '',
-        phone: '',
-        gstin: '',
-        state: 'Maharashtra',
-        stateCode: '27',
-        address: ''
-      });
+      setEditingVendor(null);
       fetchVendors();
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -123,6 +158,28 @@ export default function VendorsView() {
           sx={{ fontWeight: 700, fontSize: '0.72rem', borderRadius: '8px' }}
         />
       )
+    },
+    {
+      header: 'Actions',
+      align: 'center',
+      width: 90,
+      render: (row) => (
+        <Tooltip title="Edit Vendor">
+          <IconButton
+            size="small"
+            onClick={() => handleOpenEdit(row)}
+            sx={{
+              color: '#e5a93c',
+              border: '1px solid #fed7aa',
+              borderRadius: '8px',
+              p: '5px',
+              '&:hover': { bgcolor: '#fffbeb', borderColor: '#e5a93c' }
+            }}
+          >
+            <EditIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      )
     }
   ];
 
@@ -140,7 +197,7 @@ export default function VendorsView() {
         <Button
           variant="contained"
           startIcon={<AddIcon />}
-          onClick={() => setOpenModal(true)}
+          onClick={handleOpenCreate}
           sx={{
             bgcolor: '#e5a93c',
             borderRadius: '14px',
@@ -162,7 +219,9 @@ export default function VendorsView() {
 
       {/* Vendor Modal */}
       <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ fontWeight: 800 }}>Add Supplier / Vendor</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 800 }}>
+          {editingVendor ? `Edit Vendor (${editingVendor.id})` : 'Add Supplier / Vendor'}
+        </DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent dividers sx={{ p: 3 }}>
             <Grid container spacing={2}>
@@ -243,6 +302,20 @@ export default function VendorsView() {
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 />
               </Grid>
+              {editingVendor && (
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive !== false}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                        color="success"
+                      />
+                    }
+                    label={formData.isActive !== false ? 'Vendor Status: Active' : 'Vendor Status: Inactive'}
+                  />
+                </Grid>
+              )}
             </Grid>
           </DialogContent>
           <DialogActions sx={{ px: 3, py: 2 }}>
@@ -250,7 +323,7 @@ export default function VendorsView() {
               Cancel
             </Button>
             <Button type="submit" variant="contained" sx={{ bgcolor: '#e5a93c', borderRadius: '12px' }}>
-              Save Vendor
+              {editingVendor ? 'Update Vendor' : 'Save Vendor'}
             </Button>
           </DialogActions>
         </form>

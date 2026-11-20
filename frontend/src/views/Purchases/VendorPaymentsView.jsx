@@ -4,6 +4,8 @@ import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import ConfirmDialog from '../../components/Common/ConfirmDialog';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 import {
   Box,
   Typography,
@@ -237,14 +239,17 @@ export default function VendorPaymentsView() {
               </TextField>
             </Grid>
             <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                type="date"
+              <DatePicker
                 label="Payment Date"
-                size="small"
-                value={paymentDate}
-                onChange={(e) => setPaymentDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
+                value={paymentDate ? dayjs(paymentDate) : null}
+                onChange={(val) => setPaymentDate(val && val.isValid() ? val.format('YYYY-MM-DD') : '')}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: 'small',
+                    required: true
+                  }
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={3}>

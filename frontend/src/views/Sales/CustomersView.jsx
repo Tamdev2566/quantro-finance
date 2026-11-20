@@ -13,9 +13,14 @@ import {
   DialogActions,
   Grid,
   TextField,
-  Chip
+  Chip,
+  IconButton,
+  Tooltip,
+  FormControlLabel,
+  Switch
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/EditOutlined';
 
 export default function CustomersView() {
   const dispatch = useDispatch();
@@ -23,6 +28,7 @@ export default function CustomersView() {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
+  const [editingCustomer, setEditingCustomer] = useState(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -32,7 +38,8 @@ export default function CustomersView() {
     gstin: '',
     state: 'Maharashtra',
     stateCode: '27',
-    address: ''
+    address: '',
+    isActive: true
   });
 
   const fetchCustomers = async () => {
@@ -51,22 +58,50 @@ export default function CustomersView() {
     fetchCustomers();
   }, [refreshKey]);
 
+  const handleOpenCreate = () => {
+    setEditingCustomer(null);
+    setFormData({
+      name: '',
+      contactPerson: '',
+      email: '',
+      phone: '',
+      gstin: '',
+      state: 'Maharashtra',
+      stateCode: '27',
+      address: '',
+      isActive: true
+    });
+    setOpenModal(true);
+  };
+
+  const handleOpenEdit = (customer) => {
+    setEditingCustomer(customer);
+    setFormData({
+      name: customer.name || '',
+      contactPerson: customer.contactPerson || '',
+      email: customer.email || '',
+      phone: customer.phone || '',
+      gstin: customer.gstin || '',
+      state: customer.state || 'Maharashtra',
+      stateCode: customer.stateCode || (customer.gstin ? customer.gstin.slice(0, 2) : '27'),
+      address: customer.address || '',
+      isActive: customer.isActive !== undefined ? customer.isActive : true
+    });
+    setOpenModal(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await apiClient.createCustomer(formData);
-      dispatch(showNotification({ message: 'Customer registered successfully', severity: 'success' }));
+      if (editingCustomer) {
+        await apiClient.updateCustomer(editingCustomer.id, formData);
+        dispatch(showNotification({ message: 'Customer updated successfully', severity: 'success' }));
+      } else {
+        await apiClient.createCustomer(formData);
+        dispatch(showNotification({ message: 'Customer registered successfully', severity: 'success' }));
+      }
       setOpenModal(false);
-      setFormData({
-        name: '',
-        contactPerson: '',
-        email: '',
-        phone: '',
-        gstin: '',
-        state: 'Maharashtra',
-        stateCode: '27',
-        address: ''
-      });
+      setEditingCustomer(null);
       fetchCustomers();
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -123,6 +158,28 @@ export default function CustomersView() {
           sx={{ fontWeight: 700, fontSize: '0.72rem', borderRadius: '8px' }}
         />
       )
+    },
+    {
+      header: 'Actions',
+      align: 'center',
+      width: 90,
+      render: (row) => (
+        <Tooltip title="Edit Customer">
+          <IconButton
+            size="small"
+            onClick={() => handleOpenEdit(row)}
+            sx={{
+              color: '#e5a93c',
+              border: '1px solid #fed7aa',
+              borderRadius: '8px',
+              p: '5px',
+              '&:hover': { bgcolor: '#fffbeb', borderColor: '#e5a93c' }
+            }}
+          >
+            <EditIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      )
     }
   ];
 
@@ -140,7 +197,7 @@ export default function CustomersView() {
         <Button
           variant="contained"
           startIcon={<AddIcon />}
-          onClick={() => setOpenModal(true)}
+          onClick={handleOpenCreate}
           sx={{
             bgcolor: '#e5a93c',
             borderRadius: '14px',
@@ -162,7 +219,9 @@ export default function CustomersView() {
 
       {/* Customer Modal */}
       <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ fontWeight: 800 }}>Add New Customer</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 800 }}>
+          {editingCustomer ? `Edit Customer (${editingCustomer.id})` : 'Add New Customer'}
+        </DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent dividers sx={{ p: 3 }}>
             <Grid container spacing={2}>
@@ -243,6 +302,20 @@ export default function CustomersView() {
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 />
               </Grid>
+              {editingCustomer && (
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive !== false}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                        color="success"
+                      />
+                    }
+                    label={formData.isActive !== false ? 'Customer Status: Active' : 'Customer Status: Inactive'}
+                  />
+                </Grid>
+              )}
             </Grid>
           </DialogContent>
           <DialogActions sx={{ px: 3, py: 2 }}>
@@ -250,7 +323,7 @@ export default function CustomersView() {
               Cancel
             </Button>
             <Button type="submit" variant="contained" sx={{ bgcolor: '#e5a93c', borderRadius: '12px' }}>
-              Save Customer
+              {editingCustomer ? 'Update Customer' : 'Save Customer'}
             </Button>
           </DialogActions>
         </form>
