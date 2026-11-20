@@ -1,0 +1,15 @@
+{
+  "id": "COMP-001",
+  "name": "Apex Global Enterprises Pvt Ltd",
+  "legalName": "Apex Global Enterprises Private Limited",
+  "gstin": "27AABCA1234F1Z5",
+  "state": "Maharashtra",
+  "stateCode": "27",
+  "address": "Tech Park, Tower B, Level 8, Mumbai, MH, 400051",
+  "email": "finance@apexglobal.com",
+  "phone": "+91 22 8900 1200",
+  "baseCurrency": "INR",
+  "currencySymbol": "₹",
+  "fiscalYearStartMonth": 4,
+  "decimalPrecision": 2
+}

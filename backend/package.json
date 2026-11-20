@@ -1,0 +1,19 @@
+{
+  "name": "finance-backend",
+  "version": "1.0.0",
+  "description": "Real-time Finance & Accounting Engine Backend",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test tests/financeEngine.test.js"
+  },
+  "dependencies": {
+    "bignumber.js": "^9.1.2",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "serverless-http": "^4.0.0",
+    "uuid": "^11.1.0"
+  }
+}

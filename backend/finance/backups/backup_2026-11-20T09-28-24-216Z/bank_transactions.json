@@ -1,0 +1,44 @@
+[
+  {
+    "id": "273bd451-5784-4a53-a534-b4db442811ee",
+    "bankAccountId": "BANK-001",
+    "accountNumber": "50200012345678",
+    "date": "2026-11-20",
+    "type": "CREDIT",
+    "amount": 50000,
+    "reference": "PAY-2026-001001",
+    "description": "Payment from Acme Cloud Technologies (Bank Transfer)",
+    "runningBalance": 50000,
+    "reconciled": false,
+    "sourceModule": "Customer Payment",
+    "linkedId": "PAY-2026-001001"
+  },
+  {
+    "id": "295942cc-fe7f-4712-9db2-56d36c57e457",
+    "bankAccountId": "BANK-001",
+    "accountNumber": "50200012345678",
+    "date": "2026-11-20",
+    "type": "DEBIT",
+    "amount": 10000,
+    "reference": "VPAY-2026-000501",
+    "description": "Payment to InfraSpace Realties Corp (Bank Transfer)",
+    "runningBalance": 40000,
+    "reconciled": false,
+    "sourceModule": "Vendor Payment",
+    "linkedId": "VPAY-2026-000501"
+  },
+  {
+    "id": "4167acc3-44bb-4438-927e-783e6af541c5",
+    "bankAccountId": "BANK-001",
+    "accountNumber": "50200012345678",
+    "date": "2026-11-20",
+    "type": "DEBIT",
+    "amount": 5000,
+    "reference": "TXN-2026-001001",
+    "description": "Transfer to 1010 ()",
+    "runningBalance": 35000,
+    "reconciled": false,
+    "sourceModule": "Transfer Out",
+    "linkedId": "TXN-2026-001001"
+  }
+]

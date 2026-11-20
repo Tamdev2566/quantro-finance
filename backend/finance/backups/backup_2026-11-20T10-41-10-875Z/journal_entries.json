@@ -1,0 +1,1518 @@
+[
+  {
+    "id": "58c5917c-80c8-4179-80ab-29dd240681e7",
+    "journalNumber": "JE-2026-001003",
+    "transactionDate": "2026-05-10",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "INV-2026-001001",
+    "transactionType": "INVOICE",
+    "description": "Invoice INV-2026-001001 posted for Acme Cloud Technologies",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 112100,
+        "credit": 0,
+        "description": "Receivable from Acme Cloud Technologies for INV-2026-001001"
+      },
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 0,
+        "credit": 95000,
+        "description": "Sales revenue for INV-2026-001001"
+      },
+      {
+        "accountCode": "2110",
+        "accountName": "Output CGST",
+        "debit": 0,
+        "credit": 8550,
+        "description": "Output CGST for INV-2026-001001"
+      },
+      {
+        "accountCode": "2120",
+        "accountName": "Output SGST",
+        "debit": 0,
+        "credit": 8550,
+        "description": "Output SGST for INV-2026-001001"
+      }
+    ],
+    "totalDebit": 112100,
+    "totalCredit": 112100,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:28:23.931Z",
+    "status": "Posted",
+    "linkedTransactionId": "52c930e8-5ece-4033-9c48-29287d2936d4"
+  },
+  {
+    "id": "a46973fc-9768-4a33-841f-2aa6df1691be",
+    "journalNumber": "JE-2026-001004",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "PAY-2026-001001",
+    "transactionType": "PAYMENT",
+    "description": "Customer payment received from Acme Cloud Technologies via Bank Transfer (PAY-2026-001001)",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 50000,
+        "credit": 0,
+        "description": "Receipt from Acme Cloud Technologies"
+      },
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 0,
+        "credit": 50000,
+        "description": "Payment applied to customer account Acme Cloud Technologies"
+      }
+    ],
+    "totalDebit": 50000,
+    "totalCredit": 50000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:28:23.970Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "b13f1135-2b19-4303-aac7-7d54fdc85d06",
+    "journalNumber": "JE-2026-001005",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "CN-2026-000101",
+    "transactionType": "CREDIT_NOTE",
+    "description": "Credit note CN-2026-000101 against INV-2026-001001 (Quality discount adjustment)",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 1000,
+        "credit": 0,
+        "description": "Revenue reversal for CN CN-2026-000101"
+      },
+      {
+        "accountCode": "2110",
+        "accountName": "Output CGST",
+        "debit": 90,
+        "credit": 0,
+        "description": "Output CGST reversal for CN CN-2026-000101"
+      },
+      {
+        "accountCode": "2120",
+        "accountName": "Output SGST",
+        "debit": 90,
+        "credit": 0,
+        "description": "Output SGST reversal for CN CN-2026-000101"
+      },
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 0,
+        "credit": 1180,
+        "description": "Receivable reduction for CN CN-2026-000101 on INV-2026-001001"
+      }
+    ],
+    "totalDebit": 1180,
+    "totalCredit": 1180,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:28:24.007Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "ec8831d6-7107-4b58-a85e-46a7a2c6b8b9",
+    "journalNumber": "JE-2026-001006",
+    "transactionDate": "2026-05-15",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "BILL-2026-000501",
+    "transactionType": "VENDOR_BILL",
+    "description": "Vendor Bill BILL-2026-000501 (INV-VEND-1795166904038) posted for InfraSpace Realties Corp",
+    "sourceModule": "Purchases & Payables",
+    "lines": [
+      {
+        "accountCode": "5010",
+        "accountName": "Cost of Goods Sold (COGS)",
+        "debit": 30000,
+        "credit": 0,
+        "description": "Procurement expense for BILL-2026-000501 from InfraSpace Realties Corp"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 2700,
+        "credit": 0,
+        "description": "Input CGST on bill BILL-2026-000501"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 2700,
+        "credit": 0,
+        "description": "Input SGST on bill BILL-2026-000501"
+      },
+      {
+        "accountCode": "2010",
+        "accountName": "Accounts Payable (Trade Creditors)",
+        "debit": 0,
+        "credit": 35400,
+        "description": "Payable to InfraSpace Realties Corp for bill BILL-2026-000501"
+      }
+    ],
+    "totalDebit": 35400,
+    "totalCredit": 35400,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:28:24.065Z",
+    "status": "Posted",
+    "linkedTransactionId": "a6850672-42ee-4a36-acc2-3e96ab7922fc"
+  },
+  {
+    "id": "ce62ed63-c3fa-4382-9a41-705b14a6f4ef",
+    "journalNumber": "JE-2026-001007",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "VPAY-2026-000501",
+    "transactionType": "VENDOR_PAYMENT",
+    "description": "Disbursement to vendor InfraSpace Realties Corp via Bank Transfer (VPAY-2026-000501)",
+    "sourceModule": "Purchases & Payables",
+    "lines": [
+      {
+        "accountCode": "2010",
+        "accountName": "Accounts Payable (Trade Creditors)",
+        "debit": 10000,
+        "credit": 0,
+        "description": "Payment against payables to InfraSpace Realties Corp"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 10000,
+        "description": "Withdrawal/transfer for vendor InfraSpace Realties Corp"
+      }
+    ],
+    "totalDebit": 10000,
+    "totalCredit": 10000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:28:24.097Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "102431e2-c796-46f3-a811-042138595c76",
+    "journalNumber": "JE-2026-001008",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "EXP-2026-000201",
+    "transactionType": "EXPENSE",
+    "description": "Expense EXP-2026-000201 (Utilities & Internet): Fiber internet leased line for office",
+    "sourceModule": "Expenses",
+    "lines": [
+      {
+        "accountCode": "5150",
+        "accountName": "Office & Admin Supplies",
+        "debit": 10000,
+        "credit": 0,
+        "description": "Utilities & Internet: Fiber internet leased line for office"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 900,
+        "credit": 0,
+        "description": "Input CGST on EXP-2026-000201"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 900,
+        "credit": 0,
+        "description": "Input SGST on EXP-2026-000201"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 11800,
+        "description": "Payment for EXP-2026-000201 via Bank Transfer"
+      }
+    ],
+    "totalDebit": 11800,
+    "totalCredit": 11800,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:28:24.131Z",
+    "status": "Reversed",
+    "linkedTransactionId": null,
+    "reversalJournalId": "d8f22be6-b349-4ecd-bda5-06f5c2d21161"
+  },
+  {
+    "id": "d8f22be6-b349-4ecd-bda5-06f5c2d21161",
+    "journalNumber": "JE-2026-001009",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "JE-2026-001008",
+    "transactionType": "REVERSAL",
+    "description": "Reversal of JE-2026-001008 - Reason: Rollback expense post",
+    "sourceModule": "Expenses",
+    "lines": [
+      {
+        "accountCode": "5150",
+        "accountName": "Office & Admin Supplies",
+        "debit": 0,
+        "credit": 10000,
+        "description": "Reversal of JE-2026-001008: Utilities & Internet: Fiber internet leased line for office"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 0,
+        "credit": 900,
+        "description": "Reversal of JE-2026-001008: Input CGST on EXP-2026-000201"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 0,
+        "credit": 900,
+        "description": "Reversal of JE-2026-001008: Input SGST on EXP-2026-000201"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 11800,
+        "credit": 0,
+        "description": "Reversal of JE-2026-001008: Payment for EXP-2026-000201 via Bank Transfer"
+      }
+    ],
+    "totalDebit": 11800,
+    "totalCredit": 11800,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:28:24.148Z",
+    "status": "Posted",
+    "linkedTransactionId": "102431e2-c796-46f3-a811-042138595c76"
+  },
+  {
+    "id": "9be40672-42e2-4826-8b55-e8af567a8a8e",
+    "journalNumber": "JE-2026-001010",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "TXN-2026-001001",
+    "transactionType": "BANK_TRANSFER",
+    "description": "Cash withdrawal for office petty expenses",
+    "sourceModule": "Banking",
+    "lines": [
+      {
+        "accountCode": "1010",
+        "accountName": "Petty Cash",
+        "debit": 5000,
+        "credit": 0,
+        "description": "Fund transfer receipt from 1020"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 5000,
+        "description": "Fund transfer payout to 1010"
+      }
+    ],
+    "totalDebit": 5000,
+    "totalCredit": 5000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:28:24.175Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "d39c73fd-fe2f-4031-812f-700ad28759ee",
+    "journalNumber": "JE-2026-001011",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-01-15",
+    "referenceNumber": "",
+    "transactionType": "MANUAL",
+    "description": "Attempt to post into locked month",
+    "sourceModule": "General Ledger",
+    "lines": [
+      {
+        "accountCode": "1010",
+        "accountName": "Petty Cash",
+        "debit": 100,
+        "credit": 0,
+        "description": "Attempt to post into locked month"
+      },
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 0,
+        "credit": 100,
+        "description": "Attempt to post into locked month"
+      }
+    ],
+    "totalDebit": 100,
+    "totalCredit": 100,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:28:24.210Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "44ab6984-df3d-4692-95fc-e635e937e3a2",
+    "journalNumber": "JE-2026-001014",
+    "transactionDate": "2026-05-10",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "INV-2026-001002",
+    "transactionType": "INVOICE",
+    "description": "Invoice INV-2026-001002 posted for Acme Cloud Technologies",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 112100,
+        "credit": 0,
+        "description": "Receivable from Acme Cloud Technologies for INV-2026-001002"
+      },
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 0,
+        "credit": 95000,
+        "description": "Sales revenue for INV-2026-001002"
+      },
+      {
+        "accountCode": "2110",
+        "accountName": "Output CGST",
+        "debit": 0,
+        "credit": 8550,
+        "description": "Output CGST for INV-2026-001002"
+      },
+      {
+        "accountCode": "2120",
+        "accountName": "Output SGST",
+        "debit": 0,
+        "credit": 8550,
+        "description": "Output SGST for INV-2026-001002"
+      }
+    ],
+    "totalDebit": 112100,
+    "totalCredit": 112100,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:07.502Z",
+    "status": "Posted",
+    "linkedTransactionId": "04bb7700-3970-4b71-95bc-ae57f5273cb6"
+  },
+  {
+    "id": "30cfc244-e4e8-436c-82cf-3b7368fcffca",
+    "journalNumber": "JE-2026-001015",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "PAY-2026-001002",
+    "transactionType": "PAYMENT",
+    "description": "Customer payment received from Acme Cloud Technologies via Bank Transfer (PAY-2026-001002)",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 50000,
+        "credit": 0,
+        "description": "Receipt from Acme Cloud Technologies"
+      },
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 0,
+        "credit": 50000,
+        "description": "Payment applied to customer account Acme Cloud Technologies"
+      }
+    ],
+    "totalDebit": 50000,
+    "totalCredit": 50000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:07.561Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "8d8a837b-22d9-4280-8da4-f5579c37b66b",
+    "journalNumber": "JE-2026-001016",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "CN-2026-000102",
+    "transactionType": "CREDIT_NOTE",
+    "description": "Credit note CN-2026-000102 against INV-2026-001001 (Quality discount adjustment)",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 1000,
+        "credit": 0,
+        "description": "Revenue reversal for CN CN-2026-000102"
+      },
+      {
+        "accountCode": "2110",
+        "accountName": "Output CGST",
+        "debit": 90,
+        "credit": 0,
+        "description": "Output CGST reversal for CN CN-2026-000102"
+      },
+      {
+        "accountCode": "2120",
+        "accountName": "Output SGST",
+        "debit": 90,
+        "credit": 0,
+        "description": "Output SGST reversal for CN CN-2026-000102"
+      },
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 0,
+        "credit": 1180,
+        "description": "Receivable reduction for CN CN-2026-000102 on INV-2026-001001"
+      }
+    ],
+    "totalDebit": 1180,
+    "totalCredit": 1180,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:07.628Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "70cfeca8-8e4a-4472-ab38-7f9907209b03",
+    "journalNumber": "JE-2026-001017",
+    "transactionDate": "2026-05-15",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "BILL-2026-000502",
+    "transactionType": "VENDOR_BILL",
+    "description": "Vendor Bill BILL-2026-000502 (INV-VEND-1795166947647) posted for InfraSpace Realties Corp",
+    "sourceModule": "Purchases & Payables",
+    "lines": [
+      {
+        "accountCode": "5010",
+        "accountName": "Cost of Goods Sold (COGS)",
+        "debit": 30000,
+        "credit": 0,
+        "description": "Procurement expense for BILL-2026-000502 from InfraSpace Realties Corp"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 2700,
+        "credit": 0,
+        "description": "Input CGST on bill BILL-2026-000502"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 2700,
+        "credit": 0,
+        "description": "Input SGST on bill BILL-2026-000502"
+      },
+      {
+        "accountCode": "2010",
+        "accountName": "Accounts Payable (Trade Creditors)",
+        "debit": 0,
+        "credit": 35400,
+        "description": "Payable to InfraSpace Realties Corp for bill BILL-2026-000502"
+      }
+    ],
+    "totalDebit": 35400,
+    "totalCredit": 35400,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:07.694Z",
+    "status": "Posted",
+    "linkedTransactionId": "3c855e71-223f-4508-8f15-602b6ccb0d62"
+  },
+  {
+    "id": "73f90d35-731f-4fda-84ae-72d108314edc",
+    "journalNumber": "JE-2026-001018",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "VPAY-2026-000502",
+    "transactionType": "VENDOR_PAYMENT",
+    "description": "Disbursement to vendor InfraSpace Realties Corp via Bank Transfer (VPAY-2026-000502)",
+    "sourceModule": "Purchases & Payables",
+    "lines": [
+      {
+        "accountCode": "2010",
+        "accountName": "Accounts Payable (Trade Creditors)",
+        "debit": 10000,
+        "credit": 0,
+        "description": "Payment against payables to InfraSpace Realties Corp"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 10000,
+        "description": "Withdrawal/transfer for vendor InfraSpace Realties Corp"
+      }
+    ],
+    "totalDebit": 10000,
+    "totalCredit": 10000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:07.739Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "25ca7b1d-220e-43e7-8e39-61edcb73c095",
+    "journalNumber": "JE-2026-001019",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "EXP-2026-000202",
+    "transactionType": "EXPENSE",
+    "description": "Expense EXP-2026-000202 (Utilities & Internet): Fiber internet leased line for office",
+    "sourceModule": "Expenses",
+    "lines": [
+      {
+        "accountCode": "5150",
+        "accountName": "Office & Admin Supplies",
+        "debit": 10000,
+        "credit": 0,
+        "description": "Utilities & Internet: Fiber internet leased line for office"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 900,
+        "credit": 0,
+        "description": "Input CGST on EXP-2026-000202"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 900,
+        "credit": 0,
+        "description": "Input SGST on EXP-2026-000202"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 11800,
+        "description": "Payment for EXP-2026-000202 via Bank Transfer"
+      }
+    ],
+    "totalDebit": 11800,
+    "totalCredit": 11800,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:07.790Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "f82c81c4-7b28-437d-b7ca-4c95c0f447ae",
+    "journalNumber": "JE-2026-001020",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "TXN-2026-001002",
+    "transactionType": "BANK_TRANSFER",
+    "description": "Cash withdrawal for office petty expenses",
+    "sourceModule": "Banking",
+    "lines": [
+      {
+        "accountCode": "1010",
+        "accountName": "Petty Cash",
+        "debit": 5000,
+        "credit": 0,
+        "description": "Fund transfer receipt from 1020"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 5000,
+        "description": "Fund transfer payout to 1010"
+      }
+    ],
+    "totalDebit": 5000,
+    "totalCredit": 5000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:07.840Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "a4080270-dc3a-434b-bf6e-023133e9367e",
+    "journalNumber": "JE-2026-001024",
+    "transactionDate": "2026-05-10",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "INV-2026-001003",
+    "transactionType": "INVOICE",
+    "description": "Invoice INV-2026-001003 posted for Acme Cloud Technologies",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 112100,
+        "credit": 0,
+        "description": "Receivable from Acme Cloud Technologies for INV-2026-001003"
+      },
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 0,
+        "credit": 95000,
+        "description": "Sales revenue for INV-2026-001003"
+      },
+      {
+        "accountCode": "2110",
+        "accountName": "Output CGST",
+        "debit": 0,
+        "credit": 8550,
+        "description": "Output CGST for INV-2026-001003"
+      },
+      {
+        "accountCode": "2120",
+        "accountName": "Output SGST",
+        "debit": 0,
+        "credit": 8550,
+        "description": "Output SGST for INV-2026-001003"
+      }
+    ],
+    "totalDebit": 112100,
+    "totalCredit": 112100,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:15.198Z",
+    "status": "Posted",
+    "linkedTransactionId": "91a27cdb-7b3a-4210-a7f9-ffcb3f98b90a"
+  },
+  {
+    "id": "30f12b68-fc52-4cac-a30c-85af9dfead13",
+    "journalNumber": "JE-2026-001025",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "PAY-2026-001003",
+    "transactionType": "PAYMENT",
+    "description": "Customer payment received from Acme Cloud Technologies via Bank Transfer (PAY-2026-001003)",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 50000,
+        "credit": 0,
+        "description": "Receipt from Acme Cloud Technologies"
+      },
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 0,
+        "credit": 50000,
+        "description": "Payment applied to customer account Acme Cloud Technologies"
+      }
+    ],
+    "totalDebit": 50000,
+    "totalCredit": 50000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:15.237Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "fdd39b1c-2e69-4cd0-8f25-8ce813834333",
+    "journalNumber": "JE-2026-001026",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "CN-2026-000103",
+    "transactionType": "CREDIT_NOTE",
+    "description": "Credit note CN-2026-000103 against INV-2026-001001 (Quality discount adjustment)",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 1000,
+        "credit": 0,
+        "description": "Revenue reversal for CN CN-2026-000103"
+      },
+      {
+        "accountCode": "2110",
+        "accountName": "Output CGST",
+        "debit": 90,
+        "credit": 0,
+        "description": "Output CGST reversal for CN CN-2026-000103"
+      },
+      {
+        "accountCode": "2120",
+        "accountName": "Output SGST",
+        "debit": 90,
+        "credit": 0,
+        "description": "Output SGST reversal for CN CN-2026-000103"
+      },
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 0,
+        "credit": 1180,
+        "description": "Receivable reduction for CN CN-2026-000103 on INV-2026-001001"
+      }
+    ],
+    "totalDebit": 1180,
+    "totalCredit": 1180,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:15.273Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "e558a060-7291-43ae-a690-add6c0b2e365",
+    "journalNumber": "JE-2026-001027",
+    "transactionDate": "2026-05-15",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "BILL-2026-000503",
+    "transactionType": "VENDOR_BILL",
+    "description": "Vendor Bill BILL-2026-000503 (INV-VEND-1795166955288) posted for InfraSpace Realties Corp",
+    "sourceModule": "Purchases & Payables",
+    "lines": [
+      {
+        "accountCode": "5010",
+        "accountName": "Cost of Goods Sold (COGS)",
+        "debit": 30000,
+        "credit": 0,
+        "description": "Procurement expense for BILL-2026-000503 from InfraSpace Realties Corp"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 2700,
+        "credit": 0,
+        "description": "Input CGST on bill BILL-2026-000503"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 2700,
+        "credit": 0,
+        "description": "Input SGST on bill BILL-2026-000503"
+      },
+      {
+        "accountCode": "2010",
+        "accountName": "Accounts Payable (Trade Creditors)",
+        "debit": 0,
+        "credit": 35400,
+        "description": "Payable to InfraSpace Realties Corp for bill BILL-2026-000503"
+      }
+    ],
+    "totalDebit": 35400,
+    "totalCredit": 35400,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:15.313Z",
+    "status": "Posted",
+    "linkedTransactionId": "481b140e-6478-41d5-949e-a22d603fe68f"
+  },
+  {
+    "id": "78c6bafa-fbae-4f19-83dd-2e8fc133a884",
+    "journalNumber": "JE-2026-001028",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "VPAY-2026-000503",
+    "transactionType": "VENDOR_PAYMENT",
+    "description": "Disbursement to vendor InfraSpace Realties Corp via Bank Transfer (VPAY-2026-000503)",
+    "sourceModule": "Purchases & Payables",
+    "lines": [
+      {
+        "accountCode": "2010",
+        "accountName": "Accounts Payable (Trade Creditors)",
+        "debit": 10000,
+        "credit": 0,
+        "description": "Payment against payables to InfraSpace Realties Corp"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 10000,
+        "description": "Withdrawal/transfer for vendor InfraSpace Realties Corp"
+      }
+    ],
+    "totalDebit": 10000,
+    "totalCredit": 10000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:15.342Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "58f6009a-2a5e-4ce1-a8f7-fd84bcf64923",
+    "journalNumber": "JE-2026-001029",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "EXP-2026-000203",
+    "transactionType": "EXPENSE",
+    "description": "Expense EXP-2026-000203 (Utilities & Internet): Fiber internet leased line for office",
+    "sourceModule": "Expenses",
+    "lines": [
+      {
+        "accountCode": "5150",
+        "accountName": "Office & Admin Supplies",
+        "debit": 10000,
+        "credit": 0,
+        "description": "Utilities & Internet: Fiber internet leased line for office"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 900,
+        "credit": 0,
+        "description": "Input CGST on EXP-2026-000203"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 900,
+        "credit": 0,
+        "description": "Input SGST on EXP-2026-000203"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 11800,
+        "description": "Payment for EXP-2026-000203 via Bank Transfer"
+      }
+    ],
+    "totalDebit": 11800,
+    "totalCredit": 11800,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:15.373Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "fbe4c114-dafa-4ab3-a43f-3ab378703098",
+    "journalNumber": "JE-2026-001030",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "TXN-2026-001003",
+    "transactionType": "BANK_TRANSFER",
+    "description": "Cash withdrawal for office petty expenses",
+    "sourceModule": "Banking",
+    "lines": [
+      {
+        "accountCode": "1010",
+        "accountName": "Petty Cash",
+        "debit": 5000,
+        "credit": 0,
+        "description": "Fund transfer receipt from 1020"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 5000,
+        "description": "Fund transfer payout to 1010"
+      }
+    ],
+    "totalDebit": 5000,
+    "totalCredit": 5000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:29:15.413Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "75c4dffc-3f1b-498a-8615-255c16e73dc8",
+    "journalNumber": "JE-2026-001034",
+    "transactionDate": "2026-05-10",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "INV-2026-001004",
+    "transactionType": "INVOICE",
+    "description": "Invoice INV-2026-001004 posted for Acme Cloud Technologies",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 112100,
+        "credit": 0,
+        "description": "Receivable from Acme Cloud Technologies for INV-2026-001004"
+      },
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 0,
+        "credit": 95000,
+        "description": "Sales revenue for INV-2026-001004"
+      },
+      {
+        "accountCode": "2110",
+        "accountName": "Output CGST",
+        "debit": 0,
+        "credit": 8550,
+        "description": "Output CGST for INV-2026-001004"
+      },
+      {
+        "accountCode": "2120",
+        "accountName": "Output SGST",
+        "debit": 0,
+        "credit": 8550,
+        "description": "Output SGST for INV-2026-001004"
+      }
+    ],
+    "totalDebit": 112100,
+    "totalCredit": 112100,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:50:23.482Z",
+    "status": "Posted",
+    "linkedTransactionId": "c679b428-e126-4d62-81ad-e475dbecd6d2"
+  },
+  {
+    "id": "ee9cd28d-5f2d-4e97-8185-9ae8b11fed75",
+    "journalNumber": "JE-2026-001035",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "PAY-2026-001004",
+    "transactionType": "PAYMENT",
+    "description": "Customer payment received from Acme Cloud Technologies via Bank Transfer (PAY-2026-001004)",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 50000,
+        "credit": 0,
+        "description": "Receipt from Acme Cloud Technologies"
+      },
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 0,
+        "credit": 50000,
+        "description": "Payment applied to customer account Acme Cloud Technologies"
+      }
+    ],
+    "totalDebit": 50000,
+    "totalCredit": 50000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:50:23.519Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "e98533ac-df33-4a90-bc28-0a679c7d70b9",
+    "journalNumber": "JE-2026-001036",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "CN-2026-000104",
+    "transactionType": "CREDIT_NOTE",
+    "description": "Credit note CN-2026-000104 against INV-2026-001001 (Quality discount adjustment)",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 1000,
+        "credit": 0,
+        "description": "Revenue reversal for CN CN-2026-000104"
+      },
+      {
+        "accountCode": "2110",
+        "accountName": "Output CGST",
+        "debit": 90,
+        "credit": 0,
+        "description": "Output CGST reversal for CN CN-2026-000104"
+      },
+      {
+        "accountCode": "2120",
+        "accountName": "Output SGST",
+        "debit": 90,
+        "credit": 0,
+        "description": "Output SGST reversal for CN CN-2026-000104"
+      },
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 0,
+        "credit": 1180,
+        "description": "Receivable reduction for CN CN-2026-000104 on INV-2026-001001"
+      }
+    ],
+    "totalDebit": 1180,
+    "totalCredit": 1180,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:50:23.578Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "b753f10c-0bde-444e-8f45-593d90711b9e",
+    "journalNumber": "JE-2026-001037",
+    "transactionDate": "2026-05-15",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "BILL-2026-000504",
+    "transactionType": "VENDOR_BILL",
+    "description": "Vendor Bill BILL-2026-000504 (INV-VEND-1795168223605) posted for InfraSpace Realties Corp",
+    "sourceModule": "Purchases & Payables",
+    "lines": [
+      {
+        "accountCode": "5010",
+        "accountName": "Cost of Goods Sold (COGS)",
+        "debit": 30000,
+        "credit": 0,
+        "description": "Procurement expense for BILL-2026-000504 from InfraSpace Realties Corp"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 2700,
+        "credit": 0,
+        "description": "Input CGST on bill BILL-2026-000504"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 2700,
+        "credit": 0,
+        "description": "Input SGST on bill BILL-2026-000504"
+      },
+      {
+        "accountCode": "2010",
+        "accountName": "Accounts Payable (Trade Creditors)",
+        "debit": 0,
+        "credit": 35400,
+        "description": "Payable to InfraSpace Realties Corp for bill BILL-2026-000504"
+      }
+    ],
+    "totalDebit": 35400,
+    "totalCredit": 35400,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:50:23.640Z",
+    "status": "Posted",
+    "linkedTransactionId": "1a4dc0b7-0b5e-45af-9ff9-f003fd1b7fbc"
+  },
+  {
+    "id": "0ba90db8-364c-486d-aa03-03fcd0fad596",
+    "journalNumber": "JE-2026-001038",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "VPAY-2026-000504",
+    "transactionType": "VENDOR_PAYMENT",
+    "description": "Disbursement to vendor InfraSpace Realties Corp via Bank Transfer (VPAY-2026-000504)",
+    "sourceModule": "Purchases & Payables",
+    "lines": [
+      {
+        "accountCode": "2010",
+        "accountName": "Accounts Payable (Trade Creditors)",
+        "debit": 10000,
+        "credit": 0,
+        "description": "Payment against payables to InfraSpace Realties Corp"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 10000,
+        "description": "Withdrawal/transfer for vendor InfraSpace Realties Corp"
+      }
+    ],
+    "totalDebit": 10000,
+    "totalCredit": 10000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:50:23.669Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "4e0ed918-8c04-45f5-bd38-17cf344f3c98",
+    "journalNumber": "JE-2026-001039",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "EXP-2026-000204",
+    "transactionType": "EXPENSE",
+    "description": "Expense EXP-2026-000204 (Utilities & Internet): Fiber internet leased line for office",
+    "sourceModule": "Expenses",
+    "lines": [
+      {
+        "accountCode": "5150",
+        "accountName": "Office & Admin Supplies",
+        "debit": 10000,
+        "credit": 0,
+        "description": "Utilities & Internet: Fiber internet leased line for office"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 900,
+        "credit": 0,
+        "description": "Input CGST on EXP-2026-000204"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 900,
+        "credit": 0,
+        "description": "Input SGST on EXP-2026-000204"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 11800,
+        "description": "Payment for EXP-2026-000204 via Bank Transfer"
+      }
+    ],
+    "totalDebit": 11800,
+    "totalCredit": 11800,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:50:23.703Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "0ba02ea7-9abf-4f55-8694-042930f51a45",
+    "journalNumber": "JE-2026-001040",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "TXN-2026-001004",
+    "transactionType": "BANK_TRANSFER",
+    "description": "Cash withdrawal for office petty expenses",
+    "sourceModule": "Banking",
+    "lines": [
+      {
+        "accountCode": "1010",
+        "accountName": "Petty Cash",
+        "debit": 5000,
+        "credit": 0,
+        "description": "Fund transfer receipt from 1020"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 5000,
+        "description": "Fund transfer payout to 1010"
+      }
+    ],
+    "totalDebit": 5000,
+    "totalCredit": 5000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T09:50:23.735Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "b8c394e6-4ad1-438c-9415-c952b7bbe076",
+    "journalNumber": "JE-2026-001044",
+    "transactionDate": "2026-05-10",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "INV-2026-001005",
+    "transactionType": "INVOICE",
+    "description": "Invoice INV-2026-001005 posted for Acme Cloud Technologies",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 112100,
+        "credit": 0,
+        "description": "Receivable from Acme Cloud Technologies for INV-2026-001005"
+      },
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 0,
+        "credit": 95000,
+        "description": "Sales revenue for INV-2026-001005"
+      },
+      {
+        "accountCode": "2110",
+        "accountName": "Output CGST",
+        "debit": 0,
+        "credit": 8550,
+        "description": "Output CGST for INV-2026-001005"
+      },
+      {
+        "accountCode": "2120",
+        "accountName": "Output SGST",
+        "debit": 0,
+        "credit": 8550,
+        "description": "Output SGST for INV-2026-001005"
+      }
+    ],
+    "totalDebit": 112100,
+    "totalCredit": 112100,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T10:41:10.643Z",
+    "status": "Posted",
+    "linkedTransactionId": "3485c183-f771-4ba0-8e4a-d72310dbd3b4"
+  },
+  {
+    "id": "ea65923a-acdd-48b5-b914-6b652d1dd8b2",
+    "journalNumber": "JE-2026-001045",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "PAY-2026-001005",
+    "transactionType": "PAYMENT",
+    "description": "Customer payment received from Acme Cloud Technologies via Bank Transfer (PAY-2026-001005)",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 50000,
+        "credit": 0,
+        "description": "Receipt from Acme Cloud Technologies"
+      },
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 0,
+        "credit": 50000,
+        "description": "Payment applied to customer account Acme Cloud Technologies"
+      }
+    ],
+    "totalDebit": 50000,
+    "totalCredit": 50000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T10:41:10.679Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "4d86ae20-1668-4ae2-8690-6a10d52aa717",
+    "journalNumber": "JE-2026-001046",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "CN-2026-000105",
+    "transactionType": "CREDIT_NOTE",
+    "description": "Credit note CN-2026-000105 against INV-2026-001001 (Quality discount adjustment)",
+    "sourceModule": "Sales & Receivables",
+    "lines": [
+      {
+        "accountCode": "4010",
+        "accountName": "Sales Revenue - Products",
+        "debit": 1000,
+        "credit": 0,
+        "description": "Revenue reversal for CN CN-2026-000105"
+      },
+      {
+        "accountCode": "2110",
+        "accountName": "Output CGST",
+        "debit": 90,
+        "credit": 0,
+        "description": "Output CGST reversal for CN CN-2026-000105"
+      },
+      {
+        "accountCode": "2120",
+        "accountName": "Output SGST",
+        "debit": 90,
+        "credit": 0,
+        "description": "Output SGST reversal for CN CN-2026-000105"
+      },
+      {
+        "accountCode": "1200",
+        "accountName": "Accounts Receivable (Trade Debtors)",
+        "debit": 0,
+        "credit": 1180,
+        "description": "Receivable reduction for CN CN-2026-000105 on INV-2026-001001"
+      }
+    ],
+    "totalDebit": 1180,
+    "totalCredit": 1180,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T10:41:10.712Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "e26634a4-bd68-4432-bfcd-2529e8377386",
+    "journalNumber": "JE-2026-001047",
+    "transactionDate": "2026-05-15",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "BILL-2026-000505",
+    "transactionType": "VENDOR_BILL",
+    "description": "Vendor Bill BILL-2026-000505 (INV-VEND-1795171270735) posted for InfraSpace Realties Corp",
+    "sourceModule": "Purchases & Payables",
+    "lines": [
+      {
+        "accountCode": "5010",
+        "accountName": "Cost of Goods Sold (COGS)",
+        "debit": 30000,
+        "credit": 0,
+        "description": "Procurement expense for BILL-2026-000505 from InfraSpace Realties Corp"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 2700,
+        "credit": 0,
+        "description": "Input CGST on bill BILL-2026-000505"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 2700,
+        "credit": 0,
+        "description": "Input SGST on bill BILL-2026-000505"
+      },
+      {
+        "accountCode": "2010",
+        "accountName": "Accounts Payable (Trade Creditors)",
+        "debit": 0,
+        "credit": 35400,
+        "description": "Payable to InfraSpace Realties Corp for bill BILL-2026-000505"
+      }
+    ],
+    "totalDebit": 35400,
+    "totalCredit": 35400,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T10:41:10.764Z",
+    "status": "Posted",
+    "linkedTransactionId": "02deda6d-de82-4e34-bd4b-6e2e656d4cd5"
+  },
+  {
+    "id": "dec2e6cd-709d-47f6-9204-53c30663f360",
+    "journalNumber": "JE-2026-001048",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "VPAY-2026-000505",
+    "transactionType": "VENDOR_PAYMENT",
+    "description": "Disbursement to vendor InfraSpace Realties Corp via Bank Transfer (VPAY-2026-000505)",
+    "sourceModule": "Purchases & Payables",
+    "lines": [
+      {
+        "accountCode": "2010",
+        "accountName": "Accounts Payable (Trade Creditors)",
+        "debit": 10000,
+        "credit": 0,
+        "description": "Payment against payables to InfraSpace Realties Corp"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 10000,
+        "description": "Withdrawal/transfer for vendor InfraSpace Realties Corp"
+      }
+    ],
+    "totalDebit": 10000,
+    "totalCredit": 10000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T10:41:10.789Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "02085946-1759-404c-a39f-0cacbdc1c225",
+    "journalNumber": "JE-2026-001049",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "EXP-2026-000205",
+    "transactionType": "EXPENSE",
+    "description": "Expense EXP-2026-000205 (Utilities & Internet): Fiber internet leased line for office",
+    "sourceModule": "Expenses",
+    "lines": [
+      {
+        "accountCode": "5150",
+        "accountName": "Office & Admin Supplies",
+        "debit": 10000,
+        "credit": 0,
+        "description": "Utilities & Internet: Fiber internet leased line for office"
+      },
+      {
+        "accountCode": "1610",
+        "accountName": "Input CGST",
+        "debit": 900,
+        "credit": 0,
+        "description": "Input CGST on EXP-2026-000205"
+      },
+      {
+        "accountCode": "1620",
+        "accountName": "Input SGST",
+        "debit": 900,
+        "credit": 0,
+        "description": "Input SGST on EXP-2026-000205"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 11800,
+        "description": "Payment for EXP-2026-000205 via Bank Transfer"
+      }
+    ],
+    "totalDebit": 11800,
+    "totalCredit": 11800,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T10:41:10.814Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  },
+  {
+    "id": "92018c43-97f0-4988-b181-3e2ab429a6d7",
+    "journalNumber": "JE-2026-001050",
+    "transactionDate": "2026-11-20",
+    "postingDate": "2026-11-20",
+    "referenceNumber": "TXN-2026-001005",
+    "transactionType": "BANK_TRANSFER",
+    "description": "Cash withdrawal for office petty expenses",
+    "sourceModule": "Banking",
+    "lines": [
+      {
+        "accountCode": "1010",
+        "accountName": "Petty Cash",
+        "debit": 5000,
+        "credit": 0,
+        "description": "Fund transfer receipt from 1020"
+      },
+      {
+        "accountCode": "1020",
+        "accountName": "HDFC Operating Bank Account",
+        "debit": 0,
+        "credit": 5000,
+        "description": "Fund transfer payout to 1010"
+      }
+    ],
+    "totalDebit": 5000,
+    "totalCredit": 5000,
+    "currency": "INR",
+    "createdBy": "System User",
+    "createdDate": "2026-11-20T10:41:10.842Z",
+    "status": "Posted",
+    "linkedTransactionId": null
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "BANK-001",
+    "accountName": "HDFC Corporate Current A/c",
+    "accountNumber": "50200012345678",
+    "bankName": "HDFC Bank",
+    "ifsc": "HDFC0000060",
+    "branch": "Fort, Mumbai",
+    "ledgerAccountCode": "1020",
+    "currentBalance": 174200,
+    "isActive": true
+  },
+  {
+    "id": "BANK-002",
+    "accountName": "ICICI Reserve A/c",
+    "accountNumber": "000405098765",
+    "bankName": "ICICI Bank",
+    "ifsc": "ICIC0000004",
+    "branch": "Nariman Point, Mumbai",
+    "ledgerAccountCode": "1030",
+    "currentBalance": 0,
+    "isActive": true
+  }
+]

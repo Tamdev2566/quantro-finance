@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-11-20T09-29-15-472Z",
+  "version": "1.0.0",
+  "filesCount": 24,
+  "files": [
+    "company.json",
+    "settings.json",
+    "accounts.json",
+    "journal_entries.json",
+    "invoices.json",
+    "invoice_items.json",
+    "payments.json",
+    "credit_notes.json",
+    "vendor_bills.json",
+    "vendor_payments.json",
+    "debit_notes.json",
+    "expenses.json",
+    "tax_records.json",
+    "bank_accounts.json",
+    "bank_transactions.json",
+    "reconciliations.json",
+    "budgets.json",
+    "customers.json",
+    "vendors.json",
+    "recurring_transactions.json",
+    "audit_logs.json",
+    "transaction_sequences.json",
+    "opening_balances.json",
+    "periods.json"
+  ]
+}

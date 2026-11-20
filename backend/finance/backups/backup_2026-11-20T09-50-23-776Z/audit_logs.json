@@ -1,0 +1,1239 @@
+[
+  {
+    "id": "8ce80e8a-3b45-475d-985a-d0cd63924c8a",
+    "timestamp": "2026-11-20T09:50:23.774Z",
+    "user": "System User",
+    "action": "Unlock Month",
+    "transactionType": "PERIOD",
+    "transactionId": "FY2026-2027",
+    "beforeValues": null,
+    "afterValues": {
+      "lockedMonths": [
+        "2026-01"
+      ]
+    },
+    "reason": "Month 2026-06 unlocked",
+    "sourceModule": "Accounting"
+  },
+  {
+    "id": "4b4e42bc-00ae-492c-81a0-0bb7dd11b325",
+    "timestamp": "2026-11-20T09:50:23.760Z",
+    "user": "System User",
+    "action": "Lock Month",
+    "transactionType": "PERIOD",
+    "transactionId": "FY2026-2027",
+    "beforeValues": null,
+    "afterValues": {
+      "lockedMonths": [
+        "2026-01",
+        "2026-06"
+      ]
+    },
+    "reason": "Month 2026-06 locked",
+    "sourceModule": "Accounting"
+  },
+  {
+    "id": "b4181321-a1c7-4bac-afcf-4785b2184f86",
+    "timestamp": "2026-11-20T09:50:23.745Z",
+    "user": "System User",
+    "action": "Bank Transfer",
+    "transactionType": "BANK_TRANSFER",
+    "transactionId": "TXN-2026-001004",
+    "beforeValues": null,
+    "afterValues": {
+      "fromLedger": "1020",
+      "toLedger": "1010",
+      "amount": 5000,
+      "journalId": "0ba02ea7-9abf-4f55-8694-042930f51a45"
+    },
+    "reason": "",
+    "sourceModule": "Banking"
+  },
+  {
+    "id": "98c08854-1c86-4550-9e39-4e4ec18bce5d",
+    "timestamp": "2026-11-20T09:50:23.736Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "BANK_TRANSFER",
+    "transactionId": "0ba02ea7-9abf-4f55-8694-042930f51a45",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001040",
+      "totalDebit": 5000,
+      "totalCredit": 5000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Banking"
+  },
+  {
+    "id": "b26c7c31-2d94-4967-9666-04f87c0f3f3a",
+    "timestamp": "2026-11-20T09:50:23.718Z",
+    "user": "System User",
+    "action": "Record Expense",
+    "transactionType": "EXPENSE",
+    "transactionId": "1a1e4200-c393-4f53-99f9-aa6516f69130",
+    "beforeValues": null,
+    "afterValues": {
+      "expenseNumber": "EXP-2026-000204",
+      "totalAmount": 11800,
+      "category": "Utilities & Internet"
+    },
+    "reason": "",
+    "sourceModule": "Expenses"
+  },
+  {
+    "id": "2ab2d08e-54e3-4a77-9c23-9a254998701b",
+    "timestamp": "2026-11-20T09:50:23.703Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "EXPENSE",
+    "transactionId": "4e0ed918-8c04-45f5-bd38-17cf344f3c98",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001039",
+      "totalDebit": 11800,
+      "totalCredit": 11800,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Expenses"
+  },
+  {
+    "id": "3a393d9d-0500-4f6f-aaf8-94d8fb6e24af",
+    "timestamp": "2026-11-20T09:50:23.688Z",
+    "user": "System User",
+    "action": "Pay Vendor Bill",
+    "transactionType": "VENDOR_PAYMENT",
+    "transactionId": "fce351cf-be1b-480c-99d3-7d9199e91240",
+    "beforeValues": null,
+    "afterValues": {
+      "paymentNumber": "VPAY-2026-000504",
+      "amount": 10000,
+      "allocations": [
+        {
+          "billId": "1a4dc0b7-0b5e-45af-9ff9-f003fd1b7fbc",
+          "billNumber": "BILL-2026-000504",
+          "amount": 10000
+        }
+      ]
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "8dee5dc7-7882-46cd-8bdb-eef8b76173cb",
+    "timestamp": "2026-11-20T09:50:23.670Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "VENDOR_PAYMENT",
+    "transactionId": "0ba90db8-364c-486d-aa03-03fcd0fad596",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001038",
+      "totalDebit": 10000,
+      "totalCredit": 10000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "1cd291db-072b-4712-8373-048299548076",
+    "timestamp": "2026-11-20T09:50:23.647Z",
+    "user": "System User",
+    "action": "Post Vendor Bill",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "1a4dc0b7-0b5e-45af-9ff9-f003fd1b7fbc",
+    "beforeValues": null,
+    "afterValues": {
+      "billNumber": "BILL-2026-000504",
+      "grandTotal": 35400,
+      "journalId": "b753f10c-0bde-444e-8f45-593d90711b9e"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "889006e2-1f14-428f-9420-47069167262e",
+    "timestamp": "2026-11-20T09:50:23.640Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "b753f10c-0bde-444e-8f45-593d90711b9e",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001037",
+      "totalDebit": 35400,
+      "totalCredit": 35400,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "d5a71584-686e-4506-9b66-f00362627388",
+    "timestamp": "2026-11-20T09:50:23.628Z",
+    "user": "System User",
+    "action": "Create Vendor Bill",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "1a4dc0b7-0b5e-45af-9ff9-f003fd1b7fbc",
+    "beforeValues": null,
+    "afterValues": {
+      "billNumber": "BILL-2026-000504",
+      "grandTotal": 35400,
+      "status": "Draft"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "3db38b52-eb68-40c2-9f2c-442c8223ee8d",
+    "timestamp": "2026-11-20T09:50:23.601Z",
+    "user": "System User",
+    "action": "Create Credit Note",
+    "transactionType": "CREDIT_NOTE",
+    "transactionId": "5b9ca00c-3d4b-4e66-bbe3-59003c3f06c3",
+    "beforeValues": null,
+    "afterValues": {
+      "creditNoteNumber": "CN-2026-000104",
+      "invoiceNumber": "INV-2026-001001",
+      "grandTotal": 1180
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "66b1ba45-bc78-4111-81d8-5924bf9fd5ba",
+    "timestamp": "2026-11-20T09:50:23.579Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "CREDIT_NOTE",
+    "transactionId": "e98533ac-df33-4a90-bc28-0a679c7d70b9",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001036",
+      "totalDebit": 1180,
+      "totalCredit": 1180,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "e31b5562-03ee-479c-b5c6-8f72cb0dcfe0",
+    "timestamp": "2026-11-20T09:50:23.552Z",
+    "user": "System User",
+    "action": "Receive Payment",
+    "transactionType": "PAYMENT",
+    "transactionId": "d3be7d73-dd2d-4059-b757-7579517e7032",
+    "beforeValues": null,
+    "afterValues": {
+      "paymentNumber": "PAY-2026-001004",
+      "amount": 50000,
+      "allocations": [
+        {
+          "invoiceId": "c679b428-e126-4d62-81ad-e475dbecd6d2",
+          "invoiceNumber": "INV-2026-001004",
+          "amount": 50000
+        }
+      ]
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "5c93a9a1-8562-4db7-89ef-f3bea97f6615",
+    "timestamp": "2026-11-20T09:50:23.520Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "PAYMENT",
+    "transactionId": "ee9cd28d-5f2d-4e97-8185-9ae8b11fed75",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001035",
+      "totalDebit": 50000,
+      "totalCredit": 50000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "e7b8e7cc-6f10-447e-bb4c-09774fa46ed7",
+    "timestamp": "2026-11-20T09:50:23.501Z",
+    "user": "System User",
+    "action": "Post Invoice",
+    "transactionType": "INVOICE",
+    "transactionId": "c679b428-e126-4d62-81ad-e475dbecd6d2",
+    "beforeValues": null,
+    "afterValues": {
+      "invoiceNumber": "INV-2026-001004",
+      "journalId": "75c4dffc-3f1b-498a-8615-255c16e73dc8",
+      "grandTotal": 112100
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "cedec2ff-92d1-4ab9-afc8-f9c96cd25d55",
+    "timestamp": "2026-11-20T09:50:23.484Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "INVOICE",
+    "transactionId": "75c4dffc-3f1b-498a-8615-255c16e73dc8",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001034",
+      "totalDebit": 112100,
+      "totalCredit": 112100,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "557e28c7-9104-4005-a919-27b4c9dc5c04",
+    "timestamp": "2026-11-20T09:50:23.460Z",
+    "user": "System User",
+    "action": "Create Invoice",
+    "transactionType": "INVOICE",
+    "transactionId": "c679b428-e126-4d62-81ad-e475dbecd6d2",
+    "beforeValues": null,
+    "afterValues": {
+      "invoiceNumber": "INV-2026-001004",
+      "grandTotal": 112100,
+      "status": "Draft"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "c830987b-7e95-4043-83a8-d9d08234a56e",
+    "timestamp": "2026-11-20T09:29:15.461Z",
+    "user": "System User",
+    "action": "Unlock Month",
+    "transactionType": "PERIOD",
+    "transactionId": "FY2026-2027",
+    "beforeValues": null,
+    "afterValues": {
+      "lockedMonths": [
+        "2026-01"
+      ]
+    },
+    "reason": "Month 2026-06 unlocked",
+    "sourceModule": "Accounting"
+  },
+  {
+    "id": "fd777614-9af3-493b-816d-65c209b9cab7",
+    "timestamp": "2026-11-20T09:29:15.454Z",
+    "user": "System User",
+    "action": "Lock Month",
+    "transactionType": "PERIOD",
+    "transactionId": "FY2026-2027",
+    "beforeValues": null,
+    "afterValues": {
+      "lockedMonths": [
+        "2026-01",
+        "2026-06"
+      ]
+    },
+    "reason": "Month 2026-06 locked",
+    "sourceModule": "Accounting"
+  },
+  {
+    "id": "9c46fca3-a47f-4a4d-8052-8edd41042e18",
+    "timestamp": "2026-11-20T09:29:15.431Z",
+    "user": "System User",
+    "action": "Bank Transfer",
+    "transactionType": "BANK_TRANSFER",
+    "transactionId": "TXN-2026-001003",
+    "beforeValues": null,
+    "afterValues": {
+      "fromLedger": "1020",
+      "toLedger": "1010",
+      "amount": 5000,
+      "journalId": "fbe4c114-dafa-4ab3-a43f-3ab378703098"
+    },
+    "reason": "",
+    "sourceModule": "Banking"
+  },
+  {
+    "id": "f5f77ddf-158d-4e2e-9f16-00e1306a0f97",
+    "timestamp": "2026-11-20T09:29:15.415Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "BANK_TRANSFER",
+    "transactionId": "fbe4c114-dafa-4ab3-a43f-3ab378703098",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001030",
+      "totalDebit": 5000,
+      "totalCredit": 5000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Banking"
+  },
+  {
+    "id": "30ca4e24-cff9-4312-a49f-fe7c9a289ab9",
+    "timestamp": "2026-11-20T09:29:15.390Z",
+    "user": "System User",
+    "action": "Record Expense",
+    "transactionType": "EXPENSE",
+    "transactionId": "2a75c15c-1b75-4811-aebf-6f678b320288",
+    "beforeValues": null,
+    "afterValues": {
+      "expenseNumber": "EXP-2026-000203",
+      "totalAmount": 11800,
+      "category": "Utilities & Internet"
+    },
+    "reason": "",
+    "sourceModule": "Expenses"
+  },
+  {
+    "id": "6e781b6d-81be-4bf3-83d8-bd5fff78703b",
+    "timestamp": "2026-11-20T09:29:15.374Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "EXPENSE",
+    "transactionId": "58f6009a-2a5e-4ce1-a8f7-fd84bcf64923",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001029",
+      "totalDebit": 11800,
+      "totalCredit": 11800,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Expenses"
+  },
+  {
+    "id": "30293894-d691-4369-a4dc-04aafdaff7c4",
+    "timestamp": "2026-11-20T09:29:15.357Z",
+    "user": "System User",
+    "action": "Pay Vendor Bill",
+    "transactionType": "VENDOR_PAYMENT",
+    "transactionId": "9d647d3d-0716-4c57-aba0-7a54e94253aa",
+    "beforeValues": null,
+    "afterValues": {
+      "paymentNumber": "VPAY-2026-000503",
+      "amount": 10000,
+      "allocations": [
+        {
+          "billId": "481b140e-6478-41d5-949e-a22d603fe68f",
+          "billNumber": "BILL-2026-000503",
+          "amount": 10000
+        }
+      ]
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "92a51050-62a2-4d01-aaea-7675d4826b26",
+    "timestamp": "2026-11-20T09:29:15.342Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "VENDOR_PAYMENT",
+    "transactionId": "78c6bafa-fbae-4f19-83dd-2e8fc133a884",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001028",
+      "totalDebit": 10000,
+      "totalCredit": 10000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "63f22193-8aea-4cd9-9ce8-71ed402ef3cf",
+    "timestamp": "2026-11-20T09:29:15.323Z",
+    "user": "System User",
+    "action": "Post Vendor Bill",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "481b140e-6478-41d5-949e-a22d603fe68f",
+    "beforeValues": null,
+    "afterValues": {
+      "billNumber": "BILL-2026-000503",
+      "grandTotal": 35400,
+      "journalId": "e558a060-7291-43ae-a690-add6c0b2e365"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "5267b901-3a53-4c48-8419-c03640af06c5",
+    "timestamp": "2026-11-20T09:29:15.313Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "e558a060-7291-43ae-a690-add6c0b2e365",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001027",
+      "totalDebit": 35400,
+      "totalCredit": 35400,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "1ea35809-53b8-48de-b1f1-436169df919e",
+    "timestamp": "2026-11-20T09:29:15.294Z",
+    "user": "System User",
+    "action": "Create Vendor Bill",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "481b140e-6478-41d5-949e-a22d603fe68f",
+    "beforeValues": null,
+    "afterValues": {
+      "billNumber": "BILL-2026-000503",
+      "grandTotal": 35400,
+      "status": "Draft"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "6504b191-56cb-44e0-8035-1f4d0824ac74",
+    "timestamp": "2026-11-20T09:29:15.285Z",
+    "user": "System User",
+    "action": "Create Credit Note",
+    "transactionType": "CREDIT_NOTE",
+    "transactionId": "d8165af9-8a92-4fce-ad77-66ed51ca3c03",
+    "beforeValues": null,
+    "afterValues": {
+      "creditNoteNumber": "CN-2026-000103",
+      "invoiceNumber": "INV-2026-001001",
+      "grandTotal": 1180
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "8366d7e2-764e-47a9-9b32-8d63ee43222d",
+    "timestamp": "2026-11-20T09:29:15.273Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "CREDIT_NOTE",
+    "transactionId": "fdd39b1c-2e69-4cd0-8f25-8ce813834333",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001026",
+      "totalDebit": 1180,
+      "totalCredit": 1180,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "7ab3d595-ec2e-4da6-a1d4-ae93dc727c04",
+    "timestamp": "2026-11-20T09:29:15.252Z",
+    "user": "System User",
+    "action": "Receive Payment",
+    "transactionType": "PAYMENT",
+    "transactionId": "a7aeb30c-1de4-4dc9-9523-f9d97e68f167",
+    "beforeValues": null,
+    "afterValues": {
+      "paymentNumber": "PAY-2026-001003",
+      "amount": 50000,
+      "allocations": [
+        {
+          "invoiceId": "91a27cdb-7b3a-4210-a7f9-ffcb3f98b90a",
+          "invoiceNumber": "INV-2026-001003",
+          "amount": 50000
+        }
+      ]
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "4209cbd5-3331-4faf-be5d-f3570e766b78",
+    "timestamp": "2026-11-20T09:29:15.238Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "PAYMENT",
+    "transactionId": "30f12b68-fc52-4cac-a30c-85af9dfead13",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001025",
+      "totalDebit": 50000,
+      "totalCredit": 50000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "0bda2180-ca4d-4153-9cbe-a49b873abc48",
+    "timestamp": "2026-11-20T09:29:15.213Z",
+    "user": "System User",
+    "action": "Post Invoice",
+    "transactionType": "INVOICE",
+    "transactionId": "91a27cdb-7b3a-4210-a7f9-ffcb3f98b90a",
+    "beforeValues": null,
+    "afterValues": {
+      "invoiceNumber": "INV-2026-001003",
+      "journalId": "a4080270-dc3a-434b-bf6e-023133e9367e",
+      "grandTotal": 112100
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "eb45bffc-b926-485d-8761-f343b52ba0bf",
+    "timestamp": "2026-11-20T09:29:15.202Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "INVOICE",
+    "transactionId": "a4080270-dc3a-434b-bf6e-023133e9367e",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001024",
+      "totalDebit": 112100,
+      "totalCredit": 112100,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "5d9b2ef5-e011-49e9-a10f-c58241e1ac83",
+    "timestamp": "2026-11-20T09:29:15.180Z",
+    "user": "System User",
+    "action": "Create Invoice",
+    "transactionType": "INVOICE",
+    "transactionId": "91a27cdb-7b3a-4210-a7f9-ffcb3f98b90a",
+    "beforeValues": null,
+    "afterValues": {
+      "invoiceNumber": "INV-2026-001003",
+      "grandTotal": 112100,
+      "status": "Draft"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "c6b5db17-52d7-4460-8a1a-6a04543c8c4e",
+    "timestamp": "2026-11-20T09:29:07.882Z",
+    "user": "System User",
+    "action": "Unlock Month",
+    "transactionType": "PERIOD",
+    "transactionId": "FY2026-2027",
+    "beforeValues": null,
+    "afterValues": {
+      "lockedMonths": [
+        "2026-01"
+      ]
+    },
+    "reason": "Month 2026-06 unlocked",
+    "sourceModule": "Accounting"
+  },
+  {
+    "id": "c23e4785-8948-4a3d-b81e-38f7a549ef39",
+    "timestamp": "2026-11-20T09:29:07.867Z",
+    "user": "System User",
+    "action": "Lock Month",
+    "transactionType": "PERIOD",
+    "transactionId": "FY2026-2027",
+    "beforeValues": null,
+    "afterValues": {
+      "lockedMonths": [
+        "2026-01",
+        "2026-06"
+      ]
+    },
+    "reason": "Month 2026-06 locked",
+    "sourceModule": "Accounting"
+  },
+  {
+    "id": "bbb0082d-eeb4-4089-b3d1-8c0d6a00a790",
+    "timestamp": "2026-11-20T09:29:07.852Z",
+    "user": "System User",
+    "action": "Bank Transfer",
+    "transactionType": "BANK_TRANSFER",
+    "transactionId": "TXN-2026-001002",
+    "beforeValues": null,
+    "afterValues": {
+      "fromLedger": "1020",
+      "toLedger": "1010",
+      "amount": 5000,
+      "journalId": "f82c81c4-7b28-437d-b7ca-4c95c0f447ae"
+    },
+    "reason": "",
+    "sourceModule": "Banking"
+  },
+  {
+    "id": "d079beab-cb7a-46a3-ae71-9d799155549f",
+    "timestamp": "2026-11-20T09:29:07.841Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "BANK_TRANSFER",
+    "transactionId": "f82c81c4-7b28-437d-b7ca-4c95c0f447ae",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001020",
+      "totalDebit": 5000,
+      "totalCredit": 5000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Banking"
+  },
+  {
+    "id": "8932bebb-da18-408e-85a9-333d0ea31a60",
+    "timestamp": "2026-11-20T09:29:07.815Z",
+    "user": "System User",
+    "action": "Record Expense",
+    "transactionType": "EXPENSE",
+    "transactionId": "59676549-f2ef-483c-aee2-29b6e9340f05",
+    "beforeValues": null,
+    "afterValues": {
+      "expenseNumber": "EXP-2026-000202",
+      "totalAmount": 11800,
+      "category": "Utilities & Internet"
+    },
+    "reason": "",
+    "sourceModule": "Expenses"
+  },
+  {
+    "id": "0f588f83-e447-4cfd-8781-b4a484c2edec",
+    "timestamp": "2026-11-20T09:29:07.790Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "EXPENSE",
+    "transactionId": "25ca7b1d-220e-43e7-8e39-61edcb73c095",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001019",
+      "totalDebit": 11800,
+      "totalCredit": 11800,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Expenses"
+  },
+  {
+    "id": "f19dc6bc-c3bc-46b3-ab0e-407226167763",
+    "timestamp": "2026-11-20T09:29:07.763Z",
+    "user": "System User",
+    "action": "Pay Vendor Bill",
+    "transactionType": "VENDOR_PAYMENT",
+    "transactionId": "23747145-b082-498e-a6ad-26c4b3b9f0f1",
+    "beforeValues": null,
+    "afterValues": {
+      "paymentNumber": "VPAY-2026-000502",
+      "amount": 10000,
+      "allocations": [
+        {
+          "billId": "3c855e71-223f-4508-8f15-602b6ccb0d62",
+          "billNumber": "BILL-2026-000502",
+          "amount": 10000
+        }
+      ]
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "344a8bc4-bb91-4fb6-87ed-9a0560cb6acb",
+    "timestamp": "2026-11-20T09:29:07.739Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "VENDOR_PAYMENT",
+    "transactionId": "73f90d35-731f-4fda-84ae-72d108314edc",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001018",
+      "totalDebit": 10000,
+      "totalCredit": 10000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "cb5606b0-9588-4024-908f-f683d3e598e1",
+    "timestamp": "2026-11-20T09:29:07.710Z",
+    "user": "System User",
+    "action": "Post Vendor Bill",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "3c855e71-223f-4508-8f15-602b6ccb0d62",
+    "beforeValues": null,
+    "afterValues": {
+      "billNumber": "BILL-2026-000502",
+      "grandTotal": 35400,
+      "journalId": "70cfeca8-8e4a-4472-ab38-7f9907209b03"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "3c406b11-fee2-4547-887d-861ea0ea2745",
+    "timestamp": "2026-11-20T09:29:07.694Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "70cfeca8-8e4a-4472-ab38-7f9907209b03",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001017",
+      "totalDebit": 35400,
+      "totalCredit": 35400,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "7d4572d2-31ca-46de-8fbd-cb8cf53264e1",
+    "timestamp": "2026-11-20T09:29:07.670Z",
+    "user": "System User",
+    "action": "Create Vendor Bill",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "3c855e71-223f-4508-8f15-602b6ccb0d62",
+    "beforeValues": null,
+    "afterValues": {
+      "billNumber": "BILL-2026-000502",
+      "grandTotal": 35400,
+      "status": "Draft"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "723a1efe-9d62-4876-974d-dfc1757e9a79",
+    "timestamp": "2026-11-20T09:29:07.645Z",
+    "user": "System User",
+    "action": "Create Credit Note",
+    "transactionType": "CREDIT_NOTE",
+    "transactionId": "052cbc4d-1e19-4abd-b83d-e6250f70bfbe",
+    "beforeValues": null,
+    "afterValues": {
+      "creditNoteNumber": "CN-2026-000102",
+      "invoiceNumber": "INV-2026-001001",
+      "grandTotal": 1180
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "b5e7ba3a-a7ec-473e-8e88-642d71726707",
+    "timestamp": "2026-11-20T09:29:07.629Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "CREDIT_NOTE",
+    "transactionId": "8d8a837b-22d9-4280-8da4-f5579c37b66b",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001016",
+      "totalDebit": 1180,
+      "totalCredit": 1180,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "341b23df-7c6b-4621-8d46-f25014bbd6ea",
+    "timestamp": "2026-11-20T09:29:07.598Z",
+    "user": "System User",
+    "action": "Receive Payment",
+    "transactionType": "PAYMENT",
+    "transactionId": "d4e779ca-0b83-4cec-964c-1a5cc99a5147",
+    "beforeValues": null,
+    "afterValues": {
+      "paymentNumber": "PAY-2026-001002",
+      "amount": 50000,
+      "allocations": [
+        {
+          "invoiceId": "04bb7700-3970-4b71-95bc-ae57f5273cb6",
+          "invoiceNumber": "INV-2026-001002",
+          "amount": 50000
+        }
+      ]
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "27f9a664-0312-4dfb-8502-cfc80687fbc8",
+    "timestamp": "2026-11-20T09:29:07.562Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "PAYMENT",
+    "transactionId": "30cfc244-e4e8-436c-82cf-3b7368fcffca",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001015",
+      "totalDebit": 50000,
+      "totalCredit": 50000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "52b3a3a3-6253-4cdd-9162-8ef899e6742e",
+    "timestamp": "2026-11-20T09:29:07.532Z",
+    "user": "System User",
+    "action": "Post Invoice",
+    "transactionType": "INVOICE",
+    "transactionId": "04bb7700-3970-4b71-95bc-ae57f5273cb6",
+    "beforeValues": null,
+    "afterValues": {
+      "invoiceNumber": "INV-2026-001002",
+      "journalId": "44ab6984-df3d-4692-95fc-e635e937e3a2",
+      "grandTotal": 112100
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "7750c7ea-37f1-4562-b208-228453353ea6",
+    "timestamp": "2026-11-20T09:29:07.503Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "INVOICE",
+    "transactionId": "44ab6984-df3d-4692-95fc-e635e937e3a2",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001014",
+      "totalDebit": 112100,
+      "totalCredit": 112100,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "16495468-7fe2-4141-b7b4-ea19c86f4051",
+    "timestamp": "2026-11-20T09:29:07.477Z",
+    "user": "System User",
+    "action": "Create Invoice",
+    "transactionType": "INVOICE",
+    "transactionId": "04bb7700-3970-4b71-95bc-ae57f5273cb6",
+    "beforeValues": null,
+    "afterValues": {
+      "invoiceNumber": "INV-2026-001002",
+      "grandTotal": 112100,
+      "status": "Draft"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "4d36fdd2-87fd-49c1-828f-2cb91dd43ed7",
+    "timestamp": "2026-11-20T09:28:24.210Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "MANUAL",
+    "transactionId": "d39c73fd-fe2f-4031-812f-700ad28759ee",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001011",
+      "totalDebit": 100,
+      "totalCredit": 100,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "General Ledger"
+  },
+  {
+    "id": "0b26387d-04f0-4bc6-9821-95169ffb8a18",
+    "timestamp": "2026-11-20T09:28:24.197Z",
+    "user": "System User",
+    "action": "Lock Month",
+    "transactionType": "PERIOD",
+    "transactionId": "FY2026-2027",
+    "beforeValues": null,
+    "afterValues": {
+      "lockedMonths": [
+        "2026-01"
+      ]
+    },
+    "reason": "Month 2026-01 locked",
+    "sourceModule": "Accounting"
+  },
+  {
+    "id": "299a8272-9cf0-49b4-88fb-1b4745730762",
+    "timestamp": "2026-11-20T09:28:24.182Z",
+    "user": "System User",
+    "action": "Bank Transfer",
+    "transactionType": "BANK_TRANSFER",
+    "transactionId": "TXN-2026-001001",
+    "beforeValues": null,
+    "afterValues": {
+      "fromLedger": "1020",
+      "toLedger": "1010",
+      "amount": 5000,
+      "journalId": "9be40672-42e2-4826-8b55-e8af567a8a8e"
+    },
+    "reason": "",
+    "sourceModule": "Banking"
+  },
+  {
+    "id": "397125c8-84b6-45b3-9359-c90e7f7c7583",
+    "timestamp": "2026-11-20T09:28:24.175Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "BANK_TRANSFER",
+    "transactionId": "9be40672-42e2-4826-8b55-e8af567a8a8e",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001010",
+      "totalDebit": 5000,
+      "totalCredit": 5000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Banking"
+  },
+  {
+    "id": "607cf989-0fca-4385-a743-8a107efc7a08",
+    "timestamp": "2026-11-20T09:28:24.148Z",
+    "user": "System User",
+    "action": "Reverse Journal",
+    "transactionType": "REVERSAL",
+    "transactionId": "d8f22be6-b349-4ecd-bda5-06f5c2d21161",
+    "beforeValues": {
+      "reversedJournal": "JE-2026-001008"
+    },
+    "afterValues": {
+      "reversalNumber": "JE-2026-001009",
+      "totalDebit": 11800
+    },
+    "reason": "Rollback expense post",
+    "sourceModule": "Expenses"
+  },
+  {
+    "id": "7e4a9c00-2a14-44b7-83d7-cd20adcede47",
+    "timestamp": "2026-11-20T09:28:24.131Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "EXPENSE",
+    "transactionId": "102431e2-c796-46f3-a811-042138595c76",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001008",
+      "totalDebit": 11800,
+      "totalCredit": 11800,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Expenses"
+  },
+  {
+    "id": "9bdb6abf-e6c6-4f45-b152-247bfd3f8fb1",
+    "timestamp": "2026-11-20T09:28:24.113Z",
+    "user": "System User",
+    "action": "Pay Vendor Bill",
+    "transactionType": "VENDOR_PAYMENT",
+    "transactionId": "055a697a-80fc-47e3-86f8-f25e539bba27",
+    "beforeValues": null,
+    "afterValues": {
+      "paymentNumber": "VPAY-2026-000501",
+      "amount": 10000,
+      "allocations": [
+        {
+          "billId": "a6850672-42ee-4a36-acc2-3e96ab7922fc",
+          "billNumber": "BILL-2026-000501",
+          "amount": 10000
+        }
+      ]
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "9cb7c8a5-2a1f-43c5-b2bb-9a6c695b31b3",
+    "timestamp": "2026-11-20T09:28:24.098Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "VENDOR_PAYMENT",
+    "transactionId": "ce62ed63-c3fa-4382-9a41-705b14a6f4ef",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001007",
+      "totalDebit": 10000,
+      "totalCredit": 10000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "52591153-73b2-44f5-ae46-2795a7d37767",
+    "timestamp": "2026-11-20T09:28:24.077Z",
+    "user": "System User",
+    "action": "Post Vendor Bill",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "a6850672-42ee-4a36-acc2-3e96ab7922fc",
+    "beforeValues": null,
+    "afterValues": {
+      "billNumber": "BILL-2026-000501",
+      "grandTotal": 35400,
+      "journalId": "ec8831d6-7107-4b58-a85e-46a7a2c6b8b9"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "92f1b5c5-275a-42ff-8c0f-b76627441ea2",
+    "timestamp": "2026-11-20T09:28:24.065Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "ec8831d6-7107-4b58-a85e-46a7a2c6b8b9",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001006",
+      "totalDebit": 35400,
+      "totalCredit": 35400,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "47b449a5-c357-4ab2-9805-ea8bce9fa252",
+    "timestamp": "2026-11-20T09:28:24.042Z",
+    "user": "System User",
+    "action": "Create Vendor Bill",
+    "transactionType": "VENDOR_BILL",
+    "transactionId": "a6850672-42ee-4a36-acc2-3e96ab7922fc",
+    "beforeValues": null,
+    "afterValues": {
+      "billNumber": "BILL-2026-000501",
+      "grandTotal": 35400,
+      "status": "Draft"
+    },
+    "reason": "",
+    "sourceModule": "Purchases & Payables"
+  },
+  {
+    "id": "76d977b6-8e35-4694-8d25-c29def233889",
+    "timestamp": "2026-11-20T09:28:24.033Z",
+    "user": "System User",
+    "action": "Create Credit Note",
+    "transactionType": "CREDIT_NOTE",
+    "transactionId": "6701cb61-c796-4892-a53c-14c4f44b8494",
+    "beforeValues": null,
+    "afterValues": {
+      "creditNoteNumber": "CN-2026-000101",
+      "invoiceNumber": "INV-2026-001001",
+      "grandTotal": 1180
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "d7c47955-1a6f-4574-9b61-306136f3170b",
+    "timestamp": "2026-11-20T09:28:24.007Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "CREDIT_NOTE",
+    "transactionId": "b13f1135-2b19-4303-aac7-7d54fdc85d06",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001005",
+      "totalDebit": 1180,
+      "totalCredit": 1180,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "596f7e9e-d170-412d-8c2c-3d819b218408",
+    "timestamp": "2026-11-20T09:28:23.983Z",
+    "user": "System User",
+    "action": "Receive Payment",
+    "transactionType": "PAYMENT",
+    "transactionId": "9f94d14f-0761-43d6-942d-d2a78be43ea2",
+    "beforeValues": null,
+    "afterValues": {
+      "paymentNumber": "PAY-2026-001001",
+      "amount": 50000,
+      "allocations": [
+        {
+          "invoiceId": "52c930e8-5ece-4033-9c48-29287d2936d4",
+          "invoiceNumber": "INV-2026-001001",
+          "amount": 50000
+        }
+      ]
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "37be2496-d290-4ab6-b83a-bc0f3c0f189c",
+    "timestamp": "2026-11-20T09:28:23.970Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "PAYMENT",
+    "transactionId": "a46973fc-9768-4a33-841f-2aa6df1691be",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001004",
+      "totalDebit": 50000,
+      "totalCredit": 50000,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "ca55ed4b-5488-4245-8e79-5c0d64fca52c",
+    "timestamp": "2026-11-20T09:28:23.941Z",
+    "user": "System User",
+    "action": "Post Invoice",
+    "transactionType": "INVOICE",
+    "transactionId": "52c930e8-5ece-4033-9c48-29287d2936d4",
+    "beforeValues": null,
+    "afterValues": {
+      "invoiceNumber": "INV-2026-001001",
+      "journalId": "58c5917c-80c8-4179-80ab-29dd240681e7",
+      "grandTotal": 112100
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "d19b397b-2de1-4b6c-838a-10fc4d60c537",
+    "timestamp": "2026-11-20T09:28:23.932Z",
+    "user": "System User",
+    "action": "Post Journal",
+    "transactionType": "INVOICE",
+    "transactionId": "58c5917c-80c8-4179-80ab-29dd240681e7",
+    "beforeValues": null,
+    "afterValues": {
+      "journalNumber": "JE-2026-001003",
+      "totalDebit": 112100,
+      "totalCredit": 112100,
+      "status": "Posted"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  },
+  {
+    "id": "c4e0f12b-75fd-48d1-8a45-7d31781955d2",
+    "timestamp": "2026-11-20T09:28:23.912Z",
+    "user": "System User",
+    "action": "Create Invoice",
+    "transactionType": "INVOICE",
+    "transactionId": "52c930e8-5ece-4033-9c48-29287d2936d4",
+    "beforeValues": null,
+    "afterValues": {
+      "invoiceNumber": "INV-2026-001001",
+      "grandTotal": 112100,
+      "status": "Draft"
+    },
+    "reason": "",
+    "sourceModule": "Sales & Receivables"
+  }
+]

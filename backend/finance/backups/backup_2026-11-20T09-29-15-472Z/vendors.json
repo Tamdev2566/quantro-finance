@@ -1,0 +1,28 @@
+[
+  {
+    "id": "VEND-001",
+    "name": "InfraSpace Realties Corp",
+    "contactPerson": "Sunil Kothari",
+    "email": "billing@infraspace.com",
+    "phone": "+91 98210 99887",
+    "gstin": "27AAGCI3321L1Z9",
+    "state": "Maharashtra",
+    "stateCode": "27",
+    "address": "Bandra Kurla Complex, Mumbai, Maharashtra 400051",
+    "balance": 76200,
+    "isActive": true
+  },
+  {
+    "id": "VEND-002",
+    "name": "CloudScale Server Solutions",
+    "contactPerson": "David Miller",
+    "email": "enterprise@cloudscale.net",
+    "phone": "+91 80 4123 9900",
+    "gstin": "29AAECS4432K1Z2",
+    "state": "Karnataka",
+    "stateCode": "29",
+    "address": "Whitefield, Bengaluru, Karnataka 560066",
+    "balance": 0,
+    "isActive": true
+  }
+]
