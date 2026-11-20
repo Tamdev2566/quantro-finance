@@ -3,9 +3,6 @@ import reportService from './reportService.js';
 import { roundNumber, add, subtract, toDecimal } from '../accounting/currency.js';
 
 class DashboardService {
-  /**
-   * Helper to compute start & end dates based on filter preset
-   */
   getDateRange(filter = 'This Month', customStart = null, customEnd = null) {
     const now = new Date();
     let startDate = null;
@@ -16,7 +13,7 @@ class DashboardService {
     } else if (filter === 'This Week') {
       const d = new Date(now);
       const day = d.getDay();
-      const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Monday
+      const diff = d.getDate() - day + (day === 0 ? -6 : 1);
       d.setDate(diff);
       startDate = d.toISOString().slice(0, 10);
     } else if (filter === 'This Month') {
@@ -39,7 +36,6 @@ class DashboardService {
   getDashboardData({ filter = 'This Financial Year', customStart = null, customEnd = null } = {}) {
     const { startDate, endDate } = this.getDateRange(filter, customStart, customEnd);
 
-    // Retrieve report slices
     const pnl = reportService.getProfitAndLoss({ startDate, endDate });
     const gst = reportService.getGstSummary({ startDate, endDate });
     const recAging = reportService.getReceivablesAging();
@@ -51,7 +47,6 @@ class DashboardService {
     const invoices = jsonStore.readSync('invoices.json') || [];
     const customers = jsonStore.readSync('customers.json') || [];
 
-    // Cash and Bank balances
     let cashBalance = toDecimal(0);
     let bankBalance = toDecimal(0);
 
@@ -63,11 +58,9 @@ class DashboardService {
       }
     });
 
-    // Overdue calculations
     const overdueReceivables = recAging.summary.days31To60 + recAging.summary.days61To90 + recAging.summary.days90Plus;
     const overduePayables = payAging.summary.days31To60 + payAging.summary.days61To90 + payAging.summary.days90Plus;
 
-    // Monthly Income vs Expenses trend
     const monthBuckets = {};
     const months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
     months.forEach((m) => {
@@ -101,7 +94,6 @@ class DashboardService {
         }
       });
 
-    // Expense breakdown by category
     const expenseCategoryMap = {};
     pnl.operatingExpenses.items.forEach((item) => {
       const cat = item.category || 'Other';
@@ -115,7 +107,6 @@ class DashboardService {
       amount: roundNumber(amount)
     }));
 
-    // Revenue breakdown by category
     const revenueCategoryMap = {};
     pnl.revenue.items.forEach((item) => {
       const cat = item.category || 'Sales';
@@ -126,7 +117,6 @@ class DashboardService {
       amount: roundNumber(amount)
     }));
 
-    // Bank Account balances list
     const bankAccountBalances = bankAccounts.map((b) => ({
       id: b.id,
       accountName: b.accountName,
@@ -135,7 +125,6 @@ class DashboardService {
       currentBalance: b.currentBalance || 0
     }));
 
-    // Recent Invoices / Orders
     const recentOrders = invoices.slice(0, 5).map((inv) => ({
       id: inv.invoiceNumber || inv.id,
       name: inv.customerName || 'Customer',
@@ -144,7 +133,6 @@ class DashboardService {
       date: inv.invoiceDate || inv.issueDate || ''
     }));
 
-    // Top Selling Products / Services from posted invoices
     const productMap = {};
     invoices.forEach((inv) => {
       (inv.items || inv.lineItems || []).forEach((item) => {
@@ -158,7 +146,6 @@ class DashboardService {
     });
     const topProducts = Object.values(productMap).sort((a, b) => b.revenue - a.revenue).slice(0, 5);
 
-    // Customers by Location / State
     const locationMap = {};
     customers.forEach((c) => {
       const loc = c.state || 'Local';

@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Retrieve initial user from session if available
 let initialUser = null;
 try {
   const saved = localStorage.getItem('apex_user');

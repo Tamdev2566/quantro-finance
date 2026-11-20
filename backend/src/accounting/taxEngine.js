@@ -2,9 +2,6 @@ import { toDecimal, multiply, divide, subtract, add, roundCurrency, roundNumber 
 import jsonStore from '../storage/jsonStore.js';
 
 class TaxEngine {
-  /**
-   * Determine tax type: Intra-state (CGST+SGST) or Inter-state (IGST)
-   */
   determineTaxType(partyStateCode, companyStateCode = null) {
     if (!companyStateCode) {
       const company = jsonStore.readSync('company.json');
@@ -12,7 +9,6 @@ class TaxEngine {
     }
 
     if (!partyStateCode) {
-      // Default to intra-state if not specified
       return 'INTRA';
     }
 
@@ -22,10 +18,6 @@ class TaxEngine {
     return normParty === normCompany ? 'INTRA' : 'INTER';
   }
 
-  /**
-   * Calculate line item tax with decimal-safe precision
-   * supports taxInclusive vs taxExclusive
-   */
   calculateLineTax({
     quantity,
     unitPrice,
@@ -74,7 +66,6 @@ class TaxEngine {
     let totalTax;
 
     if (isTaxInclusive) {
-      // Taxable = Net / (1 + Rate / 100)
       const factor = add(1, divide(rate, 100));
       taxableAmount = divide(netBeforeTax, factor);
       totalTax = subtract(netBeforeTax, taxableAmount);
@@ -123,9 +114,6 @@ class TaxEngine {
     };
   }
 
-  /**
-   * Calculate full document (Invoice/Bill) taxes across all items
-   */
   calculateDocumentTotals({
     items = [],
     partyStateCode,

@@ -31,9 +31,6 @@ class BankingService {
     return recs;
   }
 
-  /**
-   * Create new Bank Account
-   */
   async createAccount(data, user = 'System User') {
     if (!data.accountName || !data.accountNumber || !data.bankName) {
       throw new Error('Account name, account number, and bank name are required.');
@@ -46,7 +43,6 @@ class BankingService {
       const id = `BANK-${Date.now().toString().slice(-4)}`;
       let ledgerCode = data.ledgerAccountCode;
 
-      // If no ledger account provided, create or map one
       if (!ledgerCode) {
         ledgerCode = `10${bankAccounts.length + 2}0`;
         accounts.push({
@@ -91,12 +87,9 @@ class BankingService {
     });
   }
 
-  /**
-   * Transfer funds between Bank/Cash accounts
-   */
   async transferFunds({
-    fromAccountCode, // e.g. '1020' or bank ID
-    toAccountCode,   // e.g. '1010' or bank ID
+    fromAccountCode,
+    toAccountCode,
     amount,
     date = new Date().toISOString().slice(0, 10),
     reference = '',
@@ -116,9 +109,6 @@ class BankingService {
     const fromLedger = fromBank ? fromBank.ledgerAccountCode : fromAccountCode;
     const toLedger = toBank ? toBank.ledgerAccountCode : toAccountCode;
 
-    // Journal:
-    // Debit: Destination Account (toLedger)
-    // Credit: Source Account (fromLedger)
     const journal = await accountingEngine.postJournal({
       transactionDate: date,
       postingDate: date,
@@ -208,9 +198,6 @@ class BankingService {
     return { txnNumber, journal, amount: transferAmount };
   }
 
-  /**
-   * Bank Statement Reconciliation
-   */
   async reconcile({
     bankAccountId,
     periodStart,
@@ -228,7 +215,6 @@ class BankingService {
       const reconciliations = tx.get('reconciliations.json') || [];
       const bankTransactions = tx.get('bank_transactions.json') || [];
 
-      // Calculate totals of matched transactions
       let matchedCredits = 0;
       let matchedDebits = 0;
 

@@ -22,12 +22,10 @@ import jsonStore from '../storage/jsonStore.js';
 
 const router = express.Router();
 
-// Helper for async route handlers
 const asyncHandler = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
-// ---------------- AUTHENTICATION ----------------
 router.post('/auth/login', asyncHandler(async (req, res) => {
   const result = authService.login(req.body);
   res.json({ success: true, data: result });
@@ -42,14 +40,12 @@ router.post('/auth/logout', asyncHandler(async (req, res) => {
   res.json({ success: true, message: 'Logged out successfully' });
 }));
 
-// ---------------- DASHBOARD ----------------
 router.get('/dashboard', asyncHandler(async (req, res) => {
   const { filter, customStart, customEnd } = req.query;
   const data = dashboardService.getDashboardData({ filter, customStart, customEnd });
   res.json({ success: true, data });
 }));
 
-// ---------------- CHART OF ACCOUNTS ----------------
 router.get('/accounts', asyncHandler(async (req, res) => {
   const accounts = accountService.getAll();
   res.json({ success: true, data: accounts });
@@ -70,10 +66,8 @@ router.delete('/accounts/:code', asyncHandler(async (req, res) => {
   res.json({ success: true, ...result });
 }));
 
-// ---------------- JOURNAL ENTRIES ----------------
 router.get('/journals', asyncHandler(async (req, res) => {
   const journals = jsonStore.readSync('journal_entries.json') || [];
-  // sort latest first
   journals.sort((a, b) => (b.createdDate || '').localeCompare(a.createdDate || ''));
   res.json({ success: true, data: journals });
 }));
@@ -101,7 +95,6 @@ router.post('/journals/:id/reverse', asyncHandler(async (req, res) => {
   res.json({ success: true, data: reversal });
 }));
 
-// ---------------- INVOICES ----------------
 router.get('/invoices', asyncHandler(async (req, res) => {
   const invoices = invoiceService.getAll();
   invoices.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
@@ -139,7 +132,6 @@ router.post('/invoices/:id/post', asyncHandler(async (req, res) => {
   res.json({ success: true, data: posted });
 }));
 
-// ---------------- PAYMENTS (CUSTOMER) ----------------
 router.get('/payments', asyncHandler(async (req, res) => {
   const payments = paymentService.getAll();
   payments.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
@@ -168,7 +160,6 @@ router.post('/payments/:id/reverse', asyncHandler(async (req, res) => {
   res.json({ success: true, data: result });
 }));
 
-// ---------------- CREDIT NOTES ----------------
 router.get('/credit-notes', asyncHandler(async (req, res) => {
   const notes = creditNoteService.getAll();
   notes.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
@@ -183,7 +174,6 @@ router.post('/credit-notes', asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, data: note });
 }));
 
-// ---------------- VENDOR BILLS ----------------
 router.get('/vendor-bills', asyncHandler(async (req, res) => {
   const bills = vendorBillService.getAll();
   bills.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
@@ -211,7 +201,6 @@ router.post('/vendor-bills/:id/post', asyncHandler(async (req, res) => {
   res.json({ success: true, data: posted });
 }));
 
-// ---------------- VENDOR PAYMENTS ----------------
 router.get('/vendor-payments', asyncHandler(async (req, res) => {
   const list = vendorPaymentService.getAll();
   list.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
@@ -234,7 +223,6 @@ router.post('/vendor-payments/:id/reverse', asyncHandler(async (req, res) => {
   res.json({ success: true, data: result });
 }));
 
-// ---------------- DEBIT NOTES ----------------
 router.get('/debit-notes', asyncHandler(async (req, res) => {
   const notes = debitNoteService.getAll();
   notes.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
@@ -249,7 +237,6 @@ router.post('/debit-notes', asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, data: note });
 }));
 
-// ---------------- EXPENSES ----------------
 router.get('/expenses', asyncHandler(async (req, res) => {
   const expenses = expenseService.getAll();
   expenses.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
@@ -265,7 +252,6 @@ router.post('/expenses', asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, data: expense });
 }));
 
-// ---------------- CUSTOMERS & VENDORS ----------------
 router.get('/customers', asyncHandler(async (req, res) => {
   res.json({ success: true, data: customerService.getAll() });
 }));
@@ -294,7 +280,6 @@ router.put('/vendors/:id', asyncHandler(async (req, res) => {
   res.json({ success: true, data: updated });
 }));
 
-// ---------------- BANKING ----------------
 router.get('/banking/accounts', asyncHandler(async (req, res) => {
   res.json({ success: true, data: bankingService.getAccounts() });
 }));
@@ -330,7 +315,6 @@ router.get('/banking/reconciliations', asyncHandler(async (req, res) => {
   res.json({ success: true, data: bankingService.getReconciliations(req.query.bankAccountId) });
 }));
 
-// ---------------- BUDGETS ----------------
 router.get('/budgets', asyncHandler(async (req, res) => {
   res.json({ success: true, data: budgetService.getAll() });
 }));
@@ -345,7 +329,6 @@ router.get('/budgets/vs-actual', asyncHandler(async (req, res) => {
   res.json({ success: true, data });
 }));
 
-// ---------------- REPORTS ----------------
 router.get('/reports/general-ledger', asyncHandler(async (req, res) => {
   const data = reportService.getGeneralLedger({
     accountCode: req.query.accountCode,
@@ -396,7 +379,6 @@ router.get('/reports/payables-aging', asyncHandler(async (req, res) => {
   res.json({ success: true, data });
 }));
 
-// ---------------- TAX & GST ----------------
 router.get('/tax/summary', asyncHandler(async (req, res) => {
   const summary = reportService.getGstSummary({
     startDate: req.query.startDate,
@@ -411,7 +393,6 @@ router.get('/tax/records', asyncHandler(async (req, res) => {
   res.json({ success: true, data: records });
 }));
 
-// ---------------- PERIODS & FISCAL YEAR ----------------
 router.get('/periods', asyncHandler(async (req, res) => {
   res.json({ success: true, data: periodService.getPeriods() });
 }));
@@ -432,7 +413,6 @@ router.post('/periods/:id/close-year', asyncHandler(async (req, res) => {
   res.json({ success: true, data: result });
 }));
 
-// ---------------- AUDIT LOGS ----------------
 router.get('/audit-logs', asyncHandler(async (req, res) => {
   const logs = auditService.getLogs({
     transactionId: req.query.transactionId,
@@ -442,7 +422,6 @@ router.get('/audit-logs', asyncHandler(async (req, res) => {
   res.json({ success: true, data: logs });
 }));
 
-// ---------------- SETTINGS & BACKUP ----------------
 router.get('/company', asyncHandler(async (req, res) => {
   res.json({ success: true, data: settingsService.getCompany() });
 }));

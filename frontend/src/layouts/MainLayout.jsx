@@ -32,11 +32,10 @@ export default function MainLayout() {
         display: 'flex',
         height: '100vh',
         maxHeight: '100vh',
-        backgroundColor: '#0c0d14', // Quantro Charcoal Canvas
+        backgroundColor: '#0c0d14',
         overflow: 'hidden'
       }}
     >
-      {/* Desktop Sidebar (hidden on mobile/tablet) */}
       <Box
         sx={{
           display: { xs: 'none', md: 'block' },
@@ -49,7 +48,6 @@ export default function MainLayout() {
         <Sidebar />
       </Box>
 
-      {/* Mobile Drawer Navigation (visible on mobile/tablet) */}
       <Drawer
         variant="temporary"
         open={mobileOpen}
@@ -70,7 +68,6 @@ export default function MainLayout() {
         <Sidebar onItemClick={() => setMobileOpen(false)} />
       </Drawer>
 
-      {/* Main Workspace Column */}
       <Box
         sx={{
           flexGrow: 1,
@@ -82,10 +79,8 @@ export default function MainLayout() {
           px: { xs: 1, sm: 1.5, md: 2.5 }
         }}
       >
-        {/* Dark Top Header with Mobile Hamburger Menu */}
         <Header onDrawerToggle={handleDrawerToggle} />
 
-        {/* Clean Canvas Workspace (Quantro) */}
         <Box
           component="main"
           sx={{
@@ -103,7 +98,6 @@ export default function MainLayout() {
         </Box>
       </Box>
 
-      {/* Global Notification Toast */}
       <Snackbar
         open={Boolean(notification)}
         autoHideDuration={4000}

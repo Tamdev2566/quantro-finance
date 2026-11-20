@@ -128,7 +128,6 @@ export default function BackupRestoreView() {
         </Box>
       </Box>
 
-      {/* Backup Archives Table */}
       <Card sx={{ p: 3 }}>
         <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 2 }}>
           Available Snapshot Archives

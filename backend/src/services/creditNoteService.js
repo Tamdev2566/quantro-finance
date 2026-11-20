@@ -42,17 +42,11 @@ class CreditNoteService {
         });
 
         if (calculated.grandTotal > inv.outstandingAmount + 0.01 && inv.status !== 'Paid') {
-          // If invoice is unpaid/partially paid, warn or limit if exceeds
-          // Credit note amount can at most be invoice grandTotal
           if (calculated.grandTotal > inv.grandTotal) {
             throw new Error(`Credit note amount (₹${calculated.grandTotal}) cannot exceed the total invoice amount (₹${inv.grandTotal}).`);
           }
         }
 
-        // Journal Lines for Credit Note (reverse invoice entry):
-        // Debit: Sales Revenue (4010)
-        // Debit: Output GST (2110 / 2120 / 2130)
-        // Credit: Accounts Receivable (1200)
         const journalLines = [
           {
             accountCode: '4010',

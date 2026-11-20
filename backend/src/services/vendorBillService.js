@@ -24,7 +24,6 @@ class VendorBillService {
     }
 
     const bills = this.getAll();
-    // Duplicate check
     const duplicate = bills.find(
       (b) =>
         b.vendorId === billData.vendorId &&
@@ -70,7 +69,7 @@ class VendorBillService {
       paymentTerms: billData.paymentTerms || 'Net 30',
       description: billData.description || 'Vendor Supply Bill',
       currency: company.baseCurrency || 'INR',
-      expenseAccountCode: billData.expenseAccountCode || '5010', // COGS default
+      expenseAccountCode: billData.expenseAccountCode || '5010',
       isTaxInclusive: Boolean(billData.isTaxInclusive),
       taxType: calculated.taxType,
       items: calculated.items,
@@ -138,9 +137,6 @@ class VendorBillService {
     });
   }
 
-  /**
-   * Post vendor bill: generates double entry journal, records input tax credit, updates vendor balance
-   */
   async post(id, user = 'System User') {
     const bills = this.getAll();
     const bill = bills.find((b) => b.id === id);
@@ -150,10 +146,6 @@ class VendorBillService {
 
     const postingDate = new Date().toISOString().slice(0, 10);
 
-    // Journal Lines:
-    // Debit: Expense / COGS (e.g. 5010)
-    // Debit: Input CGST (1610) / SGST (1620) / IGST (1630)
-    // Credit: Accounts Payable (2010)
     const journalLines = [
       {
         accountCode: bill.expenseAccountCode || '5010',

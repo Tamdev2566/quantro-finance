@@ -90,7 +90,6 @@ export default function BalanceSheetView() {
         </Box>
 
         <Grid container spacing={3}>
-          {/* --- ASSETS COLUMN --- */}
           <Grid item xs={12} md={6}>
             <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 2, p: { xs: 1, sm: 2 }, overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#2563eb', mb: 1 }}>
@@ -129,7 +128,6 @@ export default function BalanceSheetView() {
             </Box>
           </Grid>
 
-          {/* --- LIABILITIES & EQUITY COLUMN --- */}
           <Grid item xs={12} md={6}>
             <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 2, p: { xs: 1, sm: 2 }, overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#dc2626', mb: 1 }}>
@@ -151,7 +149,6 @@ export default function BalanceSheetView() {
                     <TableCell align="right" sx={{ fontWeight: 700 }}>₹{data?.totalLiabilities?.toLocaleString('en-IN')}</TableCell>
                   </TableRow>
 
-                  {/* EQUITY */}
                   <TableRow sx={{ backgroundColor: '#f8fafc' }}>
                     <TableCell colSpan={2} sx={{ fontWeight: 700 }}>Owner Equity</TableCell>
                   </TableRow>

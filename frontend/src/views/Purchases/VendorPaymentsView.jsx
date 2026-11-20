@@ -39,7 +39,6 @@ export default function VendorPaymentsView() {
   const [openModal, setOpenModal] = useState(false);
   const [confirmReverse, setConfirmReverse] = useState(null);
 
-  // Form State
   const [selectedVendorId, setSelectedVendorId] = useState('');
   const [paymentDate, setPaymentDate] = useState(new Date().toISOString().slice(0, 10));
   const [paymentMethod, setPaymentMethod] = useState('Bank Transfer');
@@ -83,7 +82,6 @@ export default function VendorPaymentsView() {
         );
         setUnpaidBills(matching);
 
-        // Auto-allocate
         const alloc = {};
         let rem = parseFloat(amount || 0);
         matching.forEach((b) => {
@@ -207,7 +205,6 @@ export default function VendorPaymentsView() {
     }
   ];
 
-  // Dedicated Full-Screen Vendor Payment Screen
   if (openModal) {
     return (
       <Box sx={{ width: '100%', maxWidth: 1100, mx: 'auto', p: { xs: 1, sm: 2 } }}>

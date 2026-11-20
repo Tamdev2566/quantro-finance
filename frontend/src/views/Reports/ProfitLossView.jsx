@@ -82,7 +82,6 @@ export default function ProfitLossView() {
         <Box sx={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
           <Table size="small" sx={{ minWidth: 420 }}>
             <TableBody>
-              {/* --- REVENUE SECTION --- */}
               <TableRow sx={{ backgroundColor: '#f8fafc' }}>
                 <TableCell colSpan={2} sx={{ fontWeight: 800, color: '#0f172a' }}>
                   I. REVENUE FROM OPERATIONS
@@ -101,7 +100,6 @@ export default function ProfitLossView() {
                 </TableCell>
               </TableRow>
 
-              {/* --- COST OF GOODS SOLD --- */}
               <TableRow sx={{ backgroundColor: '#f8fafc' }}>
                 <TableCell colSpan={2} sx={{ fontWeight: 800, color: '#0f172a', pt: 2 }}>
                   II. COST OF GOODS SOLD (COGS)
@@ -118,7 +116,6 @@ export default function ProfitLossView() {
                 <TableCell align="right" sx={{ fontWeight: 700 }}>₹{cogs.total?.toLocaleString('en-IN')}</TableCell>
               </TableRow>
 
-              {/* GROSS PROFIT */}
               <TableRow sx={{ backgroundColor: '#f1f5f9' }}>
                 <TableCell sx={{ fontWeight: 800 }}>GROSS PROFIT (A - B)</TableCell>
                 <TableCell align="right" sx={{ fontWeight: 800, color: data?.grossProfit >= 0 ? '#059669' : '#dc2626' }}>
@@ -126,7 +123,6 @@ export default function ProfitLossView() {
                 </TableCell>
               </TableRow>
 
-              {/* --- OPERATING EXPENSES --- */}
               <TableRow sx={{ backgroundColor: '#f8fafc' }}>
                 <TableCell colSpan={2} sx={{ fontWeight: 800, color: '#0f172a', pt: 2 }}>
                   III. OPERATING & ADMINISTRATIVE EXPENSES
@@ -143,7 +139,6 @@ export default function ProfitLossView() {
                 <TableCell align="right" sx={{ fontWeight: 700 }}>₹{opex.total?.toLocaleString('en-IN')}</TableCell>
               </TableRow>
 
-              {/* NET PROFIT / LOSS */}
               <TableRow sx={{ backgroundColor: data?.netProfit >= 0 ? '#ecfdf5' : '#fef2f2', borderTop: '2px solid #0f172a', borderBottom: '2px double #0f172a' }}>
                 <TableCell sx={{ fontWeight: 800, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                   {data?.netProfit >= 0 ? 'NET PROFIT FOR THE PERIOD' : 'NET LOSS FOR THE PERIOD'}

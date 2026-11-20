@@ -91,7 +91,6 @@ export default function GeneralLedgerView() {
         </Typography>
       </Box>
 
-      {/* Account Selector Banner */}
       <Card
         sx={{
           p: { xs: 2, sm: 2.5 },
@@ -150,7 +149,6 @@ export default function GeneralLedgerView() {
         </Grid>
       </Card>
 
-      {/* MUI Data Table */}
       <DataTable
         columns={columns}
         rows={ledgerData?.entries || []}

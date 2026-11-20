@@ -67,7 +67,6 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
     });
   }, []);
 
-  // Preview calculations
   let subtotal = 0;
   let totalDiscount = 0;
   let taxableTotal = 0;
@@ -248,7 +247,6 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
             </Grid>
           </Grid>
 
-          {/* Line Items Table */}
           <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5, color: '#0f172a' }}>
             Bill Purchased Items & Services:
           </Typography>
@@ -344,7 +342,6 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
             Add Purchased Item
           </Button>
 
-          {/* Notes and Totals */}
           <Grid container spacing={3} sx={{ mt: 1 }}>
             <Grid item xs={12} md={7}>
               <TextField

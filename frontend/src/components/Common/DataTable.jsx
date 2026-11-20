@@ -57,7 +57,6 @@ export default function DataTable({
         }}
       >
         <Table stickyHeader sx={{ minWidth: { xs: 550, sm: 650 } }}>
-          {/* Dark Black Theme Table Header */}
           <TableHead>
             <TableRow>
               {columns.map((col, idx) => (
@@ -65,13 +64,13 @@ export default function DataTable({
                   key={idx}
                   align={col.align || 'left'}
                   sx={{
-                    backgroundColor: '#12131c !important', // Theme Deep Charcoal Black
+                    backgroundColor: '#12131c !important',
                     color: '#ffffff !important',
                     fontWeight: 800,
                     fontSize: '0.78rem',
                     letterSpacing: '0.05em',
                     textTransform: 'uppercase',
-                    borderBottom: '2px solid #e5a93c', // Metallic Gold accent line
+                    borderBottom: '2px solid #e5a93c',
                     py: 1.8,
                     width: col.width || 'auto',
                     minWidth: col.minWidth || 'auto',

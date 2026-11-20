@@ -93,7 +93,6 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
     }
   }, [invoiceToEdit]);
 
-  // Compute live calculations
   let subtotal = 0;
   let totalDiscount = 0;
   let taxableTotal = 0;
@@ -254,7 +253,6 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
             </Grid>
           </Grid>
 
-          {/* Line Items Table */}
           <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5, color: '#0f172a' }}>
             Invoice Line Items & Billing Components:
           </Typography>
@@ -350,7 +348,6 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
             Add Line Item
           </Button>
 
-          {/* Notes and Totals */}
           <Grid container spacing={3} sx={{ mt: 1 }}>
             <Grid item xs={12} md={7}>
               <TextField

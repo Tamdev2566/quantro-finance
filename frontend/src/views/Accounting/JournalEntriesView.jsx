@@ -196,7 +196,6 @@ export default function JournalEntriesView() {
         emptyMessage="No journal entries found."
       />
 
-      {/* Journal Lines Inspection Dialog */}
       <Dialog open={Boolean(selectedJournal)} onClose={() => setSelectedJournal(null)} maxWidth="md" fullWidth>
         <DialogTitle sx={{ fontWeight: 800 }}>
           Journal Voucher #{selectedJournal?.journalNumber} ({selectedJournal?.status})

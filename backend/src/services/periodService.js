@@ -73,9 +73,6 @@ class PeriodService {
     });
   }
 
-  /**
-   * Year-end closing: Transfers Revenue and Expense net to Retained Earnings (3020)
-   */
   async closeFiscalYear(periodId, user = 'System User') {
     return jsonStore.transaction(
       ['periods.json', 'accounts.json', 'journal_entries.json'],
@@ -88,15 +85,12 @@ class PeriodService {
         const accounts = tx.get('accounts.json');
         const journals = tx.get('journal_entries.json');
 
-        // Calculate net revenue and net expenses
         let totalRevenue = toDecimal(0);
         let totalExpense = toDecimal(0);
         const closingLines = [];
 
-        // For each account, if Revenue: debit it to zero out. If Expense: credit it to zero out.
         accounts.forEach((acc) => {
           if (acc.type === 'Revenue' && acc.currentBalance !== 0) {
-            // Revenue normal balance is Credit. To close, we Debit it.
             closingLines.push({
               accountCode: acc.code,
               debit: Math.abs(acc.currentBalance),
@@ -105,7 +99,6 @@ class PeriodService {
             });
             totalRevenue = add(totalRevenue, acc.currentBalance);
           } else if (acc.type === 'Expenses' && acc.currentBalance !== 0) {
-            // Expense normal balance is Debit. To close, we Credit it.
             closingLines.push({
               accountCode: acc.code,
               debit: 0,
@@ -116,7 +109,6 @@ class PeriodService {
           }
         });
 
-        // Net Profit = Revenue - Expense
         const netProfit = subtract(totalRevenue, totalExpense);
 
         if (closingLines.length === 0) {
@@ -124,7 +116,6 @@ class PeriodService {
         }
 
         if (netProfit.isGreaterThan(0)) {
-          // Profit: Credit Retained Earnings (3020)
           closingLines.push({
             accountCode: '3020',
             debit: 0,
@@ -132,7 +123,6 @@ class PeriodService {
             description: `Year-end net profit transferred to Retained Earnings for ${period.name}`
           });
         } else if (netProfit.isLessThan(0)) {
-          // Loss: Debit Retained Earnings (3020)
           closingLines.push({
             accountCode: '3020',
             debit: roundNumber(netProfit.abs()),

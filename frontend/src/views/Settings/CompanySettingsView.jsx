@@ -110,7 +110,6 @@ export default function CompanySettingsView() {
         </Typography>
       </Box>
 
-      {/* Company Profile Form */}
       <Card sx={{ p: 3, mb: 4 }}>
         <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 2 }}>
           Legal Entity & GST Registration
@@ -178,7 +177,6 @@ export default function CompanySettingsView() {
         </Grid>
       </Card>
 
-      {/* Financial Periods & Monthly Period Locking */}
       <Card sx={{ p: { xs: 2, sm: 3 } }}>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2, mb: 2 }}>
           <Box>
@@ -245,7 +243,6 @@ export default function CompanySettingsView() {
         </Box>
       </Card>
 
-      {/* Confirm Year-End Close */}
       <ConfirmDialog
         open={Boolean(confirmClosePeriod)}
         title="Execute Year-End Financial Close?"

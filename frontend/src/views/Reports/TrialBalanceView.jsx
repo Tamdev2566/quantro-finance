@@ -110,7 +110,6 @@ export default function TrialBalanceView() {
         </Box>
       </Box>
 
-      {/* Totals Summary Banner */}
       <Card
         sx={{
           p: { xs: 2, sm: 2.5 },
@@ -149,7 +148,6 @@ export default function TrialBalanceView() {
         </Box>
       </Card>
 
-      {/* MUI Data Table */}
       <DataTable
         columns={columns}
         rows={rows}

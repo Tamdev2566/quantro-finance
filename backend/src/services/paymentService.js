@@ -15,16 +15,12 @@ class PaymentService {
     return list.find((p) => p.id === id || p.paymentNumber === id);
   }
 
-  /**
-   * Receive and process customer payment
-   * allocations: [{ invoiceId: string, amount: number }]
-   */
   async createPayment({
     customerId,
     paymentDate = new Date().toISOString().slice(0, 10),
     paymentMethod = 'Bank Transfer',
     reference = '',
-    bankAccountId, // or ledger account code
+    bankAccountId,
     amount,
     allocations = [],
     notes = '',
@@ -42,8 +38,7 @@ class PaymentService {
     const customer = customers.find((c) => c.id === customerId);
     if (!customer) throw new Error('Customer not found.');
 
-    // Determine destination account (Bank or Cash)
-    let depositAccountCode = '1020'; // default HDFC
+    let depositAccountCode = '1020';
     let bankAccount = null;
 
     if (paymentMethod === 'Cash') {
@@ -55,7 +50,6 @@ class PaymentService {
       }
     }
 
-    // Validate allocations
     let allocatedSum = toDecimal(0);
     const validAllocations = [];
 
@@ -88,9 +82,6 @@ class PaymentService {
       throw new Error(`Allocated total cannot exceed the received payment amount.`);
     }
 
-        // Create Journal Entry
-        // Debit: Bank / Cash (1010 / 1020 / 1030)
-        // Credit: Accounts Receivable (1200)
         const journal = await accountingEngine.postJournal({
           transactionDate: paymentDate,
           postingDate: paymentDate,
@@ -207,9 +198,6 @@ class PaymentService {
     return paymentRecord;
   }
 
-  /**
-   * Reverse payment: restores invoice outstanding balances, customer balance, bank balance and reverses journal
-   */
   async reversePayment(paymentId, { reason = 'Customer Cheque Bounce / Void', user = 'System User' } = {}) {
     return jsonStore.transaction(
       [
@@ -231,7 +219,6 @@ class PaymentService {
         if (!payment) throw new Error(`Payment ${paymentId} not found.`);
         if (payment.status === 'Reversed') throw new Error(`Payment is already reversed.`);
 
-        // Reverse allocated invoices
         for (const alloc of payment.allocations || []) {
           const inv = invoices.find((i) => i.id === alloc.invoiceId);
           if (inv) {
@@ -241,13 +228,11 @@ class PaymentService {
           }
         }
 
-        // Restore customer balance
         const customer = customers.find((c) => c.id === payment.customerId);
         if (customer) {
           customer.balance = roundNumber(add(customer.balance || 0, payment.amount));
         }
 
-        // Restore bank account balance
         if (payment.bankAccountId) {
           const bank = bankAccounts.find((b) => b.id === payment.bankAccountId);
           if (bank) {
@@ -255,7 +240,6 @@ class PaymentService {
           }
         }
 
-        // Reverse accounting journal
         if (payment.journalEntryId) {
           await accountingEngine.reverseJournal(payment.journalEntryId, { reason, user });
         }

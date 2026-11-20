@@ -37,8 +37,7 @@ class InvoiceService {
 
     const invoiceNumber = await sequenceService.getNextNumber('INV');
     const invoiceDate = invoiceData.invoiceDate || new Date().toISOString().slice(0, 10);
-    
-    // Calculate default due date if not provided (e.g., +30 days)
+
     let dueDate = invoiceData.dueDate;
     if (!dueDate) {
       const d = new Date(invoiceDate);
@@ -60,7 +59,7 @@ class InvoiceService {
       description: invoiceData.description || 'Sales Invoice',
       currency: company.baseCurrency || 'INR',
       isTaxInclusive: Boolean(invoiceData.isTaxInclusive),
-      taxType: calculated.taxType, // 'INTRA' or 'INTER'
+      taxType: calculated.taxType,
       items: calculated.items,
       subtotal: calculated.subtotal,
       totalDiscount: calculated.totalDiscount,
@@ -224,9 +223,6 @@ class InvoiceService {
     });
   }
 
-  /**
-   * Post invoice: generates journal entries, updates accounts, customers, tax_records
-   */
   async post(id, user = 'System User') {
     const invoices = this.getAll();
     const inv = invoices.find((i) => i.id === id);
@@ -236,10 +232,6 @@ class InvoiceService {
 
     const postingDate = new Date().toISOString().slice(0, 10);
 
-    // Build double-entry lines:
-    // Debit: Accounts Receivable (1200) for grand total
-    // Credit: Sales Revenue (4010) for taxable total
-    // Credit: Output CGST (2110) & Output SGST (2120) or Output IGST (2130)
     const journalLines = [
       {
         accountCode: '1200',
@@ -280,7 +272,6 @@ class InvoiceService {
       });
     }
 
-    // Post Journal Entry inside accounting engine
     const journal = await accountingEngine.postJournal({
       transactionDate: inv.invoiceDate,
       postingDate,

@@ -159,7 +159,6 @@ export default function AccountsView() {
     }
   ];
 
-  // Full-Screen Account Form View
   if (openModal) {
     return (
       <AccountFormModal

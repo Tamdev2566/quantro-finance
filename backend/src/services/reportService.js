@@ -2,9 +2,6 @@ import jsonStore from '../storage/jsonStore.js';
 import { roundNumber, add, subtract, toDecimal } from '../accounting/currency.js';
 
 class ReportService {
-  /**
-   * General Ledger: detailed transaction lines by account with running balance
-   */
   getGeneralLedger({ accountCode = null, startDate = null, endDate = null } = {}) {
     const accounts = jsonStore.readSync('accounts.json') || [];
     const journals = jsonStore.readSync('journal_entries.json') || [];
@@ -67,9 +64,6 @@ class ReportService {
     return accountCode ? ledgers[0] || null : ledgers;
   }
 
-  /**
-   * Trial Balance: verifies Debit = Credit across all accounts
-   */
   getTrialBalance({ startDate = null, endDate = null } = {}) {
     const accounts = jsonStore.readSync('accounts.json') || [];
     const journals = jsonStore.readSync('journal_entries.json') || [];
@@ -153,14 +147,10 @@ class ReportService {
     };
   }
 
-  /**
-   * Profit & Loss Statement
-   */
   getProfitAndLoss({ startDate = null, endDate = null } = {}) {
     const accounts = jsonStore.readSync('accounts.json') || [];
     const journals = jsonStore.readSync('journal_entries.json') || [];
 
-    // Tally posted journals in period
     const accountTotals = {};
     accounts.forEach((a) => {
       accountTotals[a.code] = { debit: toDecimal(0), credit: toDecimal(0), account: a };
@@ -190,7 +180,7 @@ class ReportService {
 
     Object.values(accountTotals).forEach(({ debit, credit, account }) => {
       if (account.type === 'Revenue') {
-        const netRev = subtract(credit, debit); // credit normal
+        const netRev = subtract(credit, debit);
         if (!netRev.isZero()) {
           revenueItems.push({
             code: account.code,
@@ -201,7 +191,7 @@ class ReportService {
           totalRevenue = add(totalRevenue, netRev);
         }
       } else if (account.type === 'Expenses') {
-        const netExp = subtract(debit, credit); // debit normal
+        const netExp = subtract(debit, credit);
         if (!netExp.isZero()) {
           if (account.category === 'Cost of Goods Sold' || account.code === '5010') {
             cogsItems.push({
@@ -248,9 +238,6 @@ class ReportService {
     };
   }
 
-  /**
-   * Balance Sheet: Assets = Liabilities + Equity
-   */
   getBalanceSheet({ asOfDate = null } = {}) {
     const accounts = jsonStore.readSync('accounts.json') || [];
     const pnl = this.getProfitAndLoss({ endDate: asOfDate });
@@ -313,7 +300,6 @@ class ReportService {
       }
     });
 
-    // Add current period profit/loss to Equity total
     totalEquity = add(totalEquity, currentPeriodNetIncome);
 
     assets.total = roundNumber(totalAssets);
@@ -336,9 +322,6 @@ class ReportService {
     };
   }
 
-  /**
-   * Cash Flow Statement: Operating, Investing, Financing
-   */
   getCashFlow({ startDate = null, endDate = null } = {}) {
     const journals = jsonStore.readSync('journal_entries.json') || [];
     const accounts = jsonStore.readSync('accounts.json') || [];
@@ -362,7 +345,7 @@ class ReportService {
 
         (j.lines || []).forEach((line) => {
           if (cashAccountCodes.includes(line.accountCode)) {
-            const isDebit = line.debit > 0; // Cash increase
+            const isDebit = line.debit > 0;
             const amt = toDecimal(isDebit ? line.debit : line.credit);
 
             if (j.transactionType === 'PAYMENT' || j.sourceModule.includes('Sales')) {
@@ -373,7 +356,6 @@ class ReportService {
               if (isDebit) financingInflow = add(financingInflow, amt);
               else financingOutflow = add(financingOutflow, amt);
             } else {
-              // Default to operating
               if (isDebit) operatingInflow = add(operatingInflow, amt);
               else operatingOutflow = add(operatingOutflow, amt);
             }
@@ -386,7 +368,6 @@ class ReportService {
     const netFinancing = subtract(financingInflow, financingOutflow);
     const netCashFlow = add(netOperating, add(netInvesting, netFinancing));
 
-    // Calculate current cash & bank balance
     const currentCashTotal = accounts
       .filter((a) => cashAccountCodes.includes(a.code))
       .reduce((sum, a) => add(sum, a.currentBalance || 0), toDecimal(0));
@@ -412,9 +393,6 @@ class ReportService {
     };
   }
 
-  /**
-   * Accounts Receivable & Customer Aging
-   */
   getReceivablesAging({ asOfDate = null } = {}) {
     const invoices = jsonStore.readSync('invoices.json') || [];
     const customers = jsonStore.readSync('customers.json') || [];
@@ -516,9 +494,6 @@ class ReportService {
     };
   }
 
-  /**
-   * Accounts Payable & Vendor Aging
-   */
   getPayablesAging({ asOfDate = null } = {}) {
     const bills = jsonStore.readSync('vendor_bills.json') || [];
     const vendors = jsonStore.readSync('vendors.json') || [];
@@ -620,9 +595,6 @@ class ReportService {
     };
   }
 
-  /**
-   * GST Tax Summary
-   */
   getGstSummary({ startDate = null, endDate = null } = {}) {
     const taxRecords = jsonStore.readSync('tax_records.json') || [];
 

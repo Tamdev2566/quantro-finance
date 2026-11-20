@@ -15,7 +15,6 @@ class JsonStore {
     this.init();
   }
 
-  // Ensure storage directories exist and default seed files are initialized
   init() {
     if (!fs.existsSync(this.storageDir)) {
       fs.mkdirSync(this.storageDir, { recursive: true });
@@ -41,7 +40,7 @@ class JsonStore {
             phone: '+91 22 8900 1200',
             baseCurrency: 'INR',
             currencySymbol: '₹',
-            fiscalYearStartMonth: 4, // April
+            fiscalYearStartMonth: 4,
             decimalPrecision: 2
           };
         } else if (file === 'settings.json') {
@@ -140,7 +139,6 @@ class JsonStore {
     });
   }
 
-  // Safe atomic file write: writes to a unique temporary file first, then atomically replaces target file
   atomicWriteSync(filePath, data) {
     const tmpPath = `${filePath}.${Date.now()}.${Math.random().toString(36).substring(2, 9)}.tmp`;
     const serialized = JSON.stringify(data, null, 2);
@@ -148,7 +146,6 @@ class JsonStore {
     fs.renameSync(tmpPath, filePath);
   }
 
-  // Concurrency serialization lock (reentrant with AsyncLocalStorage)
   async runExclusive(fn) {
     const isLocked = this.asyncLocalStorage.getStore();
     if (isLocked) {
@@ -170,7 +167,6 @@ class JsonStore {
     }
   }
 
-  // Read data with caching check
   readSync(filename) {
     const safeFilename = path.basename(filename);
     const filePath = path.join(this.storageDir, safeFilename);
@@ -181,7 +177,6 @@ class JsonStore {
     return JSON.parse(raw);
   }
 
-  // Aliases for readSync and writeSync
   read(filename) {
     return this.readSync(filename);
   }
@@ -190,14 +185,12 @@ class JsonStore {
     return this.writeSync(filename, data);
   }
 
-  // Write file atomically inside the storage folder
   writeSync(filename, data) {
     const safeFilename = path.basename(filename);
     const filePath = path.join(this.storageDir, safeFilename);
     this.atomicWriteSync(filePath, data);
   }
 
-  // Transaction support: take snapshot of files involved, execute mutator, commit or rollback on error
   async transaction(involvedFiles, executor) {
     return this.runExclusive(async () => {
       const snapshots = {};
@@ -205,10 +198,8 @@ class JsonStore {
         snapshots[file] = this.readSync(file);
       }
 
-      // Staging container for changes
       const staged = {};
       for (const file of involvedFiles) {
-        // Deep copy of snapshot to allow mutation in memory
         staged[file] = JSON.parse(JSON.stringify(snapshots[file]));
       }
 
@@ -221,19 +212,16 @@ class JsonStore {
 
       try {
         const result = await executor(txContext);
-        // If succeeded, write all files atomically
         for (const file of involvedFiles) {
           this.writeSync(file, staged[file]);
         }
         return result;
       } catch (err) {
-        // Rollback occurred implicitly because staged changes were not committed to disk
         throw err;
       }
     });
   }
 
-  // Create full backup of current storage files
   createBackup() {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const targetBackupFolder = path.join(this.backupDir, `backup_${timestamp}`);
@@ -264,7 +252,6 @@ class JsonStore {
     };
   }
 
-  // List all available backups
   listBackups() {
     if (!fs.existsSync(this.backupDir)) return [];
     const entries = fs.readdirSync(this.backupDir, { withFileTypes: true });
@@ -280,7 +267,6 @@ class JsonStore {
       .sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
   }
 
-  // Restore from a specific backup
   restoreBackup(backupId) {
     const safeBackupId = path.basename(backupId);
     const backupFolder = path.join(this.backupDir, safeBackupId);
@@ -300,7 +286,6 @@ class JsonStore {
     return { success: true, restoredBackupId: safeBackupId };
   }
 
-  // Export full finance package as JSON bundle
   exportData() {
     const bundle = {
       version: this.version,
@@ -313,7 +298,6 @@ class JsonStore {
     return bundle;
   }
 
-  // Import finance package bundle
   importData(bundle) {
     if (!bundle || !bundle.data) {
       throw new Error('Invalid bundle format');

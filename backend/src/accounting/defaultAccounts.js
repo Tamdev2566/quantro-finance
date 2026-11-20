@@ -1,5 +1,4 @@
 export const DEFAULT_ACCOUNTS = [
-  // --- ASSETS (1000-1999) ---
   {
     code: '1010',
     name: 'Petty Cash',
@@ -133,7 +132,6 @@ export const DEFAULT_ACCOUNTS = [
     currentBalance: 0
   },
 
-  // --- LIABILITIES (2000-2999) ---
   {
     code: '2010',
     name: 'Accounts Payable (Trade Creditors)',
@@ -212,7 +210,6 @@ export const DEFAULT_ACCOUNTS = [
     currentBalance: 0
   },
 
-  // --- EQUITY (3000-3999) ---
   {
     code: '3010',
     name: "Owner's / Share Capital",
@@ -247,7 +244,6 @@ export const DEFAULT_ACCOUNTS = [
     currentBalance: 0
   },
 
-  // --- REVENUE (4000-4999) ---
   {
     code: '4010',
     name: 'Sales Revenue - Products',
@@ -282,7 +278,6 @@ export const DEFAULT_ACCOUNTS = [
     currentBalance: 0
   },
 
-  // --- EXPENSES (5000-5999) ---
   {
     code: '5010',
     name: 'Cost of Goods Sold (COGS)',

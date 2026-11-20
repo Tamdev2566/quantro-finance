@@ -5,15 +5,11 @@ import auditService from '../services/auditService.js';
 import { v4 as uuidv4 } from 'uuid';
 
 class AccountingEngine {
-  /**
-   * Validate double entry balance and accounts
-   */
   validateJournal(lines, { accountsMap, postingDate, periods }) {
     if (!lines || lines.length < 2) {
       throw new Error('A journal entry must contain at least 2 lines.');
     }
 
-    // Check locked period
     if (postingDate && periods) {
       this.checkPeriodLock(postingDate, periods);
     }
@@ -59,12 +55,9 @@ class AccountingEngine {
     };
   }
 
-  /**
-   * Checks whether postingDate falls into a locked period or closed fiscal year
-   */
   checkPeriodLock(postingDate, periods) {
     const postTime = new Date(postingDate).getTime();
-    const postMonthStr = postingDate.slice(0, 7); // e.g. "2026-04"
+    const postMonthStr = postingDate.slice(0, 7);
 
     for (const period of periods) {
       const start = new Date(period.startDate).getTime();
@@ -81,9 +74,6 @@ class AccountingEngine {
     }
   }
 
-  /**
-   * Recalculates account balances based on all POSTED journal lines + opening balances
-   */
   recomputeAccountBalances(accounts, journals) {
     const balanceMap = {};
     accounts.forEach((acc) => {
@@ -109,9 +99,6 @@ class AccountingEngine {
     return accounts.map((acc) => {
       const b = balanceMap[acc.code];
       let currentBal;
-      // Normal balance rules:
-      // Assets and Expenses = Debit normal (Opening + Debit - Credit)
-      // Liabilities, Equity, Revenue = Credit normal (Opening + Credit - Debit)
       if (acc.type === 'Assets' || acc.type === 'Expenses') {
         currentBal = add(b.opening, subtract(b.debitSum, b.creditSum));
       } else {
@@ -125,9 +112,6 @@ class AccountingEngine {
     });
   }
 
-  /**
-   * Post a journal entry and atomically update account balances
-   */
   async postJournal({
     transactionDate = new Date().toISOString().slice(0, 10),
     postingDate = new Date().toISOString().slice(0, 10),
@@ -139,7 +123,7 @@ class AccountingEngine {
     currency = 'INR',
     createdBy = 'System User',
     linkedTransactionId = null,
-    status = 'Posted' // 'Draft' or 'Posted'
+    status = 'Posted'
   }) {
     const journalNumber = await sequenceService.getNextNumber('JE');
 
@@ -153,7 +137,6 @@ class AccountingEngine {
         accountsMap[a.code] = a;
       });
 
-      // Enrich lines with account names
       const enrichedLines = lines.map((l) => ({
         accountCode: l.accountCode,
         accountName: accountsMap[l.accountCode] ? accountsMap[l.accountCode].name : '',
@@ -190,7 +173,6 @@ class AccountingEngine {
       journals.push(journalEntry);
       tx.set('journal_entries.json', journals);
 
-      // If posting, update account current balances
       if (status === 'Posted') {
         const updatedAccounts = this.recomputeAccountBalances(accounts, journals);
         tx.set('accounts.json', updatedAccounts);
@@ -209,9 +191,6 @@ class AccountingEngine {
     });
   }
 
-  /**
-   * Reverse an existing posted journal entry
-   */
   async reverseJournal(journalId, { reason = 'Correction Reversal', user = 'System User' } = {}) {
     return jsonStore.transaction(['accounts.json', 'journal_entries.json', 'periods.json'], async (tx) => {
       const journals = tx.get('journal_entries.json');
@@ -226,11 +205,9 @@ class AccountingEngine {
         throw new Error(`Only posted journals can be reversed. Current status: ${targetJournal.status}`);
       }
 
-      // Check current period lock
       const today = new Date().toISOString().slice(0, 10);
       this.checkPeriodLock(today, periods);
 
-      // Create opposite lines (swap debit and credit)
       const reversalLines = targetJournal.lines.map((line) => ({
         accountCode: line.accountCode,
         accountName: line.accountName,

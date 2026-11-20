@@ -171,7 +171,6 @@ export default function VendorsView() {
     }
   ];
 
-  // Dedicated Full-Screen Create/Edit Screen
   if (isFormOpen) {
     return (
       <Box sx={{ width: '100%', maxWidth: 1000, mx: 'auto', p: { xs: 1, sm: 2 } }}>

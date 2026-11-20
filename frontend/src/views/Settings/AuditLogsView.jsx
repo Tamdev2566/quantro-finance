@@ -119,7 +119,6 @@ export default function AuditLogsView() {
         />
       </Box>
 
-      {/* MUI Data Table */}
       <DataTable
         columns={columns}
         rows={filtered}

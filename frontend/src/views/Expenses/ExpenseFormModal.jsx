@@ -65,7 +65,6 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
     }
   }, [watchedCategory, categories]);
 
-  // Preview calculations
   let taxable = watchedAmount;
   let tax = (taxable * watchedTaxRate) / 100;
   let total = taxable + tax;
@@ -219,7 +218,6 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
 
           <Divider sx={{ my: 2.5 }} />
 
-          {/* Payment & Settlement Details */}
           <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1.5, color: '#0f172a' }}>
             Payment & Settlement Mode:
           </Typography>
@@ -278,7 +276,6 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
             </Grid>
           </Grid>
 
-          {/* Tax breakdown summary box */}
           <Box sx={{ p: 2.5, backgroundColor: '#f8fafc', borderRadius: '4px', border: '1px solid #e2e8f0', mt: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>

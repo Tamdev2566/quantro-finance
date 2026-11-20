@@ -45,10 +45,6 @@ class DebitNoteService {
           throw new Error(`Debit note amount (₹${calculated.grandTotal}) cannot exceed original bill amount (₹${bill.grandTotal}).`);
         }
 
-        // Journal Lines for Debit Note (reverses bill):
-        // Debit: Accounts Payable (2010)
-        // Credit: Expense / COGS (5010)
-        // Credit: Input GST (1610 / 1620 / 1630)
         const journalLines = [
           {
             accountCode: '2010',

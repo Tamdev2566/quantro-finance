@@ -33,7 +33,6 @@ export default function Header({ onDrawerToggle }) {
         gap: { xs: 1.5, sm: 2 }
       }}
     >
-      {/* Left side: Hamburger (mobile) + Brand (mobile) + Mobile Avatar */}
       <Box
         sx={{
           display: 'flex',
@@ -45,7 +44,6 @@ export default function Header({ onDrawerToggle }) {
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
-          {/* Mobile Hamburger Menu Toggle */}
           <IconButton
             onClick={onDrawerToggle}
             size="small"
@@ -62,7 +60,6 @@ export default function Header({ onDrawerToggle }) {
             <MenuIcon sx={{ fontSize: 20 }} />
           </IconButton>
 
-          {/* Mobile Quantro Brand */}
           <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1 }}>
             <Box
               sx={{
@@ -87,7 +84,6 @@ export default function Header({ onDrawerToggle }) {
           </Box>
         </Box>
 
-        {/* On Mobile (xs): Refresh, Bell, Avatar right here on row 1 */}
         <Box sx={{ display: { xs: 'flex', sm: 'none' }, alignItems: 'center', gap: 1 }}>
           <IconButton
             size="small"
@@ -121,7 +117,6 @@ export default function Header({ onDrawerToggle }) {
         </Box>
       </Box>
 
-      {/* Search Bar with clean sharp border */}
       <Box
         sx={{
           display: 'flex',
@@ -152,10 +147,8 @@ export default function Header({ onDrawerToggle }) {
         </IconButton>
       </Box>
 
-      {/* Right Controls (Desktop/Tablet): Date Range, Notification, Profile */}
       <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: 1.5, order: 2 }}>
-        
-        {/* Date Range Selector */}
+
         <Box
           sx={{
             display: { xs: 'none', md: 'flex' },
@@ -178,7 +171,6 @@ export default function Header({ onDrawerToggle }) {
           <KeyboardArrowDownIcon sx={{ color: '#94a3b8', fontSize: 18 }} />
         </Box>
 
-        {/* Refresh Data Button */}
         <IconButton
           onClick={() => {
             dispatch(triggerRefresh());
@@ -197,7 +189,6 @@ export default function Header({ onDrawerToggle }) {
           <RefreshIcon sx={{ fontSize: 18 }} />
         </IconButton>
 
-        {/* Notification Bell with Amber dot */}
         <IconButton
           sx={{
             width: 40,
@@ -222,7 +213,6 @@ export default function Header({ onDrawerToggle }) {
           </Badge>
         </IconButton>
 
-        {/* User Profile */}
         <Box
           sx={{
             display: 'flex',

@@ -44,7 +44,6 @@ export default function PrintableInvoiceModal({ open, invoice, onClose }) {
 
       <DialogContent sx={{ p: 4 }}>
         <Box id="printable-invoice" sx={{ backgroundColor: 'white', color: '#0f172a' }}>
-          {/* Header */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
             <Box>
               <Typography variant="h5" sx={{ fontWeight: 800, color: '#2563eb' }}>
@@ -82,7 +81,6 @@ export default function PrintableInvoiceModal({ open, invoice, onClose }) {
 
           <Divider sx={{ my: 2 }} />
 
-          {/* Bill To */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
             <Box>
               <Typography variant="caption" sx={{ fontWeight: 700, color: '#64748b' }}>
@@ -112,7 +110,6 @@ export default function PrintableInvoiceModal({ open, invoice, onClose }) {
             </Box>
           </Box>
 
-          {/* Items Table */}
           <Table size="small" sx={{ mb: 3, border: '1px solid #e2e8f0' }}>
             <TableHead sx={{ backgroundColor: '#f8fafc' }}>
               <TableRow>
@@ -142,7 +139,6 @@ export default function PrintableInvoiceModal({ open, invoice, onClose }) {
             </TableBody>
           </Table>
 
-          {/* Tax Breakdown & Totals */}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
             <Box sx={{ width: 340 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5 }}>
@@ -195,7 +191,6 @@ export default function PrintableInvoiceModal({ open, invoice, onClose }) {
             </Box>
           </Box>
 
-          {/* Footer & Bank Details */}
           <Box sx={{ borderTop: '1px solid #e2e8f0', pt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <Box>
               <Typography variant="caption" sx={{ fontWeight: 700 }}>Bank Account Details for Payment:</Typography>

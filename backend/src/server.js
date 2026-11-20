@@ -13,18 +13,15 @@ const frontendDist = path.join(__dirname, '../../frontend/dist');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Enable CORS
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-user']
 }));
 
-// Parse JSON bodies with a 10MB limit for bulk import
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Healthcheck endpoint
 app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
@@ -34,10 +31,8 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API Routes
 app.use('/api', apiRouter);
 
-// Serve Frontend static assets in production
 if (fs.existsSync(frontendDist)) {
   app.use(express.static(frontendDist));
   app.get('*', (req, res, next) => {
@@ -48,7 +43,6 @@ if (fs.existsSync(frontendDist)) {
   });
 }
 
-// Global Error Handler
 app.use((err, req, res, next) => {
   console.error('API Error:', err.message);
   res.status(err.status || 400).json({
@@ -58,7 +52,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
     console.log(`=======================================================`);

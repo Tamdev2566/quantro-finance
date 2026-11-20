@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
 
-// Configure BigNumber for financial calculations
 BigNumber.config({
   DECIMAL_PLACES: 4,
   ROUNDING_MODE: BigNumber.ROUND_HALF_UP,

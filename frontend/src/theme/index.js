@@ -4,19 +4,19 @@ export const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#e5a93c', // Quantro Executive Metallic Gold
-      light: '#f3c64f', // Shimmering Light Gold
-      dark: '#b88019',  // Burnished Deep Gold
+      main: '#e5a93c',
+      light: '#f3c64f',
+      dark: '#b88019',
       contrastText: '#000000'
     },
     secondary: {
-      main: '#12131c', // Deep Dark Charcoal Black
+      main: '#12131c',
       light: '#1e202d',
       dark: '#0a0a0f',
       contrastText: '#ffffff'
     },
     background: {
-      default: '#0c0d14', // Dark Shell Canvas
+      default: '#0c0d14',
       paper: '#ffffff',
       darkCard: '#151621'
     },

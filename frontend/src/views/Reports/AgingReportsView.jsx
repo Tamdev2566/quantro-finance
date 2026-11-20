@@ -143,7 +143,6 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
         <Tab icon={<ShoppingCart />} iconPosition="start" label="Vendor Payables Aging" />
       </Tabs>
 
-      {/* Summary Stat Cards */}
       <Grid container spacing={2.5} sx={{ mb: 3 }}>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard title="0–30 Days (Current)" value={summary.current || 0} color="#10b981" />
@@ -159,7 +158,6 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
         </Grid>
       </Grid>
 
-      {/* MUI Data Table */}
       <DataTable
         columns={columns}
         rows={rows}

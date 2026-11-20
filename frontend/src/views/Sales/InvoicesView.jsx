@@ -17,7 +17,6 @@ import {
   MenuItem
 } from '@mui/material';
 
-// MUI Icons
 import AddIcon from '@mui/icons-material/Add';
 import PrintIcon from '@mui/icons-material/Print';
 import ApproveIcon from '@mui/icons-material/CheckCircleOutline';
@@ -33,7 +32,6 @@ export default function InvoicesView() {
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [searchText, setSearchText] = useState('');
 
-  // Modals
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [selectedInvoiceForEdit, setSelectedInvoiceForEdit] = useState(null);
   const [selectedInvoiceForPrint, setSelectedInvoiceForPrint] = useState(null);
@@ -201,7 +199,6 @@ export default function InvoicesView() {
     setOpenCreateModal(true);
   };
 
-  // Full-Screen Invoice Creation / Edit View
   if (openCreateModal || selectedInvoiceForEdit) {
     return (
       <InvoiceFormModal
@@ -223,7 +220,6 @@ export default function InvoicesView() {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      {/* View Header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
@@ -250,7 +246,6 @@ export default function InvoicesView() {
         </Button>
       </Box>
 
-      {/* Filter Toolbar */}
       <Box sx={{ display: 'flex', gap: 2, mb: 2.5, alignItems: 'center', flexWrap: 'wrap' }}>
         <TextField
           size="small"
@@ -276,7 +271,6 @@ export default function InvoicesView() {
         </TextField>
       </Box>
 
-      {/* Modern MUI DataTable */}
       <DataTable
         columns={columns}
         rows={filteredInvoices}
@@ -284,14 +278,12 @@ export default function InvoicesView() {
         emptyMessage="No invoices found matching criteria."
       />
 
-      {/* Printable Invoice Modal */}
       <PrintableInvoiceModal
         open={Boolean(selectedInvoiceForPrint)}
         invoice={selectedInvoiceForPrint}
         onClose={() => setSelectedInvoiceForPrint(null)}
       />
 
-      {/* Confirm Post Dialog */}
       <ConfirmDialog
         open={Boolean(confirmPostInv)}
         title="Post Invoice to Ledger?"
@@ -301,7 +293,6 @@ export default function InvoicesView() {
         onCancel={() => setConfirmPostInv(null)}
       />
 
-      {/* Confirm Delete Dialog */}
       <ConfirmDialog
         open={Boolean(confirmDeleteInv)}
         title="Delete Draft Invoice?"

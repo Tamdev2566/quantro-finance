@@ -5,7 +5,7 @@ const uiSlice = createSlice({
   initialState: {
     currentScreen: 'dashboard',
     activeTab: 0,
-    notification: null, // { message, severity: 'success' | 'error' | 'info' | 'warning', key }
+    notification: null,
     themeMode: 'light'
   },
   reducers: {

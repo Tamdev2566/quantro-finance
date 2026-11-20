@@ -79,7 +79,6 @@ export default function CashFlowView() {
         <Box sx={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
           <Table size="small" sx={{ minWidth: 420 }}>
             <TableBody>
-              {/* --- OPERATING ACTIVITIES --- */}
               <TableRow sx={{ backgroundColor: '#f8fafc' }}>
                 <TableCell colSpan={2} sx={{ fontWeight: 800 }}>
                   1. CASH FLOWS FROM OPERATING ACTIVITIES
@@ -104,7 +103,6 @@ export default function CashFlowView() {
                 </TableCell>
               </TableRow>
 
-              {/* --- INVESTING ACTIVITIES --- */}
               <TableRow sx={{ backgroundColor: '#f8fafc' }}>
                 <TableCell colSpan={2} sx={{ fontWeight: 800, pt: 2 }}>
                   2. CASH FLOWS FROM INVESTING ACTIVITIES
@@ -119,7 +117,6 @@ export default function CashFlowView() {
                 <TableCell align="right" sx={{ fontWeight: 800 }}>₹{inv.net?.toLocaleString('en-IN')}</TableCell>
               </TableRow>
 
-              {/* --- FINANCING ACTIVITIES --- */}
               <TableRow sx={{ backgroundColor: '#f8fafc' }}>
                 <TableCell colSpan={2} sx={{ fontWeight: 800, pt: 2 }}>
                   3. CASH FLOWS FROM FINANCING ACTIVITIES
@@ -134,7 +131,6 @@ export default function CashFlowView() {
                 <TableCell align="right" sx={{ fontWeight: 800 }}>₹{fin.net?.toLocaleString('en-IN')}</TableCell>
               </TableRow>
 
-              {/* NET CASH MOVEMENT & CLOSING BALANCE */}
               <TableRow sx={{ backgroundColor: '#eff6ff', borderTop: '2px solid #0f172a' }}>
                 <TableCell sx={{ fontWeight: 800, fontSize: { xs: '0.85rem', sm: '1rem' } }}>NET INCREASE / (DECREASE) IN CASH & EQUIVALENTS</TableCell>
                 <TableCell align="right" sx={{ fontWeight: 800, color: data?.netCashFlow >= 0 ? '#059669' : '#dc2626' }}>

@@ -179,7 +179,6 @@ export default function JournalFormModal({ onClose, onSuccess }) {
             </Grid>
           </Grid>
 
-          {/* Journal Lines Table */}
           <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>
             Journal Debits & Credits (Double-Entry Engine)
           </Typography>
@@ -257,7 +256,6 @@ export default function JournalFormModal({ onClose, onSuccess }) {
             Add Journal Line
           </Button>
 
-          {/* Balance Verification Box */}
           <Box sx={{ p: 2, backgroundColor: isBalanced ? '#ecfdf5' : '#fef2f2', borderRadius: '4px', border: `1px solid ${isBalanced ? '#a7f3d0' : '#fecaca'}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Box>
               <Typography variant="body2" sx={{ fontWeight: 700, color: isBalanced ? '#065f46' : '#991b1b' }}>

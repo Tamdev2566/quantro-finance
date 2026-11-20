@@ -16,18 +16,12 @@ import financeReducer, {
 } from './slices/financeSlice';
 import { clearPersistedRoute } from '@history';
 
-// Combine child domain slices under parent app reducer
 const appReducer = combineReducers({
   auth: authReducer,
   ui: uiReducer,
   finance: financeReducer
 });
 
-/**
- * Root Reducer Pattern:
- * On logout, state is reset to `undefined` which forces all combined child slices
- * to return their default pristine initial states in a single atomic action.
- */
 export const rootReducer = (state, action) => {
   if (
     action.type === 'auth/logout' ||

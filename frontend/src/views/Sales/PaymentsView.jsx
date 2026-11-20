@@ -121,7 +121,6 @@ export default function PaymentsView() {
     }
   ];
 
-  // Full-Screen Payment Receipt View
   if (openModal) {
     return (
       <PaymentFormModal
@@ -179,8 +178,6 @@ export default function PaymentsView() {
         loading={loading}
         emptyMessage="No customer payments found."
       />
-
-
 
       <ConfirmDialog
         open={Boolean(confirmReversePayment)}

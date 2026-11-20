@@ -42,7 +42,6 @@ class ExpenseService {
     const expenseNumber = await sequenceService.getNextNumber('EXP');
     const company = jsonStore.readSync('company.json');
 
-    // Tax calculation
     const taxRate = expenseData.taxRate || 0;
     const taxCalculation = taxEngine.calculateLineTax({
       quantity: 1,
@@ -81,12 +80,11 @@ class ExpenseService {
       isItcEligible: expenseData.isItcEligible !== undefined ? expenseData.isItcEligible : true,
       reference: expenseData.reference || '',
       notes: expenseData.notes || '',
-      status: expenseData.status || 'Posted', // can be Draft, Approved, Posted
+      status: expenseData.status || 'Posted',
       createdBy: user,
       createdAt: new Date().toISOString()
     };
 
-    // If status is Posted, generate double entry journal immediately
     let journal = null;
     if (expenseRecord.status === 'Posted') {
       const journalLines = [
@@ -98,7 +96,6 @@ class ExpenseService {
         }
       ];
 
-      // Add Input GST lines if tax exists & ITC is eligible
       if (expenseRecord.isItcEligible) {
         if (expenseRecord.cgstAmount > 0) {
           journalLines.push({
@@ -125,11 +122,9 @@ class ExpenseService {
           });
         }
       } else if (expenseRecord.totalTax > 0) {
-        // If ITC is ineligible, capitalize tax into expense
         journalLines[0].debit = expenseRecord.totalAmount;
       }
 
-      // Credit line: Bank/Cash if paid, or Accrued Expenses (2300) if unpaid
       const creditCode = isPaid ? expenseRecord.paymentAccountCode : '2300';
       journalLines.push({
         accountCode: creditCode,

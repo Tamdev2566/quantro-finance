@@ -1,10 +1,6 @@
 import jsonStore from '../storage/jsonStore.js';
 
 class SequenceService {
-  /**
-   * Generates next sequential transaction number atomic under lock
-   * e.g. prefix="INV", year="2026" => "INV-2026-000001"
-   */
   async getNextNumber(prefix, year = null) {
     const currentYear = year || new Date().getFullYear().toString();
     const sequenceKey = `${prefix}_${currentYear}`;

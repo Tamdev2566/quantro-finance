@@ -125,13 +125,12 @@ export default function LoginView() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#0c0d14', // Quantro Charcoal Canvas
+        backgroundColor: '#0c0d14',
         p: { xs: 2, md: 4 },
         position: 'relative',
         overflow: 'hidden'
       }}
     >
-      {/* Metallic Gold Glowing Ambience Spheres */}
       <Box
         sx={{
           position: 'absolute',
@@ -157,7 +156,6 @@ export default function LoginView() {
         }}
       />
 
-      {/* Main Login Card */}
       <Box
         sx={{
           width: '100%',
@@ -172,7 +170,6 @@ export default function LoginView() {
           zIndex: 1
         }}
       >
-        {/* Left Side: Quantro Brand Showcase */}
         <Box
           sx={{
             background: 'linear-gradient(155deg, #181926 0%, #11121c 100%)',
@@ -186,7 +183,6 @@ export default function LoginView() {
           }}
         >
           <Box>
-            {/* Logo */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: { xs: 2.5, sm: 4 } }}>
               <Box
                 sx={{
@@ -275,7 +271,6 @@ export default function LoginView() {
           </Box>
         </Box>
 
-        {/* Right Side: Sleek Dark Login Form */}
         <Box sx={{ p: { xs: 3.5, md: 5 }, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <Box sx={{ mb: 3 }}>
             <Typography variant="h5" sx={{ fontWeight: 800, color: '#ffffff', mb: 0.5, letterSpacing: '-0.02em' }}>
@@ -292,7 +287,6 @@ export default function LoginView() {
             </Alert>
           )}
 
-          {/* Quick Demo 1-Click Sign-in */}
           <Box
             sx={{
               mb: 3,

@@ -9,8 +9,7 @@ class AuthService {
   login({ email, password }) {
     const users = this.getAllUsers();
     const cleanEmail = (email || '').trim().toLowerCase();
-    
-    // Find matching user
+
     const user = users.find((u) => u.email.toLowerCase() === cleanEmail);
     if (!user) {
       throw new Error('Invalid email or password. Please verify credentials.');
@@ -20,7 +19,6 @@ class AuthService {
       throw new Error('Invalid password provided.');
     }
 
-    // Log the successful login in audit log
     auditService.log({
       action: 'USER_LOGIN',
       entity: 'USER',
@@ -29,7 +27,6 @@ class AuthService {
       user: user.name
     });
 
-    // Return user without password
     const { password: _, ...safeUser } = user;
     return {
       user: safeUser,

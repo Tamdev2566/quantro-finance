@@ -63,13 +63,11 @@ class AccountService {
       const existing = accounts[idx];
       const before = { ...existing };
 
-      // Update allowed fields
       if (updateData.name) existing.name = updateData.name.trim();
       if (updateData.description !== undefined) existing.description = updateData.description;
       if (updateData.parentAccountCode !== undefined) existing.parentAccountCode = updateData.parentAccountCode;
       if (updateData.isActive !== undefined) existing.isActive = Boolean(updateData.isActive);
 
-      // Only allow type/category edit if not a system account
       if (!existing.isSystem) {
         if (updateData.type) existing.type = updateData.type;
         if (updateData.category) existing.category = updateData.category;
@@ -109,7 +107,6 @@ class AccountService {
         throw new Error(`System account '${acc.name}' cannot be deleted.`);
       }
 
-      // Check if account has ever been used in journal entries
       const journals = tx.get('journal_entries.json');
       const isUsed = journals.some((j) =>
         (j.lines || []).some((l) => l.accountCode === code)

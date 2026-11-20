@@ -66,7 +66,6 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
         );
         setUnpaidInvoices(matching);
 
-        // Auto-allocate against earliest invoices if amount entered
         const newAlloc = {};
         let rem = watchedAmount;
         matching.forEach((inv) => {
@@ -245,7 +244,6 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
 
           <Divider sx={{ my: 2.5 }} />
 
-          {/* Open Invoices for Allocation */}
           <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5, color: '#0f172a' }}>
             Allocate Against Outstanding Invoices:
           </Typography>
@@ -292,7 +290,6 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
             </Box>
           )}
 
-          {/* Allocation summary */}
           <Box sx={{ p: 2, backgroundColor: '#f8fafc', borderRadius: '4px', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1.5, border: '1px solid #e2e8f0' }}>
             <Box>
               <Typography variant="caption" sx={{ color: '#64748b' }}>Allocated to Invoices</Typography>

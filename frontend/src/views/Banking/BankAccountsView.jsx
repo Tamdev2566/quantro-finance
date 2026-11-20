@@ -32,7 +32,6 @@ export default function BankAccountsView() {
   const [selectedAccountId, setSelectedAccountId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Transfer Screen State
   const [openTransferModal, setOpenTransferModal] = useState(false);
   const [fromCode, setFromCode] = useState('');
   const [toCode, setToCode] = useState('');
@@ -40,7 +39,6 @@ export default function BankAccountsView() {
   const [transferRef, setTransferRef] = useState('');
   const [transferDesc, setTransferDesc] = useState('');
 
-  // New Bank Account Screen State
   const [openNewAccountModal, setOpenNewAccountModal] = useState(false);
   const [newAccData, setNewAccData] = useState({
     accountName: '',
@@ -124,7 +122,6 @@ export default function BankAccountsView() {
   const selectedAccount = bankAccounts.find((b) => b.id === selectedAccountId);
   const accountTransactions = transactions.filter((t) => t.bankAccountId === selectedAccountId);
 
-  // Dedicated Full-Screen: Internal Fund Transfer
   if (openTransferModal) {
     return (
       <Box sx={{ width: '100%', maxWidth: 800, mx: 'auto', p: { xs: 1, sm: 2 } }}>
@@ -235,7 +232,6 @@ export default function BankAccountsView() {
     );
   }
 
-  // Dedicated Full-Screen: Add Bank Account
   if (openNewAccountModal) {
     return (
       <Box sx={{ width: '100%', maxWidth: 800, mx: 'auto', p: { xs: 1, sm: 2 } }}>
@@ -362,7 +358,6 @@ export default function BankAccountsView() {
         </Box>
       </Box>
 
-      {/* Account Cards */}
       <Grid container spacing={2.5} sx={{ mb: 3 }}>
         {bankAccounts.map((b) => (
           <Grid item xs={12} sm={6} md={4} key={b.id}>
@@ -395,7 +390,6 @@ export default function BankAccountsView() {
         ))}
       </Grid>
 
-      {/* Transaction Feed */}
       <Card sx={{ border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
         <Box sx={{ p: 2.5, borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>

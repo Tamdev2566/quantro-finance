@@ -26,8 +26,8 @@ class BudgetService {
       id: uuidv4(),
       name: budgetData.name.trim(),
       fiscalYear: budgetData.fiscalYear || '2026-2027',
-      periodType: budgetData.periodType || 'Annual', // 'Annual' or 'Monthly'
-      month: budgetData.month || null, // e.g. '2026-05'
+      periodType: budgetData.periodType || 'Annual',
+      month: budgetData.month || null,
       department: budgetData.department || 'General',
       accountCode: account.code,
       accountName: account.name,
@@ -60,7 +60,6 @@ class BudgetService {
     const budgets = this.getAll().filter((b) => !fiscalYear || b.fiscalYear === fiscalYear);
     const journals = jsonStore.readSync('journal_entries.json') || [];
 
-    // Calculate actuals from posted journals
     const actualMap = {};
     journals.forEach((j) => {
       if (j.status === 'Posted') {
@@ -71,8 +70,6 @@ class BudgetService {
     });
 
     return budgets.map((b) => {
-      // For expense accounts, debit net is positive expense
-      // For revenue accounts, credit net is positive revenue
       let actual = actualMap[b.accountCode] || 0;
       if (b.accountType === 'Revenue') {
         actual = -actual;

@@ -124,7 +124,6 @@ export default function TaxSummaryView() {
         </Typography>
       </Box>
 
-      {/* Tax KPI Cards */}
       <Grid container spacing={2.5} sx={{ mb: 3 }}>
         <Grid item xs={12} sm={4}>
           <StatCard
@@ -155,7 +154,6 @@ export default function TaxSummaryView() {
         </Grid>
       </Grid>
 
-      {/* Audit Table of Tax Records */}
       <Box sx={{ mb: 2 }}>
         <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#0f172a', mb: 1.5 }}>
           GST Transaction Ledger & Invoices

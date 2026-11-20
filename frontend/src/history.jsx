@@ -4,10 +4,6 @@ import { createMemoryHistory } from 'history';
 
 const STORAGE_KEY = 'quantro_active_route';
 
-/**
- * Determine the initial route upon page reload/refresh.
- * Prevents memory history from falling back to empty '/' or losing the current screen.
- */
 export const getPersistedRoute = () => {
   try {
     const saved = sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY);
@@ -21,9 +17,6 @@ export const getPersistedRoute = () => {
   }
 };
 
-/**
- * Save active route to storage so it survives browser refresh.
- */
 export const setPersistedRoute = (path) => {
   try {
     if (path && path !== '/login' && path !== '/') {
@@ -33,9 +26,6 @@ export const setPersistedRoute = (path) => {
   } catch (e) {}
 };
 
-/**
- * Clear persisted route on logout
- */
 export const clearPersistedRoute = () => {
   try {
     sessionStorage.removeItem(STORAGE_KEY);
@@ -43,7 +33,6 @@ export const clearPersistedRoute = () => {
   } catch (e) {}
 };
 
-// Create memory history instance initialized with the persisted route
 const initialRoute = getPersistedRoute();
 
 export const history = createMemoryHistory({
@@ -51,7 +40,6 @@ export const history = createMemoryHistory({
   initialIndex: 0
 });
 
-// Continuously sync history changes to storage
 history.listen(({ location }) => {
   const fullPath = location.pathname + (location.search || '') + (location.hash || '');
   if (fullPath && fullPath !== '/login') {
@@ -59,9 +47,6 @@ history.listen(({ location }) => {
   }
 });
 
-/**
- * Custom HistoryRouter component bridging the `history` package memory history with react-router-dom
- */
 export function HistoryRouter({ history: historyInstance = history, children }) {
   const [state, setState] = useState({
     action: historyInstance.action,

@@ -26,7 +26,6 @@ export default function CreditNotesView() {
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
 
-  // Form State
   const [invoiceId, setInvoiceId] = useState('');
   const [noteDate, setNoteDate] = useState(new Date().toISOString().slice(0, 10));
   const [reason, setReason] = useState('Sales Return');
@@ -141,7 +140,6 @@ export default function CreditNotesView() {
     }
   ];
 
-  // Dedicated Full-Screen Create Credit Note Screen
   if (openModal) {
     return (
       <Box sx={{ width: '100%', maxWidth: 1000, mx: 'auto', p: { xs: 1, sm: 2 } }}>

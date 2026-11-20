@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-// Icons
 import HomeIcon from '@mui/icons-material/Home';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -36,7 +35,6 @@ export default function Sidebar({ onItemClick }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Collapsible section states (all open by default so user retains full visibility)
   const [openSections, setOpenSections] = useState({
     sales: true,
     purchases: true,
@@ -171,7 +169,7 @@ export default function Sidebar({ onItemClick }) {
         flexShrink: 0,
         height: '100%',
         maxHeight: '100vh',
-        backgroundColor: '#0c0d14', // Quantro Deep Dark Canvas
+        backgroundColor: '#0c0d14',
         p: 2,
         boxSizing: 'border-box',
         display: 'flex',
@@ -181,7 +179,6 @@ export default function Sidebar({ onItemClick }) {
         overflow: 'hidden'
       }}
     >
-      {/* Quantro Brand Logo with Premium Metallic Gold (Fixed at top) */}
       <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2.5, px: 1, pt: 0.5 }}>
         <Box
           sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }}
@@ -192,14 +189,13 @@ export default function Sidebar({ onItemClick }) {
               width: 36,
               height: 36,
               borderRadius: '6px',
-              background: 'linear-gradient(135deg, #f3c64f 0%, #d49b28 50%, #b88019 100%)', // Shimmering Gold
+              background: 'linear-gradient(135deg, #f3c64f 0%, #d49b28 50%, #b88019 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               boxShadow: '0 4px 16px rgba(229, 169, 60, 0.4)'
             }}
           >
-            {/* Geometric Quantro 3-bar icon */}
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path d="M4 6C4 4.89543 4.89543 4 6 4H8C9.10457 4 10 4.89543 10 6V18C10 19.1046 9.10457 20 8 20H6C4.89543 20 4 19.1046 4 18V6Z" fill="#12131c" />
               <path d="M11 9C11 7.89543 11.8954 7 13 7H15C16.1046 7 17 7.89543 17 9V18C17 19.1046 16.1046 20 15 20H13C11.8954 20 11 19.1046 11 18V9Z" fill="#12131c" fillOpacity="0.8" />
@@ -236,7 +232,6 @@ export default function Sidebar({ onItemClick }) {
         )}
       </Box>
 
-      {/* Scrollable Navigation Area (Takes remaining space and scrolls smoothly) */}
       <Box
         sx={{
           flex: 1,
@@ -259,7 +254,6 @@ export default function Sidebar({ onItemClick }) {
           }
         }}
       >
-        {/* Dashboard Item (Active Gold Icon & Text) */}
         <ListItemButton
           onClick={() => nav('/dashboard')}
           sx={{
@@ -289,12 +283,10 @@ export default function Sidebar({ onItemClick }) {
           />
         </ListItemButton>
 
-        {/* Section: Main Menu Modules */}
         <Typography variant="caption" sx={{ color: '#475569', fontWeight: 700, display: 'block', mb: 0.8, pl: 1, textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '0.68rem' }}>
           Operations & Sales
         </Typography>
 
-        {/* Sales & Receivables (AR) */}
         {renderGroupHeader('sales', 'Sales (AR)', <PointOfSaleIcon />, '5')}
         <Collapse in={openSections.sales} timeout="auto" unmountOnExit>
           <List disablePadding>
@@ -306,7 +298,6 @@ export default function Sidebar({ onItemClick }) {
           </List>
         </Collapse>
 
-        {/* Purchases & Payables (AP) */}
         {renderGroupHeader('purchases', 'Purchases (AP)', <ShoppingCartIcon />, '5')}
         <Collapse in={openSections.purchases} timeout="auto" unmountOnExit>
           <List disablePadding>
@@ -318,12 +309,10 @@ export default function Sidebar({ onItemClick }) {
           </List>
         </Collapse>
 
-        {/* Section: Financial Core */}
         <Typography variant="caption" sx={{ color: '#475569', fontWeight: 700, display: 'block', mt: 2, mb: 0.8, pl: 1, textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '0.68rem' }}>
           Finance & Accounting
         </Typography>
 
-        {/* Accounting & General Ledger */}
         {renderGroupHeader('accounting', 'Accounting', <AccountBalanceIcon />, '5')}
         <Collapse in={openSections.accounting} timeout="auto" unmountOnExit>
           <List disablePadding>
@@ -335,7 +324,6 @@ export default function Sidebar({ onItemClick }) {
           </List>
         </Collapse>
 
-        {/* Banking & Cash */}
         {renderGroupHeader('banking', 'Banking & Cash', <AccountBalanceWalletIcon />, '2')}
         <Collapse in={openSections.banking} timeout="auto" unmountOnExit>
           <List disablePadding>
@@ -344,7 +332,6 @@ export default function Sidebar({ onItemClick }) {
           </List>
         </Collapse>
 
-        {/* Direct Expenses */}
         {renderGroupHeader('expenses', 'Expenses', <CategoryIcon />, '2')}
         <Collapse in={openSections.expenses} timeout="auto" unmountOnExit>
           <List disablePadding>
@@ -353,12 +340,10 @@ export default function Sidebar({ onItemClick }) {
           </List>
         </Collapse>
 
-        {/* Section: Intelligence & Reports */}
         <Typography variant="caption" sx={{ color: '#475569', fontWeight: 700, display: 'block', mt: 2, mb: 0.8, pl: 1, textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '0.68rem' }}>
           Reports & Analysis
         </Typography>
 
-        {/* Financial Statements & Budgets */}
         {renderGroupHeader('reports', 'Financial Reports', <AssessmentIcon />, '4')}
         <Collapse in={openSections.reports} timeout="auto" unmountOnExit>
           <List disablePadding>
@@ -369,7 +354,6 @@ export default function Sidebar({ onItemClick }) {
           </List>
         </Collapse>
 
-        {/* Section: General */}
         <Typography variant="caption" sx={{ color: '#475569', fontWeight: 700, display: 'block', mt: 2, mb: 0.8, pl: 1, textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '0.68rem' }}>
           System & Config
         </Typography>
@@ -384,7 +368,6 @@ export default function Sidebar({ onItemClick }) {
         </Collapse>
       </Box>
 
-      {/* Bottom Section: Logout only (Fixed at bottom) */}
       <Box sx={{ flexShrink: 0, pt: 1.5, borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
         <ListItemButton
           onClick={handleLogout}

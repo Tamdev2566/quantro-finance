@@ -44,7 +44,6 @@ export const ACCOUNT_TYPES = {
 };
 
 export const ACCOUNT_CATEGORIES = {
-  // Assets
   CASH: 'Cash',
   BANK: 'Bank',
   ACCOUNTS_RECEIVABLE: 'Accounts Receivable',
@@ -53,25 +52,21 @@ export const ACCOUNT_CATEGORIES = {
   PREPAID_EXPENSES: 'Prepaid Expenses',
   INPUT_GST: 'Input GST',
   OTHER_ASSETS: 'Other Assets',
-  
-  // Liabilities
+
   ACCOUNTS_PAYABLE: 'Accounts Payable',
   OUTPUT_GST: 'Output GST',
   LOANS: 'Loans',
   ACCRUED_EXPENSES: 'Accrued Expenses',
   OTHER_LIABILITIES: 'Other Liabilities',
-  
-  // Equity
+
   OWNER_CAPITAL: 'Owner Capital',
   RETAINED_EARNINGS: 'Retained Earnings',
   DRAWINGS: 'Drawings',
-  
-  // Revenue
+
   SALES_REVENUE: 'Sales Revenue',
   SERVICE_REVENUE: 'Service Revenue',
   OTHER_INCOME: 'Other Income',
-  
-  // Expenses
+
   SALARIES: 'Salaries',
   RENT: 'Rent',
   UTILITIES: 'Utilities',

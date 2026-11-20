@@ -17,7 +17,6 @@ import periodService from '../src/services/periodService.js';
 describe('Finance & Accounting Engine Core Tests', () => {
 
   before(async () => {
-    // Seed test fixtures for core workflow tests
     const customers = jsonStore.readSync('customers.json') || [];
     if (!customers.find((c) => c.id === 'CUST-001')) {
       customers.push({
@@ -64,7 +63,6 @@ describe('Finance & Accounting Engine Core Tests', () => {
   });
 
   after(async () => {
-    // Clean test fixtures so runtime storage remains 100% clean for fresh user entries
     jsonStore.writeSync('customers.json', []);
     jsonStore.writeSync('vendors.json', []);
     jsonStore.writeSync('bank_accounts.json', []);
@@ -105,7 +103,6 @@ describe('Finance & Accounting Engine Core Tests', () => {
   });
 
   test('Decimal-Safe Currency Math avoids floating point inaccuracies', () => {
-    // 0.1 + 0.2 in JS float is 0.30000000000000004
     const sum = currency.add(0.1, 0.2);
     assert.strictEqual(currency.roundCurrency(sum, 2), '0.30');
     assert.strictEqual(currency.roundNumber(sum, 2), 0.3);
@@ -127,13 +124,6 @@ describe('Finance & Accounting Engine Core Tests', () => {
       isInterState: false
     });
 
-    // Line total: 2 * 5000 = 10,000
-    // Discount 10%: 1,000
-    // Taxable amount: 9,000
-    // CGST 9%: 810
-    // SGST 9%: 810
-    // Total Tax: 1,620
-    // Grand Total: 10,620
     assert.strictEqual(calc.lineTotal, 10000);
     assert.strictEqual(calc.discountAmount, 1000);
     assert.strictEqual(calc.taxableAmount, 9000);
@@ -154,9 +144,6 @@ describe('Finance & Accounting Engine Core Tests', () => {
       isInterState: true
     });
 
-    // Taxable: 18,000
-    // IGST 18%: 3,240
-    // Grand Total: 21,240
     assert.strictEqual(calc.taxableAmount, 18000);
     assert.strictEqual(calc.cgstAmount, 0);
     assert.strictEqual(calc.sgstAmount, 0);
@@ -175,9 +162,6 @@ describe('Finance & Accounting Engine Core Tests', () => {
       isInterState: false
     });
 
-    // Taxable: 1180 / 1.18 = 1000
-    // Total Tax: 180 (CGST 90, SGST 90)
-    // Grand Total: 1180
     assert.strictEqual(calc.taxableAmount, 1000);
     assert.strictEqual(calc.cgstAmount, 90);
     assert.strictEqual(calc.sgstAmount, 90);
@@ -193,7 +177,7 @@ describe('Finance & Accounting Engine Core Tests', () => {
           description: 'Unbalanced test entry',
           lines: [
             { accountCode: '1010', debit: 500, credit: 0 },
-            { accountCode: '4010', debit: 0, credit: 400 } // Unbalanced by 100
+            { accountCode: '4010', debit: 0, credit: 400 }
           ]
         });
       },
@@ -237,11 +221,9 @@ describe('Finance & Accounting Engine Core Tests', () => {
     assert.strictEqual(inv.subtotal, 100000);
     assert.strictEqual(inv.totalDiscount, 5000);
     assert.strictEqual(inv.taxableTotal, 95000);
-    // 95000 * 18% = 17100
     assert.strictEqual(inv.totalTax, 17100);
     assert.strictEqual(inv.grandTotal, 112100);
 
-    // Post the invoice
     const { invoice: postedInv, journal } = await invoiceService.post(inv.id);
     assert.strictEqual(postedInv.status, 'Posted');
     assert.strictEqual(journal.totalDebit, journal.totalCredit);
@@ -249,13 +231,11 @@ describe('Finance & Accounting Engine Core Tests', () => {
   });
 
   test('Payment Workflow: Customer Payment Allocation and Balance Update', async () => {
-    // Find customer and an unpaid invoice
     const invoices = invoiceService.getAll().filter((i) => i.status === 'Posted' && i.outstandingAmount > 0);
     assert.ok(invoices.length > 0, 'Should have at least one posted invoice');
     const targetInv = invoices[0];
     const initialOutstanding = targetInv.outstandingAmount;
 
-    // Make partial payment of ₹50,000
     const payAmount = Math.min(50000, initialOutstanding);
     const payment = await paymentService.createPayment({
       customerId: targetInv.customerId,
@@ -268,7 +248,6 @@ describe('Finance & Accounting Engine Core Tests', () => {
     assert.strictEqual(payment.status, 'Posted');
     assert.strictEqual(payment.allocatedAmount, payAmount);
 
-    // Verify invoice outstanding reduced
     const refreshedInv = invoiceService.getById(targetInv.id);
     assert.strictEqual(refreshedInv.paidAmount, payAmount);
     assert.strictEqual(refreshedInv.outstandingAmount, initialOutstanding - payAmount);
@@ -359,8 +338,8 @@ describe('Finance & Accounting Engine Core Tests', () => {
 
   test('Bank Transfer: Moves funds with balanced journal entry', async () => {
     const transfer = await bankingService.transferFunds({
-      fromAccountCode: '1020', // HDFC Bank
-      toAccountCode: '1010',   // Petty Cash
+      fromAccountCode: '1020',
+      toAccountCode: '1010',
       amount: 5000,
       description: 'Cash withdrawal for office petty expenses'
     });
@@ -401,7 +380,6 @@ describe('Finance & Accounting Engine Core Tests', () => {
     assert.ok(periods.length > 0);
     const p = periods[0];
 
-    // Lock month '2026-06' (June 2026, inside FY 2026-2027)
     await periodService.toggleLockMonth(p.id, '2026-06', true);
 
     await assert.rejects(
@@ -418,7 +396,6 @@ describe('Finance & Accounting Engine Core Tests', () => {
       /locked against mutations/
     );
 
-    // Unlock month
     await periodService.toggleLockMonth(p.id, '2026-06', false);
   });
 

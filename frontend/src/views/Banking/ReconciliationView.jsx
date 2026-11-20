@@ -50,7 +50,6 @@ export default function ReconciliationView() {
     if (selectedAccountId) {
       apiClient.getBankTransactions({ bankAccountId: selectedAccountId }).then((res) => {
         setTransactions(res.data || []);
-        // Auto-select matched transactions
         const alreadyMatched = (res.data || []).filter((t) => t.reconciled).map((t) => t.id);
         setSelectedTxnIds(alreadyMatched);
       });
@@ -67,7 +66,6 @@ export default function ReconciliationView() {
     setSelectedTxnIds(transactions.map((t) => t.id));
   };
 
-  // Calculations
   const openingNum = parseFloat(stmtOpening || 0);
   const closingNum = parseFloat(stmtClosing || 0);
 
@@ -114,7 +112,6 @@ export default function ReconciliationView() {
         </Typography>
       </Box>
 
-      {/* Control Ribbon */}
       <Card sx={{ p: 2.5, mb: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={3}>
@@ -182,7 +179,6 @@ export default function ReconciliationView() {
         </Grid>
       </Card>
 
-      {/* Balance Verification Bar */}
       <Card sx={{ p: { xs: 1.5, sm: 2 }, mb: 3, backgroundColor: isBalanced ? '#ecfdf5' : '#fef2f2', border: `1px solid ${isBalanced ? '#a7f3d0' : '#fecaca'}` }}>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'stretch', md: 'center' }, gap: 2 }}>
           <Box>
@@ -219,7 +215,6 @@ export default function ReconciliationView() {
         </Box>
       </Card>
 
-      {/* Transactions Check Table */}
       <Card sx={{ p: { xs: 1.5, sm: 2.5 } }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>

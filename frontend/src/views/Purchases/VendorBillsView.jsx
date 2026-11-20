@@ -151,7 +151,6 @@ export default function VendorBillsView() {
     }
   ];
 
-  // Full-Screen Vendor Bill Form View
   if (openCreateModal) {
     return (
       <VendorBillFormModal
@@ -225,8 +224,6 @@ export default function VendorBillsView() {
         loading={loading}
         emptyMessage="No vendor bills found."
       />
-
-
 
       <ConfirmDialog
         open={Boolean(confirmPostBill)}

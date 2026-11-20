@@ -38,7 +38,7 @@ class VendorPaymentService {
     const vendor = vendors.find((v) => v.id === vendorId);
     if (!vendor) throw new Error('Vendor not found.');
 
-    let creditAccountCode = '1020'; // default HDFC
+    let creditAccountCode = '1020';
     let bankAccount = null;
 
     if (paymentMethod === 'Cash') {
@@ -80,9 +80,6 @@ class VendorPaymentService {
       throw new Error('Allocated sum cannot exceed total payment amount.');
     }
 
-        // Create balanced journal:
-        // Debit: Accounts Payable (2010)
-        // Credit: Bank / Cash (1020 / 1010)
         const journal = await accountingEngine.postJournal({
           transactionDate: paymentDate,
           postingDate: paymentDate,
@@ -220,7 +217,6 @@ class VendorPaymentService {
         if (!payment) throw new Error(`Vendor payment ${paymentId} not found.`);
         if (payment.status === 'Reversed') throw new Error('Payment is already reversed.');
 
-        // Restore allocated bills
         for (const alloc of payment.allocations || []) {
           const bill = bills.find((b) => b.id === alloc.billId);
           if (bill) {
@@ -230,13 +226,11 @@ class VendorPaymentService {
           }
         }
 
-        // Restore vendor balance
         const vendor = vendors.find((v) => v.id === payment.vendorId);
         if (vendor) {
           vendor.balance = roundNumber(add(vendor.balance || 0, payment.amount));
         }
 
-        // Restore bank account
         if (payment.bankAccountId) {
           const bank = bankAccounts.find((b) => b.id === payment.bankAccountId);
           if (bank) {
@@ -244,7 +238,6 @@ class VendorPaymentService {
           }
         }
 
-        // Reverse accounting journal
         if (payment.journalEntryId) {
           await accountingEngine.reverseJournal(payment.journalEntryId, { reason, user });
         }

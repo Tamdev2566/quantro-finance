@@ -27,7 +27,7 @@ class AuditService {
 
     return jsonStore.runExclusive(async () => {
       const logs = jsonStore.readSync('audit_logs.json') || [];
-      logs.unshift(entry); // Most recent first
+      logs.unshift(entry);
       jsonStore.writeSync('audit_logs.json', logs);
       return entry;
     });

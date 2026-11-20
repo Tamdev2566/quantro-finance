@@ -15,7 +15,6 @@ import {
   CircularProgress
 } from '@mui/material';
 
-// Icons
 import AddIcon from '@mui/icons-material/Add';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -32,7 +31,6 @@ import WatchIcon from '@mui/icons-material/Watch';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 
-// Charts
 import {
   ResponsiveContainer,
   AreaChart,
@@ -92,7 +90,6 @@ export default function DashboardView() {
       }))
     : [{ name: 'No Categories Yet', value: 1, color: '#e2e8f0' }];
 
-  // Mini Sparkline Wave Component in Metallic Gold
   const Sparkline = ({ color = '#e5a93c' }) => (
     <svg width="90" height="38" viewBox="0 0 90 38" fill="none" style={{ overflow: 'visible' }}>
       <path
@@ -107,8 +104,7 @@ export default function DashboardView() {
 
   return (
     <Box sx={{ width: '100%', mx: 'auto' }}>
-      
-      {/* ================= HEADER SECTION ================= */}
+
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3.5, flexWrap: 'wrap', gap: 2 }}>
         <Box>
           <Typography
@@ -152,10 +148,8 @@ export default function DashboardView() {
         </Button>
       </Box>
 
-      {/* ================= ROW 1: 4 STAT CARDS ================= */}
       <Grid container spacing={2.5} sx={{ mb: 3.5 }}>
-        
-        {/* 1. Total Revenue (Dark Hero Card) */}
+
         <Grid item xs={12} sm={6} lg={3}>
           <Card
             sx={{
@@ -207,7 +201,6 @@ export default function DashboardView() {
           </Card>
         </Grid>
 
-        {/* 2. Total Orders (White Card) */}
         <Grid item xs={12} sm={6} lg={3}>
           <Card
             sx={{
@@ -260,7 +253,6 @@ export default function DashboardView() {
           </Card>
         </Grid>
 
-        {/* 3. New Customers (White Card) */}
         <Grid item xs={12} sm={6} lg={3}>
           <Card
             sx={{
@@ -312,7 +304,6 @@ export default function DashboardView() {
           </Card>
         </Grid>
 
-        {/* 4. Conversion Rate (White Card) */}
         <Grid item xs={12} sm={6} lg={3}>
           <Card
             sx={{
@@ -367,10 +358,8 @@ export default function DashboardView() {
 
       </Grid>
 
-      {/* ================= ROW 2: CHARTS ================= */}
       <Grid container spacing={2.5} sx={{ mb: 3.5 }}>
-        
-        {/* Left: Revenue Overview (Area Chart) */}
+
         <Grid item xs={12} lg={8}>
           <Card sx={{ p: 3, borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2.5, flexWrap: 'wrap', gap: 2 }}>
@@ -389,7 +378,6 @@ export default function DashboardView() {
               </Box>
 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                {/* Toggle Buttons */}
                 <Box sx={{ display: 'flex', bgcolor: '#f8fafc', p: 0.4, borderRadius: '4px', border: '1px solid #e2e8f0' }}>
                   <Button
                     size="small"
@@ -431,7 +419,6 @@ export default function DashboardView() {
               </Box>
             </Box>
 
-            {/* Glowing Metallic Gold Area Chart */}
             <Box sx={{ height: 280, width: '100%', position: 'relative' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={monthlyTrend} margin={{ top: 30, right: 20, left: -10, bottom: 0 }}>
@@ -477,7 +464,6 @@ export default function DashboardView() {
           </Card>
         </Grid>
 
-        {/* Right: Sales by Category (Donut Chart) */}
         <Grid item xs={12} lg={4}>
           <Card sx={{ p: 3, borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -489,10 +475,8 @@ export default function DashboardView() {
               </Box>
             </Box>
 
-            {/* Donut and Legend Layout */}
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center', justifyContent: 'center', my: 2, gap: 2.5 }}>
-              
-              {/* Donut with Center Text */}
+
               <Box sx={{ position: 'relative', width: 170, height: 170, flexShrink: 0 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -527,7 +511,6 @@ export default function DashboardView() {
                 </Box>
               </Box>
 
-              {/* Legend List */}
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2, pl: { xs: 0, sm: 2 }, width: { xs: '100%', sm: 'auto' }, flexGrow: 1 }}>
                 {revenueCategories.length === 0 ? (
                   <Typography variant="caption" sx={{ color: '#94a3b8', fontStyle: 'italic' }}>
@@ -555,10 +538,8 @@ export default function DashboardView() {
 
       </Grid>
 
-      {/* ================= ROW 3: BOTTOM 3 WIDGETS ================= */}
       <Grid container spacing={2.5}>
-        
-        {/* 1. Top Selling Products */}
+
         <Grid item xs={12} lg={4}>
           <Card sx={{ p: 2.8, borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)', height: '100%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -628,7 +609,6 @@ export default function DashboardView() {
           </Card>
         </Grid>
 
-        {/* 2. Recent Orders */}
         <Grid item xs={12} lg={4}>
           <Card sx={{ p: 2.8, borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)', height: '100%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -647,7 +627,6 @@ export default function DashboardView() {
               </Typography>
             </Box>
 
-            {/* Orders list */}
             <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <Box sx={{ minWidth: 310 }}>
                 {recentOrders.length === 0 ? (
@@ -709,7 +688,6 @@ export default function DashboardView() {
           </Card>
         </Grid>
 
-        {/* 3. Customers by Location */}
         <Grid item xs={12} lg={4}>
           <Card sx={{ p: 2.8, borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)', height: '100%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>

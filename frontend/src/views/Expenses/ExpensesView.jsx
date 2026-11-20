@@ -112,7 +112,6 @@ export default function ExpensesView() {
     }
   ];
 
-  // Full-Screen Record Expense View
   if (openModal) {
     return (
       <ExpenseFormModal
@@ -188,7 +187,6 @@ export default function ExpensesView() {
         loading={loading}
         emptyMessage="No expenses recorded."
       />
-
 
     </Box>
   );

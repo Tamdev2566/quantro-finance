@@ -16,7 +16,6 @@ const financeSlice = createSlice({
     dashboardFilter: 'This Financial Year',
     refreshKey: 0,
     company: null,
-    // Mirrored fields for 100% backward compatibility
     user: initialUser,
     isAuthenticated: Boolean(initialUser),
     notification: null,
