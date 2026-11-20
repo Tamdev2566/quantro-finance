@@ -26,8 +26,8 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
 
   const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
-      category: 'Office Supplies',
-      accountCode: '5150',
+      category: '',
+      accountCode: '',
       expenseDate: new Date().toISOString().slice(0, 10),
       vendorName: '',
       description: '',
@@ -39,7 +39,7 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
       isItcEligible: true,
       isPaid: true,
       paymentMethod: 'Bank Transfer',
-      bankAccountId: 'BANK-001',
+      bankAccountId: '',
       reference: '',
       notes: ''
     }

@@ -32,7 +32,7 @@ export default function CreditNotesView() {
   const [invoiceId, setInvoiceId] = useState('');
   const [noteDate, setNoteDate] = useState(new Date().toISOString().slice(0, 10));
   const [reason, setReason] = useState('Sales Return');
-  const [itemDesc, setItemDesc] = useState('Return / Rate Adjustment');
+  const [itemDesc, setItemDesc] = useState('');
   const [amount, setAmount] = useState('');
   const [taxRate, setTaxRate] = useState(18);
 

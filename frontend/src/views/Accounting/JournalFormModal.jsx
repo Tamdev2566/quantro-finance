@@ -35,10 +35,10 @@ export default function JournalFormModal({ open, onClose, onSuccess }) {
       transactionDate: new Date().toISOString().slice(0, 10),
       postingDate: new Date().toISOString().slice(0, 10),
       referenceNumber: '',
-      description: 'Manual Journal Entry',
+      description: '',
       lines: [
-        { accountCode: '1010', debit: 1000, credit: 0, description: '' },
-        { accountCode: '4010', debit: 0, credit: 1000, description: '' }
+        { accountCode: '', debit: '', credit: '', description: '' },
+        { accountCode: '', debit: '', credit: '', description: '' }
       ]
     }
   });

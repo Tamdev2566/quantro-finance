@@ -39,11 +39,11 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
       billDate: new Date().toISOString().slice(0, 10),
       dueDate: '',
       paymentTerms: 'Net 30',
-      description: 'Vendor Supply Bill',
-      expenseAccountCode: '5010',
+      description: '',
+      expenseAccountCode: '',
       isTaxInclusive: false,
       items: [
-        { description: 'Procurement of Server Hardware / Software', quantity: 1, unitPrice: 20000, discountPercent: 0, taxRate: 18 }
+        { description: '', quantity: 1, unitPrice: '', discountPercent: 0, taxRate: 18 }
       ],
       notes: ''
     }

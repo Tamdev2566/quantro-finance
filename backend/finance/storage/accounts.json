@@ -8,7 +8,7 @@
     "isActive": true,
     "isSystem": true,
     "openingBalance": 0,
-    "currentBalance": 35100
+    "currentBalance": 0
   },
   {
     "code": "1020",
@@ -19,7 +19,7 @@
     "isActive": true,
     "isSystem": true,
     "openingBalance": 0,
-    "currentBalance": 186000
+    "currentBalance": 0
   },
   {
     "code": "1030",
@@ -41,7 +41,7 @@
     "isActive": true,
     "isSystem": true,
     "openingBalance": 0,
-    "currentBalance": 426440
+    "currentBalance": 0
   },
   {
     "code": "1300",
@@ -96,7 +96,7 @@
     "isActive": true,
     "isSystem": true,
     "openingBalance": 0,
-    "currentBalance": 23400
+    "currentBalance": 0
   },
   {
     "code": "1620",
@@ -107,7 +107,7 @@
     "isActive": true,
     "isSystem": true,
     "openingBalance": 0,
-    "currentBalance": 23400
+    "currentBalance": 0
   },
   {
     "code": "1630",
@@ -140,7 +140,7 @@
     "isActive": true,
     "isSystem": true,
     "openingBalance": 0,
-    "currentBalance": 177800
+    "currentBalance": 0
   },
   {
     "code": "2110",
@@ -151,7 +151,7 @@
     "isActive": true,
     "isSystem": true,
     "openingBalance": 0,
-    "currentBalance": 59220
+    "currentBalance": 0
   },
   {
     "code": "2120",
@@ -162,7 +162,7 @@
     "isActive": true,
     "isSystem": true,
     "openingBalance": 0,
-    "currentBalance": 59220
+    "currentBalance": 0
   },
   {
     "code": "2130",
@@ -250,7 +250,7 @@
     "isActive": true,
     "isSystem": true,
     "openingBalance": 0,
-    "currentBalance": 658100
+    "currentBalance": 0
   },
   {
     "code": "4020",
@@ -283,7 +283,7 @@
     "isActive": true,
     "isSystem": true,
     "openingBalance": 0,
-    "currentBalance": 210000
+    "currentBalance": 0
   },
   {
     "code": "5110",
@@ -338,7 +338,7 @@
     "isActive": true,
     "isSystem": false,
     "openingBalance": 0,
-    "currentBalance": 50000
+    "currentBalance": 0
   },
   {
     "code": "5160",

@@ -48,6 +48,8 @@ class DashboardService {
     const bankAccounts = jsonStore.readSync('bank_accounts.json') || [];
     const journals = jsonStore.readSync('journal_entries.json') || [];
     const expenses = jsonStore.readSync('expenses.json') || [];
+    const invoices = jsonStore.readSync('invoices.json') || [];
+    const customers = jsonStore.readSync('customers.json') || [];
 
     // Cash and Bank balances
     let cashBalance = toDecimal(0);
@@ -133,9 +135,42 @@ class DashboardService {
       currentBalance: b.currentBalance || 0
     }));
 
+    // Recent Invoices / Orders
+    const recentOrders = invoices.slice(0, 5).map((inv) => ({
+      id: inv.invoiceNumber || inv.id,
+      name: inv.customerName || 'Customer',
+      amount: inv.totalAmount || 0,
+      status: inv.status || 'Draft',
+      date: inv.invoiceDate || inv.issueDate || ''
+    }));
+
+    // Top Selling Products / Services from posted invoices
+    const productMap = {};
+    invoices.forEach((inv) => {
+      (inv.items || inv.lineItems || []).forEach((item) => {
+        const desc = item.description || 'General Item';
+        if (!productMap[desc]) {
+          productMap[desc] = { name: desc, orders: 0, revenue: 0 };
+        }
+        productMap[desc].orders += (item.quantity || 1);
+        productMap[desc].revenue = roundNumber(add(productMap[desc].revenue, item.amount || ((item.quantity || 1) * (item.unitPrice || 0))));
+      });
+    });
+    const topProducts = Object.values(productMap).sort((a, b) => b.revenue - a.revenue).slice(0, 5);
+
+    // Customers by Location / State
+    const locationMap = {};
+    customers.forEach((c) => {
+      const loc = c.state || 'Local';
+      locationMap[loc] = (locationMap[loc] || 0) + 1;
+    });
+    const customersByLocation = Object.entries(locationMap).map(([location, count]) => ({ location, count }));
+
     return {
       filter,
       dateRange: { startDate, endDate },
+      ordersCount: invoices.length,
+      customersCount: customers.length,
       cards: {
         totalRevenue: pnl.revenue.total,
         totalExpenses: pnl.totalExpenses,
@@ -167,7 +202,10 @@ class DashboardService {
         ],
         expenseCategoryBreakdown,
         revenueCategoryBreakdown,
-        bankAccountBalances
+        bankAccountBalances,
+        recentOrders,
+        topProducts,
+        customersByLocation
       }
     };
   }

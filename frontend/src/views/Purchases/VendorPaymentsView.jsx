@@ -44,7 +44,7 @@ export default function VendorPaymentsView() {
   const [selectedVendorId, setSelectedVendorId] = useState('');
   const [paymentDate, setPaymentDate] = useState(new Date().toISOString().slice(0, 10));
   const [paymentMethod, setPaymentMethod] = useState('Bank Transfer');
-  const [bankAccountId, setBankAccountId] = useState('BANK-001');
+  const [bankAccountId, setBankAccountId] = useState('');
   const [amount, setAmount] = useState('');
   const [reference, setReference] = useState('');
   const [allocations, setAllocations] = useState({});

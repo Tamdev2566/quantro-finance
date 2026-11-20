@@ -305,7 +305,7 @@ export default function LoginView() {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8, mb: 1.5 }}>
               <BoltIcon sx={{ color: '#e5a93c', fontSize: 18 }} />
               <Typography variant="caption" sx={{ fontWeight: 800, color: '#e5a93c', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                1-Click Quick Demo Sign-in
+                Quick Sign-in
               </Typography>
             </Box>
             <Stack spacing={1}>

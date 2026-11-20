@@ -5,8 +5,6 @@
     "startDate": "2026-04-01",
     "endDate": "2027-03-31",
     "isClosed": false,
-    "lockedMonths": [
-      "2026-01"
-    ]
+    "lockedMonths": []
   }
 ]

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   Dialog,
   DialogContent,
@@ -18,6 +19,7 @@ import PrintIcon from '@mui/icons-material/Print';
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function PrintableInvoiceModal({ open, invoice, onClose }) {
+  const company = useSelector((state) => state.finance.company);
   if (!invoice) return null;
 
   const handlePrint = () => {
@@ -46,17 +48,19 @@ export default function PrintableInvoiceModal({ open, invoice, onClose }) {
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
             <Box>
               <Typography variant="h5" sx={{ fontWeight: 800, color: '#2563eb' }}>
-                APEX GLOBAL ENTERPRISES PVT LTD
+                {company?.legalName || company?.name || 'Quantro Finance'}
               </Typography>
               <Typography variant="body2" sx={{ color: '#475569' }}>
-                Level 8, Tower B, Tech Park, Mumbai, MH, 400051
+                {company?.address || 'Registered Office Address'}
               </Typography>
               <Typography variant="body2" sx={{ color: '#475569' }}>
-                GSTIN: <strong>27AABCA1234F1Z5</strong> | State: Maharashtra (27)
+                GSTIN: <strong>{company?.gstin || 'Not Configured'}</strong> | State: {company?.state || 'Local'} ({company?.stateCode || '27'})
               </Typography>
-              <Typography variant="body2" sx={{ color: '#475569' }}>
-                Email: finance@apexglobal.com
-              </Typography>
+              {company?.email && (
+                <Typography variant="body2" sx={{ color: '#475569' }}>
+                  Email: {company.email}
+                </Typography>
+              )}
             </Box>
             <Box sx={{ textAlign: 'right' }}>
               <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: '0.05em' }}>

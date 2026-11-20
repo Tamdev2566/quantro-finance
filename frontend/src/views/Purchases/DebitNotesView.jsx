@@ -31,7 +31,7 @@ export default function DebitNotesView() {
   const [billId, setBillId] = useState('');
   const [noteDate, setNoteDate] = useState(new Date().toISOString().slice(0, 10));
   const [reason, setReason] = useState('Purchase Return');
-  const [desc, setDesc] = useState('Goods Return / Rate Correction');
+  const [desc, setDesc] = useState('');
   const [amount, setAmount] = useState('');
   const [taxRate, setTaxRate] = useState(18);
 

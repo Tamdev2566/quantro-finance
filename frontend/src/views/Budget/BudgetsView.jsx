@@ -27,12 +27,12 @@ export default function BudgetsView() {
   const [openModal, setOpenModal] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: 'Marketing & Digital Ads Budget',
-    accountCode: '5160',
-    department: 'Marketing',
+    name: '',
+    accountCode: '',
+    department: 'General',
     fiscalYear: '2026-2027',
     periodType: 'Annual',
-    budgetAmount: 100000
+    budgetAmount: ''
   });
 
   const fetchBudgets = async () => {

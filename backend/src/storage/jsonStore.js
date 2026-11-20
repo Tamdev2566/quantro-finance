@@ -128,88 +128,11 @@ class JsonStore {
             REC: 100
           };
         } else if (file === 'customers.json') {
-          initialData = [
-            {
-              id: 'CUST-001',
-              name: 'Acme Cloud Technologies',
-              contactPerson: 'Rahul Sharma',
-              email: 'accounts@acmecloud.in',
-              phone: '+91 98201 11223',
-              gstin: '27AAACA9999P1ZV',
-              state: 'Maharashtra',
-              stateCode: '27',
-              address: 'Andheri East, Mumbai, Maharashtra 400069',
-              balance: 0,
-              isActive: true
-            },
-            {
-              id: 'CUST-002',
-              name: 'Zenith Logistics Ltd',
-              contactPerson: 'Priya Iyer',
-              email: 'billing@zenithlog.com',
-              phone: '+91 98400 55443',
-              gstin: '33AABCP8888D1ZR',
-              state: 'Tamil Nadu',
-              stateCode: '33',
-              address: 'Anna Salai, Chennai, Tamil Nadu 600002',
-              balance: 0,
-              isActive: true
-            }
-          ];
+          initialData = [];
         } else if (file === 'vendors.json') {
-          initialData = [
-            {
-              id: 'VEND-001',
-              name: 'InfraSpace Realties Corp',
-              contactPerson: 'Sunil Kothari',
-              email: 'billing@infraspace.com',
-              phone: '+91 98210 99887',
-              gstin: '27AAGCI3321L1Z9',
-              state: 'Maharashtra',
-              stateCode: '27',
-              address: 'Bandra Kurla Complex, Mumbai, Maharashtra 400051',
-              balance: 0,
-              isActive: true
-            },
-            {
-              id: 'VEND-002',
-              name: 'CloudScale Server Solutions',
-              contactPerson: 'David Miller',
-              email: 'enterprise@cloudscale.net',
-              phone: '+91 80 4123 9900',
-              gstin: '29AAECS4432K1Z2',
-              state: 'Karnataka',
-              stateCode: '29',
-              address: 'Whitefield, Bengaluru, Karnataka 560066',
-              balance: 0,
-              isActive: true
-            }
-          ];
+          initialData = [];
         } else if (file === 'bank_accounts.json') {
-          initialData = [
-            {
-              id: 'BANK-001',
-              accountName: 'HDFC Corporate Current A/c',
-              accountNumber: '50200012345678',
-              bankName: 'HDFC Bank',
-              ifsc: 'HDFC0000060',
-              branch: 'Fort, Mumbai',
-              ledgerAccountCode: '1020',
-              currentBalance: 0,
-              isActive: true
-            },
-            {
-              id: 'BANK-002',
-              accountName: 'ICICI Reserve A/c',
-              accountNumber: '000405098765',
-              bankName: 'ICICI Bank',
-              ifsc: 'ICIC0000004',
-              branch: 'Nariman Point, Mumbai',
-              ledgerAccountCode: '1030',
-              currentBalance: 0,
-              isActive: true
-            }
-          ];
+          initialData = [];
         }
 
         this.atomicWriteSync(filePath, initialData);

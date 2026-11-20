@@ -34,7 +34,7 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
       customerId: '',
       paymentDate: new Date().toISOString().slice(0, 10),
       paymentMethod: 'Bank Transfer',
-      bankAccountId: 'BANK-001',
+      bankAccountId: '',
       reference: '',
       amount: '',
       notes: ''

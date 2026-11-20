@@ -21,6 +21,7 @@ import BalancedIcon from '@mui/icons-material/CheckCircle';
 export default function BalanceSheetView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
+  const company = useSelector((state) => state.finance.company);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -81,7 +82,7 @@ export default function BalanceSheetView() {
       <Card sx={{ p: { xs: 1.5, sm: 3 } }}>
         <Box sx={{ textAlign: 'center', mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: 800 }}>
-            APEX GLOBAL ENTERPRISES PVT LTD
+            {company?.legalName || company?.name || 'Quantro Finance'}
           </Typography>
           <Typography variant="subtitle2" sx={{ color: '#64748b' }}>
             Balance Sheet as on {data?.asOfDate}

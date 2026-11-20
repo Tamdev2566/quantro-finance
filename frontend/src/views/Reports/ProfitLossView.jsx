@@ -21,6 +21,7 @@ import PrintIcon from '@mui/icons-material/Print';
 export default function ProfitLossView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
+  const company = useSelector((state) => state.finance.company);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -71,7 +72,7 @@ export default function ProfitLossView() {
       <Card sx={{ p: { xs: 1.5, sm: 3 }, border: '1px solid #e2e8f0' }}>
         <Box sx={{ textAlign: 'center', mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: 800 }}>
-            APEX GLOBAL ENTERPRISES PVT LTD
+            {company?.legalName || company?.name || 'Quantro Finance'}
           </Typography>
           <Typography variant="subtitle2" sx={{ color: '#64748b' }}>
             Profit and Loss Statement for Financial Year 2026-2027

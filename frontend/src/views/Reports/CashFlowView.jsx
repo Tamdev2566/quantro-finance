@@ -18,6 +18,7 @@ import PrintIcon from '@mui/icons-material/Print';
 export default function CashFlowView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
+  const company = useSelector((state) => state.finance.company);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -68,7 +69,7 @@ export default function CashFlowView() {
       <Card sx={{ p: { xs: 1.5, sm: 3 } }}>
         <Box sx={{ textAlign: 'center', mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: 800 }}>
-            APEX GLOBAL ENTERPRISES PVT LTD
+            {company?.legalName || company?.name || 'Quantro Finance'}
           </Typography>
           <Typography variant="subtitle2" sx={{ color: '#64748b' }}>
             Cash Flow Statement for Financial Year 2026-2027

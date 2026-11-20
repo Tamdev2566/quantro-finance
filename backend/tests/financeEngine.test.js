@@ -1,4 +1,4 @@
-import { test, describe, before, beforeEach } from 'node:test';
+import { test, describe, before, after, beforeEach } from 'node:test';
 import assert from 'node:assert';
 import jsonStore from '../src/storage/jsonStore.js';
 import currency from '../src/accounting/currency.js';
@@ -15,6 +15,94 @@ import reportService from '../src/services/reportService.js';
 import periodService from '../src/services/periodService.js';
 
 describe('Finance & Accounting Engine Core Tests', () => {
+
+  before(async () => {
+    // Seed test fixtures for core workflow tests
+    const customers = jsonStore.readSync('customers.json') || [];
+    if (!customers.find((c) => c.id === 'CUST-001')) {
+      customers.push({
+        id: 'CUST-001',
+        name: 'Test Customer Acme',
+        state: 'Maharashtra',
+        stateCode: '27',
+        gstin: '27AAACA9999P1ZV',
+        balance: 0,
+        isActive: true
+      });
+      jsonStore.writeSync('customers.json', customers);
+    }
+
+    const vendors = jsonStore.readSync('vendors.json') || [];
+    if (!vendors.find((v) => v.id === 'VEND-001')) {
+      vendors.push({
+        id: 'VEND-001',
+        name: 'Test Vendor InfraSpace',
+        state: 'Maharashtra',
+        stateCode: '27',
+        gstin: '27AAGCI3321L1Z9',
+        balance: 0,
+        isActive: true
+      });
+      jsonStore.writeSync('vendors.json', vendors);
+    }
+
+    const bankAccounts = jsonStore.readSync('bank_accounts.json') || [];
+    if (!bankAccounts.find((b) => b.id === 'BANK-001')) {
+      bankAccounts.push({
+        id: 'BANK-001',
+        accountName: 'Test Bank Account',
+        accountNumber: '50200012345678',
+        bankName: 'Test Bank',
+        ifsc: 'HDFC0000060',
+        branch: 'Fort, Mumbai',
+        ledgerAccountCode: '1020',
+        currentBalance: 500000,
+        isActive: true
+      });
+      jsonStore.writeSync('bank_accounts.json', bankAccounts);
+    }
+  });
+
+  after(async () => {
+    // Clean test fixtures so runtime storage remains 100% clean for fresh user entries
+    jsonStore.writeSync('customers.json', []);
+    jsonStore.writeSync('vendors.json', []);
+    jsonStore.writeSync('bank_accounts.json', []);
+    jsonStore.writeSync('invoices.json', []);
+    jsonStore.writeSync('invoice_items.json', []);
+    jsonStore.writeSync('payments.json', []);
+    jsonStore.writeSync('credit_notes.json', []);
+    jsonStore.writeSync('vendor_bills.json', []);
+    jsonStore.writeSync('vendor_payments.json', []);
+    jsonStore.writeSync('debit_notes.json', []);
+    jsonStore.writeSync('expenses.json', []);
+    jsonStore.writeSync('journal_entries.json', []);
+    jsonStore.writeSync('tax_records.json', []);
+    jsonStore.writeSync('bank_transactions.json', []);
+    jsonStore.writeSync('reconciliations.json', []);
+    jsonStore.writeSync('recurring_transactions.json', []);
+    jsonStore.writeSync('budgets.json', []);
+    jsonStore.writeSync('opening_balances.json', []);
+    jsonStore.writeSync('audit_logs.json', []);
+    const cleanAccounts = (jsonStore.readSync('accounts.json') || []).map((a) => ({
+      ...a,
+      openingBalance: 0,
+      currentBalance: 0
+    }));
+    jsonStore.writeSync('accounts.json', cleanAccounts);
+    jsonStore.writeSync('transaction_sequences.json', {
+      INV: 1000,
+      CN: 100,
+      BILL: 500,
+      DN: 100,
+      PAY: 1000,
+      VPAY: 500,
+      EXP: 200,
+      JE: 1000,
+      TXN: 1000,
+      REC: 100
+    });
+  });
 
   test('Decimal-Safe Currency Math avoids floating point inaccuracies', () => {
     // 0.1 + 0.2 in JS float is 0.30000000000000004

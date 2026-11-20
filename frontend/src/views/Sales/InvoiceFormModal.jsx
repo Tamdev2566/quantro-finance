@@ -37,10 +37,10 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
       invoiceDate: new Date().toISOString().slice(0, 10),
       dueDate: '',
       paymentTerms: 'Net 30',
-      description: 'Consulting and Professional Services',
+      description: '',
       isTaxInclusive: false,
       items: [
-        { description: 'Consulting & Engineering Services', quantity: 1, unitPrice: 25000, discountPercent: 0, taxRate: 18 }
+        { description: '', quantity: 1, unitPrice: '', discountPercent: 0, taxRate: 18 }
       ],
       notes: ''
     }

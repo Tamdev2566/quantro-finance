@@ -77,26 +77,20 @@ export default function DashboardView() {
   }
 
   const { cards } = data;
+  const monthlyTrend = data?.visualizations?.monthlyTrend || [];
+  const revenueCategories = data?.visualizations?.revenueCategoryBreakdown || [];
+  const topProducts = data?.visualizations?.topProducts || [];
+  const recentOrders = data?.visualizations?.recentOrders || [];
+  const customersByLocation = data?.visualizations?.customersByLocation || [];
 
-  // Smooth Area Chart Data for Revenue Overview
-  const revenueChartData = [
-    { date: 'Dec 01', revenue: 6200, orders: 180 },
-    { date: 'Dec 05', revenue: 7800, orders: 220 },
-    { date: 'Dec 10', revenue: 4900, orders: 150 },
-    { date: 'Dec 15', revenue: 8400, orders: 260 },
-    { date: 'Dec 20', revenue: 14220, orders: 410 },
-    { date: 'Dec 25', revenue: 9800, orders: 290 },
-    { date: 'Dec 31', revenue: 13500, orders: 380 }
-  ];
-
-  // Donut slices for Sales by Category with Premium Metallic Gold palette
-  const categoryDonut = [
-    { name: 'Electronics', value: 38, color: '#e5a93c' }, // Premium Metallic Gold
-    { name: 'Fashion', value: 24, color: '#b88019' },     // Deep Burnished Gold
-    { name: 'Home & Living', value: 18, color: '#1e2029' }, // Dark Slate
-    { name: 'Beauty', value: 12, color: '#94a3b8' },      // Silver Grey
-    { name: 'Others', value: 8, color: '#e2e8f0' }        // Soft Platinum
-  ];
+  const donutColors = ['#e5a93c', '#b88019', '#1e2029', '#94a3b8', '#059669', '#3b82f6'];
+  const categoryDonut = revenueCategories.length > 0
+    ? revenueCategories.map((c, idx) => ({
+        name: c.category,
+        value: c.amount,
+        color: donutColors[idx % donutColors.length]
+      }))
+    : [{ name: 'No Categories Yet', value: 1, color: '#e2e8f0' }];
 
   // Mini Sparkline Wave Component in Metallic Gold
   const Sparkline = ({ color = '#e5a93c' }) => (
@@ -199,14 +193,14 @@ export default function DashboardView() {
               <Typography variant="body2" sx={{ color: '#94a3b8', fontWeight: 500, mb: 0.5 }}>
                 Total Revenue
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 800, color: '#ffffff', mb: 1.5, letterSpacing: '-0.02em' }}>
-                ${(cards.totalRevenue || 84320).toLocaleString('en-US')}
+              <Typography variant="h4" sx={{ fontWeight: 800, color: '#ffffff', mb: 1.5, letterSpacing: '-0.02em', fontSize: { xs: '1.4rem', sm: '1.75rem', md: '2rem' } }}>
+                ₹{(cards?.totalRevenue || 0).toLocaleString('en-IN')}
               </Typography>
             </Box>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
               <Typography variant="caption" sx={{ color: '#10b981', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.3 }}>
-                ↑ 12.5% <span style={{ color: '#64748b', fontWeight: 400 }}>from last month</span>
+                From posted sales
               </Typography>
               <Sparkline color="#e5a93c" />
             </Box>
@@ -250,16 +244,16 @@ export default function DashboardView() {
 
             <Box>
               <Typography variant="body2" sx={{ color: '#64748b', fontWeight: 500, mb: 0.5 }}>
-                Total Orders
+                Total Invoices
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 800, color: '#0f172a', mb: 1.5, letterSpacing: '-0.02em' }}>
-                2,568
+              <Typography variant="h4" sx={{ fontWeight: 800, color: '#0f172a', mb: 1.5, letterSpacing: '-0.02em', fontSize: { xs: '1.4rem', sm: '1.75rem', md: '2rem' } }}>
+                {(data?.ordersCount || 0).toLocaleString('en-IN')}
               </Typography>
             </Box>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-              <Typography variant="caption" sx={{ color: '#10b981', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.3 }}>
-                ↑ 8.4% <span style={{ color: '#94a3b8', fontWeight: 400 }}>from last month</span>
+              <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.3 }}>
+                Sales invoices generated
               </Typography>
               <Sparkline color="#e5a93c" />
             </Box>
@@ -302,16 +296,16 @@ export default function DashboardView() {
 
             <Box>
               <Typography variant="body2" sx={{ color: '#64748b', fontWeight: 500, mb: 0.5 }}>
-                New Customers
+                Active Customers
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 800, color: '#0f172a', mb: 1.5, letterSpacing: '-0.02em' }}>
-                1,245
+              <Typography variant="h4" sx={{ fontWeight: 800, color: '#0f172a', mb: 1.5, letterSpacing: '-0.02em', fontSize: { xs: '1.4rem', sm: '1.75rem', md: '2rem' } }}>
+                {(data?.customersCount || 0).toLocaleString('en-IN')}
               </Typography>
             </Box>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-              <Typography variant="caption" sx={{ color: '#10b981', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.3 }}>
-                ↑ 16.2% <span style={{ color: '#94a3b8', fontWeight: 400 }}>from last month</span>
+              <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.3 }}>
+                Registered client accounts
               </Typography>
               <Sparkline color="#e5a93c" />
             </Box>
@@ -355,16 +349,16 @@ export default function DashboardView() {
 
             <Box>
               <Typography variant="body2" sx={{ color: '#64748b', fontWeight: 500, mb: 0.5 }}>
-                Conversion Rate
+                Liquid Reserves
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 800, color: '#0f172a', mb: 1.5, letterSpacing: '-0.02em' }}>
-                3.6%
+              <Typography variant="h4" sx={{ fontWeight: 800, color: '#0f172a', mb: 1.5, letterSpacing: '-0.02em', fontSize: { xs: '1.4rem', sm: '1.75rem', md: '2rem' } }}>
+                ₹{((cards?.bankBalance || 0) + (cards?.cashBalance || 0)).toLocaleString('en-IN')}
               </Typography>
             </Box>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
               <Typography variant="caption" sx={{ color: '#10b981', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.3 }}>
-                ↑ 0.8% <span style={{ color: '#94a3b8', fontWeight: 400 }}>from last month</span>
+                Bank & cash balance
               </Typography>
               <Sparkline color="#e5a93c" />
             </Box>
@@ -386,10 +380,10 @@ export default function DashboardView() {
                 </Box>
                 <Box>
                   <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>
-                    Revenue Overview
+                    Financial Overview Trend
                   </Typography>
                   <Typography variant="caption" sx={{ color: '#94a3b8' }}>
-                    Total revenue and orders from 01 Dec - 31 Dec 2023
+                    Monthly revenue vs expenditure trend for FY 2026-2027
                   </Typography>
                 </Box>
               </Box>
@@ -417,77 +411,30 @@ export default function DashboardView() {
                   </Button>
                   <Button
                     size="small"
-                    onClick={() => setViewType('orders')}
+                    onClick={() => setViewType('expenses')}
                     sx={{
                       borderRadius: '50px',
                       px: 2,
                       py: 0.4,
                       fontSize: '0.78rem',
                       fontWeight: 700,
-                      backgroundColor: viewType === 'orders' ? '#12131c' : 'transparent',
-                      color: viewType === 'orders' ? '#ffffff' : '#64748b',
+                      backgroundColor: viewType === 'expenses' ? '#12131c' : 'transparent',
+                      color: viewType === 'expenses' ? '#ffffff' : '#64748b',
                       '&:hover': {
-                        backgroundColor: viewType === 'orders' ? '#12131c' : '#f1f5f9'
+                        backgroundColor: viewType === 'expenses' ? '#12131c' : '#f1f5f9'
                       }
                     }}
                   >
-                    Orders
+                    Expenses
                   </Button>
-                </Box>
-
-                {/* Dropdown Pill */}
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 0.8,
-                    bgcolor: '#ffffff',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '50px',
-                    px: 1.8,
-                    py: 0.6,
-                    cursor: 'pointer'
-                  }}
-                >
-                  <Typography variant="caption" sx={{ fontWeight: 600, color: '#475569' }}>
-                    This month
-                  </Typography>
-                  <KeyboardArrowDownIcon sx={{ fontSize: 16, color: '#94a3b8' }} />
                 </Box>
               </Box>
             </Box>
 
             {/* Glowing Metallic Gold Area Chart */}
             <Box sx={{ height: 280, width: '100%', position: 'relative' }}>
-              
-              {/* Tooltip Pill Marker at Dec 20 */}
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '18%',
-                  left: '60%',
-                  transform: 'translate(-50%, -100%)',
-                  bgcolor: '#12131c',
-                  color: '#ffffff',
-                  px: 1.8,
-                  py: 0.6,
-                  borderRadius: '50px',
-                  boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
-                  display: { xs: 'none', sm: 'flex' },
-                  alignItems: 'center',
-                  gap: 0.8,
-                  zIndex: 2,
-                  border: '1px solid rgba(229, 169, 60, 0.4)'
-                }}
-              >
-                <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#e5a93c' }} />
-                <Typography variant="caption" sx={{ fontWeight: 800, fontSize: '0.8rem', color: '#ffffff' }}>
-                  $14,220
-                </Typography>
-              </Box>
-
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={revenueChartData} margin={{ top: 30, right: 20, left: -20, bottom: 0 }}>
+                <AreaChart data={monthlyTrend} margin={{ top: 30, right: 20, left: -10, bottom: 0 }}>
                   <defs>
                     <linearGradient id="quantroGoldGrad" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="#e5a93c" stopOpacity={0.35} />
@@ -495,7 +442,7 @@ export default function DashboardView() {
                     </linearGradient>
                   </defs>
                   <XAxis
-                    dataKey="date"
+                    dataKey="month"
                     axisLine={false}
                     tickLine={false}
                     tick={{ fontSize: 11, fill: '#94a3b8' }}
@@ -504,7 +451,7 @@ export default function DashboardView() {
                     axisLine={false}
                     tickLine={false}
                     tick={{ fontSize: 11, fill: '#94a3b8' }}
-                    tickFormatter={(val) => `$${val / 1000}K`}
+                    tickFormatter={(val) => '₹' + (val >= 1000 ? (val / 1000).toFixed(0) + 'K' : val)}
                   />
                   <RechartsTooltip
                     contentStyle={{
@@ -515,10 +462,11 @@ export default function DashboardView() {
                       boxShadow: '0 8px 24px rgba(0,0,0,0.25)'
                     }}
                     labelStyle={{ color: '#94a3b8' }}
+                    formatter={(val) => ['₹' + Number(val || 0).toLocaleString('en-IN'), viewType === 'revenue' ? 'Revenue' : 'Expenses']}
                   />
                   <Area
                     type="monotone"
-                    dataKey={viewType === 'revenue' ? 'revenue' : 'orders'}
+                    dataKey={viewType === 'revenue' ? 'income' : 'expenses'}
                     stroke="#e5a93c"
                     strokeWidth={3}
                     fill="url(#quantroGoldGrad)"
@@ -538,24 +486,6 @@ export default function DashboardView() {
                 <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a' }}>
                   Sales by Category
                 </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.6,
-                  bgcolor: '#ffffff',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '50px',
-                  px: 1.5,
-                  py: 0.5,
-                  cursor: 'pointer'
-                }}
-              >
-                <Typography variant="caption" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.75rem' }}>
-                  This month
-                </Typography>
-                <KeyboardArrowDownIcon sx={{ fontSize: 14, color: '#94a3b8' }} />
               </Box>
             </Box>
 
@@ -588,8 +518,8 @@ export default function DashboardView() {
                     textAlign: 'center'
                   }}
                 >
-                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a', lineHeight: 1.1, fontSize: '1.05rem' }}>
-                    $84.3K
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a', lineHeight: 1.1, fontSize: '1rem' }}>
+                    ₹{(cards?.totalRevenue || 0).toLocaleString('en-IN')}
                   </Typography>
                   <Typography variant="caption" sx={{ color: '#94a3b8', fontSize: '0.68rem', fontWeight: 600 }}>
                     Total Sales
@@ -599,19 +529,25 @@ export default function DashboardView() {
 
               {/* Legend List */}
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2, pl: { xs: 0, sm: 2 }, width: { xs: '100%', sm: 'auto' }, flexGrow: 1 }}>
-                {categoryDonut.map((cat, i) => (
-                  <Box key={i} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: cat.color }} />
-                      <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.78rem' }}>
-                        {cat.name}
+                {revenueCategories.length === 0 ? (
+                  <Typography variant="caption" sx={{ color: '#94a3b8', fontStyle: 'italic' }}>
+                    No sales categories recorded yet
+                  </Typography>
+                ) : (
+                  categoryDonut.map((cat, i) => (
+                    <Box key={i} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: cat.color }} />
+                        <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.78rem' }}>
+                          {cat.name}
+                        </Typography>
+                      </Box>
+                      <Typography variant="caption" sx={{ color: '#0f172a', fontWeight: 700, fontSize: '0.78rem' }}>
+                        ₹{Number(cat.value || 0).toLocaleString('en-IN')}
                       </Typography>
                     </Box>
-                    <Typography variant="caption" sx={{ color: '#0f172a', fontWeight: 700, fontSize: '0.78rem' }}>
-                      {cat.value}%
-                    </Typography>
-                  </Box>
-                ))}
+                  ))
+                )}
               </Box>
             </Box>
           </Card>
@@ -643,56 +579,50 @@ export default function DashboardView() {
 
             <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <Box sx={{ minWidth: 340 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8', fontSize: '0.72rem', fontWeight: 600, mb: 1.5, px: 0.5 }}>
-                  <span>Product</span>
-                  <Box sx={{ display: 'flex', gap: 3 }}>
-                    <span>Orders</span>
-                    <span>Revenue</span>
-                    <span>Growth</span>
+                {topProducts.length === 0 ? (
+                  <Box sx={{ py: 5, textAlign: 'center', color: '#94a3b8' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#64748b', mb: 0.5 }}>
+                      No product sales yet
+                    </Typography>
+                    <Typography variant="caption">
+                      Items from posted sales invoices will appear here automatically.
+                    </Typography>
                   </Box>
-                </Box>
-
-                {/* Product items */}
-                {[
-                  { name: 'Wireless Headphones', icon: HeadphonesIcon, orders: '1,245', revenue: '$24,900', growth: '↑ 12%' },
-                  { name: 'Smart Watch', icon: WatchIcon, orders: '980', revenue: '$19,600', growth: '↑ 8%' },
-                  { name: 'Running Shoes', icon: DirectionsRunIcon, orders: '764', revenue: '$15,280', growth: '↑ 5%' },
-                  { name: 'Sunglasses', icon: WbSunnyIcon, orders: '620', revenue: '$12,400', growth: '↑ 3%' }
-                ].map((p, idx) => {
-                  const IconComp = p.icon;
-                  return (
-                    <Box
-                      key={idx}
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        py: 1.2,
-                        borderBottom: idx < 3 ? '1px solid #f8fafc' : 'none'
-                      }}
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
-                        <Box sx={{ width: 32, height: 32, borderRadius: '8px', bgcolor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <IconComp sx={{ fontSize: 16, color: '#334155' }} />
-                        </Box>
+                ) : (
+                  <>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8', fontSize: '0.72rem', fontWeight: 600, mb: 1.5, px: 0.5 }}>
+                      <span>Product</span>
+                      <Box sx={{ display: 'flex', gap: 3 }}>
+                        <span>Units</span>
+                        <span>Revenue</span>
+                      </Box>
+                    </Box>
+                    {topProducts.map((p, idx) => (
+                      <Box
+                        key={idx}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          py: 1.2,
+                          borderBottom: idx < topProducts.length - 1 ? '1px solid #f8fafc' : 'none'
+                        }}
+                      >
                         <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem' }}>
                           {p.name}
                         </Typography>
+                        <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
+                          <Typography variant="body2" sx={{ color: '#64748b', fontSize: '0.8rem', width: 40, textAlign: 'right' }}>
+                            {p.orders}
+                          </Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem', width: 80, textAlign: 'right' }}>
+                            ₹{Number(p.revenue || 0).toLocaleString('en-IN')}
+                          </Typography>
+                        </Box>
                       </Box>
-                      <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
-                        <Typography variant="body2" sx={{ color: '#64748b', fontSize: '0.8rem', width: 40, textAlign: 'right' }}>
-                          {p.orders}
-                        </Typography>
-                        <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem', width: 55, textAlign: 'right' }}>
-                          {p.revenue}
-                        </Typography>
-                        <Typography variant="caption" sx={{ color: '#10b981', fontWeight: 700, width: 45, textAlign: 'right' }}>
-                          {p.growth}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  );
-                })}
+                    ))}
+                  </>
+                )}
               </Box>
             </Box>
           </Card>
@@ -720,54 +650,60 @@ export default function DashboardView() {
             {/* Orders list */}
             <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <Box sx={{ minWidth: 310 }}>
-                {[
-                  { id: '12345', name: 'John Doe', amount: '$120.00', status: 'Completed', color: '#10b981', bg: '#dcfce7', avatarBg: '#ede9fe', avatarColor: '#7c3aed', initials: 'JD' },
-                  { id: '12344', name: 'Sarah Miller', amount: '$89.00', status: 'Processing', color: '#0284c7', bg: '#e0f2fe', avatarBg: '#fce7f3', avatarColor: '#db2777', initials: 'SM' },
-                  { id: '12343', name: 'Robert Lee', amount: '$250.00', status: 'Completed', color: '#10b981', bg: '#dcfce7', avatarBg: '#ffedd5', avatarColor: '#ea580c', initials: 'RL' },
-                  { id: '12342', name: 'Emma Parker', amount: '$65.00', status: 'Pending', color: '#b88019', bg: 'rgba(229, 169, 60, 0.15)', avatarBg: 'rgba(229, 169, 60, 0.1)', avatarColor: '#e5a93c', initials: 'EP' }
-                ].map((ord, idx) => (
-                  <Box
-                    key={idx}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      py: 1.1,
-                      borderBottom: idx < 3 ? '1px solid #f8fafc' : 'none'
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
-                      <Avatar sx={{ width: 32, height: 32, bgcolor: ord.avatarBg, color: ord.avatarColor, fontSize: '0.75rem', fontWeight: 700 }}>
-                        {ord.initials}
-                      </Avatar>
-                      <Box>
-                        <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem', lineHeight: 1.1 }}>
-                          {ord.name}
+                {recentOrders.length === 0 ? (
+                  <Box sx={{ py: 5, textAlign: 'center', color: '#94a3b8' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#64748b', mb: 0.5 }}>
+                      No sales invoices yet
+                    </Typography>
+                    <Typography variant="caption">
+                      Newly created sales invoices will show up here.
+                    </Typography>
+                  </Box>
+                ) : (
+                  recentOrders.map((ord, idx) => (
+                    <Box
+                      key={idx}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        py: 1.1,
+                        borderBottom: idx < recentOrders.length - 1 ? '1px solid #f8fafc' : 'none'
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
+                        <Avatar sx={{ width: 32, height: 32, bgcolor: 'rgba(229, 169, 60, 0.15)', color: '#b88019', fontSize: '0.75rem', fontWeight: 700 }}>
+                          {(ord.name || 'C').slice(0, 2).toUpperCase()}
+                        </Avatar>
+                        <Box>
+                          <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem', lineHeight: 1.1 }}>
+                            {ord.name}
+                          </Typography>
+                          <Typography variant="caption" sx={{ color: '#94a3b8', fontSize: '0.7rem' }}>
+                            #{ord.id}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem' }}>
+                          ₹{Number(ord.amount || 0).toLocaleString('en-IN')}
                         </Typography>
-                        <Typography variant="caption" sx={{ color: '#94a3b8', fontSize: '0.7rem' }}>
-                          #{ord.id}
-                        </Typography>
+                        <Chip
+                          size="small"
+                          label={ord.status}
+                          sx={{
+                            bgcolor: ord.status === 'Paid' ? '#dcfce7' : ord.status === 'Posted' ? '#eff6ff' : 'rgba(229, 169, 60, 0.15)',
+                            color: ord.status === 'Paid' ? '#10b981' : ord.status === 'Posted' ? '#2563eb' : '#b88019',
+                            fontWeight: 700,
+                            fontSize: '0.7rem',
+                            height: 22,
+                            borderRadius: '50px'
+                          }}
+                        />
                       </Box>
                     </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem' }}>
-                        {ord.amount}
-                      </Typography>
-                      <Chip
-                        size="small"
-                        label={ord.status}
-                        sx={{
-                          bgcolor: ord.bg,
-                          color: ord.color,
-                          fontWeight: 700,
-                          fontSize: '0.7rem',
-                          height: 22,
-                          borderRadius: '50px'
-                        }}
-                      />
-                    </Box>
-                  </Box>
-                ))}
+                  ))
+                )}
               </Box>
             </Box>
           </Card>
@@ -783,118 +719,40 @@ export default function DashboardView() {
                   Customers by Location
                 </Typography>
               </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.6,
-                  bgcolor: '#ffffff',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '50px',
-                  px: 1.4,
-                  py: 0.4,
-                  cursor: 'pointer'
-                }}
+              <Typography
+                variant="caption"
+                onClick={() => navigate('/customers')}
+                sx={{ color: '#0f172a', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 0.3 }}
               >
-                <Typography variant="caption" sx={{ fontWeight: 600, color: '#475569', fontSize: '0.72rem' }}>
-                  This month
-                </Typography>
-                <KeyboardArrowDownIcon sx={{ fontSize: 14, color: '#94a3b8' }} />
-              </Box>
+                View All →
+              </Typography>
             </Box>
 
-            {/* Stylized Vector World Map Container */}
-            <Box
-              sx={{
-                position: 'relative',
-                height: 180,
-                bgcolor: '#f8fafc',
-                borderRadius: '18px',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                p: 1
-              }}
-            >
-              {/* World Map SVG */}
-              <svg width="100%" height="100%" viewBox="0 0 400 200" fill="none" style={{ opacity: 0.4 }}>
-                <path
-                  d="M50,40 Q90,30 110,60 T140,90 T90,140 T50,80 Z"
-                  fill="#cbd5e1"
-                />
-                <path
-                  d="M180,30 Q240,20 280,50 T320,110 T250,130 T190,80 Z"
-                  fill="#cbd5e1"
-                />
-                <path
-                  d="M290,120 Q340,110 360,140 T320,170 T280,140 Z"
-                  fill="#cbd5e1"
-                />
-                <path
-                  d="M80,110 Q120,100 130,130 T110,180 T70,140 Z"
-                  fill="#cbd5e1"
-                />
-              </svg>
-
-              {/* Hotspot Marker Pill over United States */}
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '32%',
-                  left: '42%',
-                  bgcolor: '#12131c',
-                  color: '#ffffff',
-                  px: 1.8,
-                  py: 0.8,
-                  borderRadius: '12px',
-                  boxShadow: '0 8px 18px rgba(0,0,0,0.3)',
-                  border: '1px solid rgba(229, 169, 60, 0.4)',
-                  zIndex: 2
-                }}
-              >
-                <Typography variant="body2" sx={{ fontWeight: 800, fontSize: '0.75rem', color: '#ffffff', lineHeight: 1.1 }}>
-                  United States
-                </Typography>
-                <Typography variant="caption" sx={{ color: '#94a3b8', fontSize: '0.68rem' }}>
-                  1,245 customers
-                </Typography>
-              </Box>
-
-              {/* Glowing Metallic Gold Hotspot Dots */}
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '38%',
-                  left: '28%',
-                  width: 14,
-                  height: 14,
-                  borderRadius: '50%',
-                  bgcolor: 'rgba(229, 169, 60, 0.3)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#e5a93c' }} />
-              </Box>
-
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '68%',
-                  left: '80%',
-                  width: 12,
-                  height: 12,
-                  borderRadius: '50%',
-                  bgcolor: 'rgba(229, 169, 60, 0.3)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#e5a93c' }} />
-              </Box>
+            <Box sx={{ py: 1 }}>
+              {customersByLocation.length === 0 ? (
+                <Box sx={{ py: 5, textAlign: 'center', color: '#94a3b8' }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#64748b', mb: 0.5 }}>
+                    No customer locations yet
+                  </Typography>
+                  <Typography variant="caption">
+                    Add customers under Sales &gt; Customers to see regional distributions.
+                  </Typography>
+                </Box>
+              ) : (
+                customersByLocation.map((loc, idx) => (
+                  <Box key={idx} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1.2, borderBottom: idx < customersByLocation.length - 1 ? '1px solid #f8fafc' : 'none' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#e5a93c' }} />
+                      <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.85rem' }}>
+                        {loc.location}
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" sx={{ fontWeight: 700, color: '#64748b', fontSize: '0.82rem' }}>
+                      {loc.count} {loc.count === 1 ? 'customer' : 'customers'}
+                    </Typography>
+                  </Box>
+                ))
+              )}
             </Box>
           </Card>
         </Grid>
