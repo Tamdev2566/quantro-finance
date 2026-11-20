@@ -104,12 +104,12 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
   ];
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 } }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
           Aging Analysis (Accounts Receivable & Payable)
         </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
           Credit exposure and liability aging across 0-30, 31-60, 61-90, and 90+ day overdue buckets
         </Typography>
       </Box>
@@ -117,6 +117,9 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
       <Tabs
         value={tab}
         onChange={(_, val) => setTab(val)}
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile
         sx={{
           mb: 3,
           '& .MuiTab-root': {

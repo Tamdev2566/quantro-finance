@@ -185,12 +185,12 @@ export default function VendorPaymentsView() {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             Vendor Payments & Disbursements
           </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8' }}>
+          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
             Pay supplier bills, manage Accounts Payable reductions, and record bank ledger debits
           </Typography>
         </Box>
@@ -202,6 +202,7 @@ export default function VendorPaymentsView() {
             bgcolor: '#e5a93c',
             borderRadius: '14px',
             fontWeight: 700,
+            width: { xs: '100%', sm: 'auto' },
             boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
             '&:hover': { bgcolor: '#4b4bc0' }
           }}
@@ -218,8 +219,16 @@ export default function VendorPaymentsView() {
       />
 
       {/* Pay Vendor Modal */}
-      <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="md" fullWidth>
-        <DialogTitle sx={{ fontWeight: 800 }}>Record Vendor Payment</DialogTitle>
+      <Dialog
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
+      >
+        <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>
+          Record Vendor Payment
+        </DialogTitle>
         <DialogContent dividers sx={{ p: 3 }}>
           <Grid container spacing={2.5} sx={{ mb: 3 }}>
             <Grid item xs={12} sm={6}>
@@ -315,39 +324,41 @@ export default function VendorPaymentsView() {
               No unpaid bills found for this vendor. Amount will be recorded as unallocated advance.
             </Typography>
           ) : (
-            <Table size="small" sx={{ border: '1px solid #f1f5f9', borderRadius: '12px' }}>
-              <TableHead sx={{ bgcolor: '#f8fafc' }}>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Bill #</TableCell>
-                  <TableCell sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Date</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Bill Total (₹)</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Due (₹)</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Allocate Payment (₹)</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {unpaidBills.map((b) => (
-                  <TableRow key={b.id}>
-                    <TableCell sx={{ fontWeight: 600 }}>{b.billNumber}</TableCell>
-                    <TableCell>{b.billDate}</TableCell>
-                    <TableCell align="right">₹{b.grandTotal.toLocaleString('en-IN')}</TableCell>
-                    <TableCell align="right" sx={{ color: '#ef4444', fontWeight: 700 }}>
-                      ₹{b.outstandingAmount.toLocaleString('en-IN')}
-                    </TableCell>
-                    <TableCell align="right">
-                      <TextField
-                        size="small"
-                        type="number"
-                        sx={{ width: 130 }}
-                        value={allocations[b.id] || ''}
-                        onChange={(e) => setAllocations({ ...allocations, [b.id]: e.target.value })}
-                        placeholder="0.00"
-                      />
-                    </TableCell>
+            <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', mb: 2 }}>
+              <Table size="small" sx={{ minWidth: 550, border: '1px solid #f1f5f9', borderRadius: '12px' }}>
+                <TableHead sx={{ bgcolor: '#f8fafc' }}>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Bill #</TableCell>
+                    <TableCell sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Date</TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Bill Total (₹)</TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Due (₹)</TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Allocate Payment (₹)</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {unpaidBills.map((b) => (
+                    <TableRow key={b.id}>
+                      <TableCell sx={{ fontWeight: 600 }}>{b.billNumber}</TableCell>
+                      <TableCell>{b.billDate}</TableCell>
+                      <TableCell align="right">₹{b.grandTotal.toLocaleString('en-IN')}</TableCell>
+                      <TableCell align="right" sx={{ color: '#ef4444', fontWeight: 700 }}>
+                        ₹{b.outstandingAmount.toLocaleString('en-IN')}
+                      </TableCell>
+                      <TableCell align="right">
+                        <TextField
+                          size="small"
+                          type="number"
+                          sx={{ width: 130 }}
+                          value={allocations[b.id] || ''}
+                          onChange={(e) => setAllocations({ ...allocations, [b.id]: e.target.value })}
+                          placeholder="0.00"
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
           )}
         </DialogContent>
         <DialogActions sx={{ px: 3, py: 2 }}>

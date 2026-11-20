@@ -177,8 +177,9 @@ export default function LoginView() {
           sx={{
             background: 'linear-gradient(155deg, #181926 0%, #11121c 100%)',
             borderRight: '1px solid rgba(255, 255, 255, 0.05)',
+            borderBottom: { xs: '1px solid rgba(255, 255, 255, 0.05)', md: 'none' },
             color: '#ffffff',
-            p: { xs: 4, md: 5.5 },
+            p: { xs: 2.5, sm: 4, md: 5.5 },
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between'
@@ -186,7 +187,7 @@ export default function LoginView() {
         >
           <Box>
             {/* Logo */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: { xs: 2.5, sm: 4 } }}>
               <Box
                 sx={{
                   width: 42,
@@ -215,7 +216,7 @@ export default function LoginView() {
               </Box>
             </Box>
 
-            <Typography variant="h4" sx={{ fontWeight: 800, mb: 1.5, color: '#ffffff', lineHeight: 1.25, letterSpacing: '-0.02em' }}>
+            <Typography variant="h4" sx={{ fontWeight: 800, mb: 1.5, color: '#ffffff', lineHeight: 1.25, letterSpacing: '-0.02em', fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.1rem' } }}>
               Real-Time Financial Intelligence Platform
             </Typography>
             <Typography variant="body2" sx={{ color: '#94a3b8', mb: 4, lineHeight: 1.6, fontSize: '0.9rem' }}>

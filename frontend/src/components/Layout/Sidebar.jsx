@@ -11,8 +11,10 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
-  Chip
+  Chip,
+  IconButton
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 // Icons
 import HomeIcon from '@mui/icons-material/Home';
@@ -29,7 +31,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const DRAWER_WIDTH = 260;
 
-export default function Sidebar() {
+export default function Sidebar({ onItemClick }) {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -50,6 +52,7 @@ export default function Sidebar() {
   };
 
   const handleLogout = () => {
+    if (onItemClick) onItemClick();
     apiClient.logout().catch(() => {});
     dispatch(logout());
     dispatch(showNotification({ message: 'Signed out successfully', severity: 'info' }));
@@ -65,6 +68,7 @@ export default function Sidebar() {
 
   const nav = (path) => {
     navigate(path);
+    if (onItemClick) onItemClick();
   };
 
   const renderSubItem = (label, path, badge = null) => {
@@ -165,7 +169,8 @@ export default function Sidebar() {
       sx={{
         width: DRAWER_WIDTH,
         flexShrink: 0,
-        height: '100vh',
+        height: '100%',
+        minHeight: '100vh',
         backgroundColor: '#0c0d14', // Quantro Deep Dark Canvas
         p: 2,
         boxSizing: 'border-box',
@@ -185,37 +190,57 @@ export default function Sidebar() {
         }}
       >
         {/* Quantro Brand Logo with Premium Metallic Gold */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3.5, px: 1, pt: 0.5 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3.5, px: 1, pt: 0.5 }}>
           <Box
-            sx={{
-              width: 36,
-              height: 36,
-              borderRadius: '11px',
-              background: 'linear-gradient(135deg, #f3c64f 0%, #d49b28 50%, #b88019 100%)', // Shimmering Gold
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 4px 16px rgba(229, 169, 60, 0.4)'
-            }}
+            sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }}
+            onClick={() => nav('/dashboard')}
           >
-            {/* Geometric Quantro 3-bar icon */}
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M4 6C4 4.89543 4.89543 4 6 4H8C9.10457 4 10 4.89543 10 6V18C10 19.1046 9.10457 20 8 20H6C4.89543 20 4 19.1046 4 18V6Z" fill="#12131c" />
-              <path d="M11 9C11 7.89543 11.8954 7 13 7H15C16.1046 7 17 7.89543 17 9V18C17 19.1046 16.1046 20 15 20H13C11.8954 20 11 19.1046 11 18V9Z" fill="#12131c" fillOpacity="0.8" />
-              <path d="M18 12C18 10.8954 18.8954 10 20 10H22V18C22 19.1046 21.1046 20 20 20H18V12Z" fill="#12131c" fillOpacity="0.6" />
-            </svg>
+            <Box
+              sx={{
+                width: 36,
+                height: 36,
+                borderRadius: '11px',
+                background: 'linear-gradient(135deg, #f3c64f 0%, #d49b28 50%, #b88019 100%)', // Shimmering Gold
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 16px rgba(229, 169, 60, 0.4)'
+              }}
+            >
+              {/* Geometric Quantro 3-bar icon */}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M4 6C4 4.89543 4.89543 4 6 4H8C9.10457 4 10 4.89543 10 6V18C10 19.1046 9.10457 20 8 20H6C4.89543 20 4 19.1046 4 18V6Z" fill="#12131c" />
+                <path d="M11 9C11 7.89543 11.8954 7 13 7H15C16.1046 7 17 7.89543 17 9V18C17 19.1046 16.1046 20 15 20H13C11.8954 20 11 19.1046 11 18V9Z" fill="#12131c" fillOpacity="0.8" />
+                <path d="M18 12C18 10.8954 18.8954 10 20 10H22V18C22 19.1046 21.1046 20 20 20H18V12Z" fill="#12131c" fillOpacity="0.6" />
+              </svg>
+            </Box>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 800,
+                color: '#ffffff',
+                letterSpacing: '-0.02em',
+                fontSize: '1.25rem'
+              }}
+            >
+              Quantro
+            </Typography>
           </Box>
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: 800,
-              color: '#ffffff',
-              letterSpacing: '-0.02em',
-              fontSize: '1.25rem'
-            }}
-          >
-            Quantro
-          </Typography>
+
+          {onItemClick && (
+            <IconButton
+              onClick={onItemClick}
+              size="small"
+              sx={{
+                color: '#94a3b8',
+                display: { xs: 'flex', md: 'none' },
+                bgcolor: 'rgba(255,255,255,0.05)',
+                '&:hover': { bgcolor: 'rgba(255,255,255,0.1)', color: '#ffffff' }
+              }}
+            >
+              <CloseIcon sx={{ fontSize: 18 }} />
+            </IconButton>
+          )}
         </Box>
 
         {/* Dashboard Item (Active Gold Icon & Text) */}

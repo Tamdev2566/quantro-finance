@@ -81,12 +81,12 @@ export default function GeneralLedgerView() {
   ];
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 } }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
           General Ledger & Account Statements
         </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
           Real-time transaction audit trail, debit/credit entries, and incremental running balance
         </Typography>
       </Box>
@@ -94,9 +94,9 @@ export default function GeneralLedgerView() {
       {/* Account Selector Banner */}
       <Card
         sx={{
-          p: 2.5,
+          p: { xs: 2, sm: 2.5 },
           mb: 3,
-          borderRadius: '20px',
+          borderRadius: { xs: '16px', sm: '20px' },
           boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.03)',
           border: '1px solid #f1f5f9'
         }}
@@ -120,7 +120,7 @@ export default function GeneralLedgerView() {
             </TextField>
           </Grid>
           <Grid item xs={12} sm={7}>
-            <Box sx={{ display: 'flex', gap: 4, justifyContent: { xs: 'flex-start', sm: 'flex-end' }, flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', gap: { xs: 2, sm: 4 }, justifyContent: { xs: 'space-between', sm: 'flex-end' }, flexWrap: 'wrap' }}>
               <Box>
                 <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600 }}>Opening Balance</Typography>
                 <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#0f172a' }}>

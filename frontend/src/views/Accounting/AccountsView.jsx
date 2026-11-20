@@ -161,12 +161,12 @@ export default function AccountsView() {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             Chart of Accounts
           </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8' }}>
+          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
             Hierarchical ledger classifications: Assets, Liabilities, Equity, Revenue, and Expenses
           </Typography>
         </Box>
@@ -175,6 +175,7 @@ export default function AccountsView() {
           startIcon={<AddIcon />}
           onClick={() => { setAccountToEdit(null); setOpenModal(true); }}
           sx={{
+            width: { xs: '100%', sm: 'auto' },
             bgcolor: '#e5a93c',
             borderRadius: '14px',
             fontWeight: 700,
@@ -200,7 +201,7 @@ export default function AccountsView() {
           label="Account Type"
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          sx={{ width: 170 }}
+          sx={{ width: { xs: '100%', sm: 170 } }}
         >
           <MenuItem value="ALL">All Types</MenuItem>
           <MenuItem value="Assets">Assets</MenuItem>

@@ -41,14 +41,22 @@ export default function DataTable({
       sx={{
         width: '100%',
         backgroundColor: '#ffffff',
-        borderRadius: '20px',
+        borderRadius: { xs: '14px', sm: '20px' },
         border: '1px solid #e2e8f0',
         boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.05)',
         overflow: 'hidden'
       }}
     >
-      <TableContainer sx={{ maxHeight: 620 }}>
-        <Table stickyHeader sx={{ minWidth: 650 }}>
+      <TableContainer
+        sx={{
+          maxHeight: 620,
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          '&::-webkit-scrollbar': { height: '6px' },
+          '&::-webkit-scrollbar-thumb': { backgroundColor: '#cbd5e1', borderRadius: '4px' }
+        }}
+      >
+        <Table stickyHeader sx={{ minWidth: { xs: 550, sm: 650 } }}>
           {/* Dark Black Theme Table Header */}
           <TableHead>
             <TableRow>
@@ -137,6 +145,12 @@ export default function DataTable({
             borderTop: '1px solid #f1f5f9',
             backgroundColor: '#ffffff',
             color: '#64748b',
+            '& .MuiTablePagination-toolbar': {
+              flexWrap: 'wrap',
+              px: { xs: 1, sm: 2 },
+              minHeight: 48,
+              gap: { xs: 0.5, sm: 1 }
+            },
             '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
               fontSize: '0.8rem',
               fontWeight: 600

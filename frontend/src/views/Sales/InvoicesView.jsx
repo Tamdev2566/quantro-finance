@@ -199,12 +199,12 @@ export default function InvoicesView() {
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       {/* View Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             Sales Invoices (Accounts Receivable)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8' }}>
+          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
             Generate GST tax invoices, manage approval pipelines, and post double-entry receivables
           </Typography>
         </Box>
@@ -216,6 +216,7 @@ export default function InvoicesView() {
             bgcolor: '#e5a93c',
             borderRadius: '14px',
             fontWeight: 700,
+            width: { xs: '100%', sm: 'auto' },
             boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
             '&:hover': { bgcolor: '#4b4bc0' }
           }}
@@ -239,7 +240,7 @@ export default function InvoicesView() {
           label="Status"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          sx={{ width: 170 }}
+          sx={{ width: { xs: '100%', sm: 170 } }}
         >
           <MenuItem value="ALL">All Statuses</MenuItem>
           <MenuItem value="Draft">Draft</MenuItem>

@@ -89,12 +89,23 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle sx={{ fontWeight: 800 }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: { xs: '16px', sm: '20px' },
+          m: { xs: 1.5, sm: 2 }
+        }
+      }}
+    >
+      <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
         {accountToEdit ? `Edit Account: ${accountToEdit.code}` : 'Create Chart of Accounts Code'}
       </DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent dividers sx={{ p: 3 }}>
+        <DialogContent dividers sx={{ p: { xs: 2, sm: 3 } }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
               <TextField

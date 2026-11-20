@@ -53,32 +53,32 @@ export default function BalanceSheetView() {
   const equity = data?.equity || {};
 
   return (
-    <Box sx={{ p: 3, maxWidth: 1100, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1100, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2, mb: 3 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800 }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             Balance Sheet (Financial Position)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b' }}>
+          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
             Audited financial status: Total Assets strictly equal Total Liabilities + Equity
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' }, justifyContent: { xs: 'space-between', sm: 'flex-end' } }}>
           {data?.isBalanced && (
             <Chip
               icon={<BalancedIcon />}
               label="Equation Balanced: Assets = Liabilities + Equity"
               color="success"
-              sx={{ fontWeight: 600 }}
+              sx={{ fontWeight: 600, fontSize: { xs: '0.75rem', sm: '0.8125rem' } }}
             />
           )}
-          <Button variant="outlined" startIcon={<PrintIcon />} onClick={() => window.print()}>
+          <Button variant="outlined" startIcon={<PrintIcon />} onClick={() => window.print()} sx={{ width: { xs: '100%', sm: 'auto' } }}>
             Print
           </Button>
         </Box>
       </Box>
 
-      <Card sx={{ p: 3 }}>
+      <Card sx={{ p: { xs: 1.5, sm: 3 } }}>
         <Box sx={{ textAlign: 'center', mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: 800 }}>
             APEX GLOBAL ENTERPRISES PVT LTD
@@ -91,11 +91,11 @@ export default function BalanceSheetView() {
         <Grid container spacing={3}>
           {/* --- ASSETS COLUMN --- */}
           <Grid item xs={12} md={6}>
-            <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 2, p: 2 }}>
+            <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 2, p: { xs: 1, sm: 2 }, overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#2563eb', mb: 1 }}>
                 ASSETS
               </Typography>
-              <Table size="small">
+              <Table size="small" sx={{ minWidth: 280 }}>
                 <TableBody>
                   <TableRow sx={{ backgroundColor: '#f8fafc' }}>
                     <TableCell colSpan={2} sx={{ fontWeight: 700 }}>Current Assets</TableCell>
@@ -130,11 +130,11 @@ export default function BalanceSheetView() {
 
           {/* --- LIABILITIES & EQUITY COLUMN --- */}
           <Grid item xs={12} md={6}>
-            <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 2, p: 2 }}>
+            <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 2, p: { xs: 1, sm: 2 }, overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#dc2626', mb: 1 }}>
                 LIABILITIES & EQUITY
               </Typography>
-              <Table size="small">
+              <Table size="small" sx={{ minWidth: 280 }}>
                 <TableBody>
                   <TableRow sx={{ backgroundColor: '#f8fafc' }}>
                     <TableCell colSpan={2} sx={{ fontWeight: 700 }}>Current Liabilities</TableCell>

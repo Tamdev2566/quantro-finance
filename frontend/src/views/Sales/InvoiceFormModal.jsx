@@ -148,8 +148,14 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
-      <DialogTitle sx={{ fontWeight: 800 }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="lg"
+      fullWidth
+      PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
+    >
+      <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>
         {invoiceToEdit ? `Edit Sales Invoice (${invoiceToEdit.invoiceNumber})` : 'Create New Sales Invoice'}
       </DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -247,88 +253,90 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
           <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>
             Line Items & Services
           </Typography>
-          <Table size="small" sx={{ mb: 2, border: '1px solid #e2e8f0' }}>
-            <TableHead sx={{ backgroundColor: '#151621' }}>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 700, color: '#ffffff' }}>Item Description</TableCell>
-                <TableCell sx={{ fontWeight: 700, width: 90, color: '#ffffff' }}>Qty</TableCell>
-                <TableCell sx={{ fontWeight: 700, width: 130, color: '#ffffff' }}>Unit Price (₹)</TableCell>
-                <TableCell sx={{ fontWeight: 700, width: 100, color: '#ffffff' }}>Disc %</TableCell>
-                <TableCell sx={{ fontWeight: 700, width: 110, color: '#ffffff' }}>GST Rate</TableCell>
-                <TableCell sx={{ fontWeight: 700, width: 120, color: '#ffffff' }}>Amount</TableCell>
-                <TableCell sx={{ width: 50 }}></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {fields.map((field, index) => {
-                const itemQty = parseFloat(watchedItems[index]?.quantity || 0);
-                const itemPrice = parseFloat(watchedItems[index]?.unitPrice || 0);
-                const itemDisc = parseFloat(watchedItems[index]?.discountPercent || 0);
-                const lineAmt = itemQty * itemPrice * (1 - itemDisc / 100);
+          <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', mb: 2 }}>
+            <Table size="small" sx={{ minWidth: 650, border: '1px solid #e2e8f0' }}>
+              <TableHead sx={{ backgroundColor: '#151621' }}>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 700, color: '#ffffff' }}>Item Description</TableCell>
+                  <TableCell sx={{ fontWeight: 700, width: 90, color: '#ffffff' }}>Qty</TableCell>
+                  <TableCell sx={{ fontWeight: 700, width: 130, color: '#ffffff' }}>Unit Price (₹)</TableCell>
+                  <TableCell sx={{ fontWeight: 700, width: 100, color: '#ffffff' }}>Disc %</TableCell>
+                  <TableCell sx={{ fontWeight: 700, width: 110, color: '#ffffff' }}>GST Rate</TableCell>
+                  <TableCell sx={{ fontWeight: 700, width: 120, color: '#ffffff' }}>Amount</TableCell>
+                  <TableCell sx={{ width: 50 }}></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {fields.map((field, index) => {
+                  const itemQty = parseFloat(watchedItems[index]?.quantity || 0);
+                  const itemPrice = parseFloat(watchedItems[index]?.unitPrice || 0);
+                  const itemDisc = parseFloat(watchedItems[index]?.discountPercent || 0);
+                  const lineAmt = itemQty * itemPrice * (1 - itemDisc / 100);
 
-                return (
-                  <TableRow key={field.id}>
-                    <TableCell>
-                      <TextField
-                        fullWidth
-                        size="small"
-                        placeholder="Product / service name..."
-                        {...register(`items.${index}.description`, { required: true })}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        type="number"
-                        size="small"
-                        inputProps={{ min: 1 }}
-                        {...register(`items.${index}.quantity`, { required: true, valueAsNumber: true })}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        type="number"
-                        size="small"
-                        inputProps={{ min: 0, step: 0.01 }}
-                        {...register(`items.${index}.unitPrice`, { required: true, valueAsNumber: true })}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        type="number"
-                        size="small"
-                        inputProps={{ min: 0, max: 100 }}
-                        {...register(`items.${index}.discountPercent`, { valueAsNumber: true })}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        select
-                        size="small"
-                        fullWidth
-                        {...register(`items.${index}.taxRate`, { valueAsNumber: true })}
-                      >
-                        <MenuItem value={0}>0% (Exempt)</MenuItem>
-                        <MenuItem value={5}>5%</MenuItem>
-                        <MenuItem value={12}>12%</MenuItem>
-                        <MenuItem value={18}>18%</MenuItem>
-                        <MenuItem value={28}>28%</MenuItem>
-                      </TextField>
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600 }}>
-                      ₹{lineAmt.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
-                    </TableCell>
-                    <TableCell>
-                      {fields.length > 1 && (
-                        <IconButton size="small" color="error" onClick={() => remove(index)}>
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+                  return (
+                    <TableRow key={field.id}>
+                      <TableCell>
+                        <TextField
+                          fullWidth
+                          size="small"
+                          placeholder="Product / service name..."
+                          {...register(`items.${index}.description`, { required: true })}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          type="number"
+                          size="small"
+                          inputProps={{ min: 1 }}
+                          {...register(`items.${index}.quantity`, { required: true, valueAsNumber: true })}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          type="number"
+                          size="small"
+                          inputProps={{ min: 0, step: 0.01 }}
+                          {...register(`items.${index}.unitPrice`, { required: true, valueAsNumber: true })}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          type="number"
+                          size="small"
+                          inputProps={{ min: 0, max: 100 }}
+                          {...register(`items.${index}.discountPercent`, { valueAsNumber: true })}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          select
+                          size="small"
+                          fullWidth
+                          {...register(`items.${index}.taxRate`, { valueAsNumber: true })}
+                        >
+                          <MenuItem value={0}>0% (Exempt)</MenuItem>
+                          <MenuItem value={5}>5%</MenuItem>
+                          <MenuItem value={12}>12%</MenuItem>
+                          <MenuItem value={18}>18%</MenuItem>
+                          <MenuItem value={28}>28%</MenuItem>
+                        </TextField>
+                      </TableCell>
+                      <TableCell sx={{ fontWeight: 600 }}>
+                        ₹{lineAmt.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+                      </TableCell>
+                      <TableCell>
+                        {fields.length > 1 && (
+                          <IconButton size="small" color="error" onClick={() => remove(index)}>
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </Box>
 
           <Button
             size="small"
@@ -341,7 +349,7 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
 
           {/* Totals Summary */}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Box sx={{ width: 300, p: 2, backgroundColor: '#f8fafc', borderRadius: 2, border: '1px solid #e2e8f0' }}>
+            <Box sx={{ width: { xs: '100%', sm: 300 }, p: 2, backgroundColor: '#f8fafc', borderRadius: 2, border: '1px solid #e2e8f0' }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                 <Typography variant="body2">Subtotal:</Typography>
                 <Typography variant="body2" sx={{ fontWeight: 600 }}>₹{subtotal.toLocaleString('en-IN')}</Typography>

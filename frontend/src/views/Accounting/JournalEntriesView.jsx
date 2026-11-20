@@ -140,12 +140,12 @@ export default function JournalEntriesView() {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             General Journal Entries (Double-Entry Engine)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8' }}>
+          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
             Multi-line balanced accounting vouchers: strict verification of Total Debits = Total Credits
           </Typography>
         </Box>
@@ -157,6 +157,7 @@ export default function JournalEntriesView() {
             bgcolor: '#e5a93c',
             borderRadius: '14px',
             fontWeight: 700,
+            width: { xs: '100%', sm: 'auto' },
             boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
             '&:hover': { bgcolor: '#4b4bc0' }
           }}

@@ -75,17 +75,17 @@ export default function TrialBalanceView() {
   ];
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 } }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2, mb: 3 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             Trial Balance Report
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
             Verification of arithmetic accuracy across all debit and credit account balances
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' }, justifyContent: { xs: 'space-between', sm: 'flex-end' } }}>
           {totals.isBalanced && (
             <Chip
               icon={<BalancedIcon sx={{ color: '#10b981 !important' }} />}
@@ -94,7 +94,8 @@ export default function TrialBalanceView() {
                 fontWeight: 600,
                 backgroundColor: '#f0fdf4',
                 color: '#16a34a',
-                borderRadius: '10px'
+                borderRadius: '10px',
+                fontSize: { xs: '0.75rem', sm: '0.8125rem' }
               }}
             />
           )}
@@ -102,7 +103,7 @@ export default function TrialBalanceView() {
             variant="outlined"
             startIcon={<PrintIcon />}
             onClick={() => window.print()}
-            sx={{ borderRadius: '12px', textTransform: 'none' }}
+            sx={{ width: { xs: '100%', sm: 'auto' }, borderRadius: '12px', textTransform: 'none' }}
           >
             Print
           </Button>
@@ -112,10 +113,10 @@ export default function TrialBalanceView() {
       {/* Totals Summary Banner */}
       <Card
         sx={{
-          p: 2.5,
+          p: { xs: 2, sm: 2.5 },
           mb: 3,
           backgroundColor: '#ffffff',
-          borderRadius: '20px',
+          borderRadius: { xs: '16px', sm: '20px' },
           border: '1px solid #f1f5f9',
           boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.03)'
         }}

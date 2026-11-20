@@ -115,12 +115,21 @@ export default function DashboardView() {
     <Box sx={{ width: '100%', mx: 'auto' }}>
       
       {/* ================= HEADER SECTION ================= */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3.5, flexWrap: 'wrap', gap: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3.5, flexWrap: 'wrap', gap: 2 }}>
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', mb: 0.5 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 800,
+              color: '#0f172a',
+              letterSpacing: '-0.02em',
+              mb: 0.5,
+              fontSize: { xs: '1.45rem', sm: '1.8rem', md: '2.1rem' }
+            }}
+          >
             Sales Dashboard
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: '0.9rem' }}>
+          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.82rem', sm: '0.9rem' } }}>
             Track your business performance and growth in real time.
           </Typography>
         </Box>
@@ -137,6 +146,7 @@ export default function DashboardView() {
             py: 1.1,
             fontWeight: 700,
             fontSize: '0.88rem',
+            width: { xs: '100%', sm: 'auto' },
             boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
             '&:hover': {
               backgroundColor: '#1e202d',
@@ -463,7 +473,7 @@ export default function DashboardView() {
                   py: 0.6,
                   borderRadius: '50px',
                   boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
-                  display: 'flex',
+                  display: { xs: 'none', sm: 'flex' },
                   alignItems: 'center',
                   gap: 0.8,
                   zIndex: 2,
@@ -550,7 +560,7 @@ export default function DashboardView() {
             </Box>
 
             {/* Donut and Legend Layout */}
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', my: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center', justifyContent: 'center', my: 2, gap: 2.5 }}>
               
               {/* Donut with Center Text */}
               <Box sx={{ position: 'relative', width: 170, height: 170, flexShrink: 0 }}>
@@ -588,7 +598,7 @@ export default function DashboardView() {
               </Box>
 
               {/* Legend List */}
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2, pl: 2, flexGrow: 1 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2, pl: { xs: 0, sm: 2 }, width: { xs: '100%', sm: 'auto' }, flexGrow: 1 }}>
                 {categoryDonut.map((cat, i) => (
                   <Box key={i} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -631,56 +641,60 @@ export default function DashboardView() {
               </Typography>
             </Box>
 
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8', fontSize: '0.72rem', fontWeight: 600, mb: 1.5, px: 0.5 }}>
-              <span>Product</span>
-              <Box sx={{ display: 'flex', gap: 3 }}>
-                <span>Orders</span>
-                <span>Revenue</span>
-                <span>Growth</span>
-              </Box>
-            </Box>
-
-            {/* Product items */}
-            {[
-              { name: 'Wireless Headphones', icon: HeadphonesIcon, orders: '1,245', revenue: '$24,900', growth: '↑ 12%' },
-              { name: 'Smart Watch', icon: WatchIcon, orders: '980', revenue: '$19,600', growth: '↑ 8%' },
-              { name: 'Running Shoes', icon: DirectionsRunIcon, orders: '764', revenue: '$15,280', growth: '↑ 5%' },
-              { name: 'Sunglasses', icon: WbSunnyIcon, orders: '620', revenue: '$12,400', growth: '↑ 3%' }
-            ].map((p, idx) => {
-              const IconComp = p.icon;
-              return (
-                <Box
-                  key={idx}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    py: 1.2,
-                    borderBottom: idx < 3 ? '1px solid #f8fafc' : 'none'
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
-                    <Box sx={{ width: 32, height: 32, borderRadius: '8px', bgcolor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <IconComp sx={{ fontSize: 16, color: '#334155' }} />
-                    </Box>
-                    <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem' }}>
-                      {p.name}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
-                    <Typography variant="body2" sx={{ color: '#64748b', fontSize: '0.8rem', width: 40, textAlign: 'right' }}>
-                      {p.orders}
-                    </Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem', width: 55, textAlign: 'right' }}>
-                      {p.revenue}
-                    </Typography>
-                    <Typography variant="caption" sx={{ color: '#10b981', fontWeight: 700, width: 45, textAlign: 'right' }}>
-                      {p.growth}
-                    </Typography>
+            <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <Box sx={{ minWidth: 340 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8', fontSize: '0.72rem', fontWeight: 600, mb: 1.5, px: 0.5 }}>
+                  <span>Product</span>
+                  <Box sx={{ display: 'flex', gap: 3 }}>
+                    <span>Orders</span>
+                    <span>Revenue</span>
+                    <span>Growth</span>
                   </Box>
                 </Box>
-              );
-            })}
+
+                {/* Product items */}
+                {[
+                  { name: 'Wireless Headphones', icon: HeadphonesIcon, orders: '1,245', revenue: '$24,900', growth: '↑ 12%' },
+                  { name: 'Smart Watch', icon: WatchIcon, orders: '980', revenue: '$19,600', growth: '↑ 8%' },
+                  { name: 'Running Shoes', icon: DirectionsRunIcon, orders: '764', revenue: '$15,280', growth: '↑ 5%' },
+                  { name: 'Sunglasses', icon: WbSunnyIcon, orders: '620', revenue: '$12,400', growth: '↑ 3%' }
+                ].map((p, idx) => {
+                  const IconComp = p.icon;
+                  return (
+                    <Box
+                      key={idx}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        py: 1.2,
+                        borderBottom: idx < 3 ? '1px solid #f8fafc' : 'none'
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
+                        <Box sx={{ width: 32, height: 32, borderRadius: '8px', bgcolor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <IconComp sx={{ fontSize: 16, color: '#334155' }} />
+                        </Box>
+                        <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem' }}>
+                          {p.name}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
+                        <Typography variant="body2" sx={{ color: '#64748b', fontSize: '0.8rem', width: 40, textAlign: 'right' }}>
+                          {p.orders}
+                        </Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem', width: 55, textAlign: 'right' }}>
+                          {p.revenue}
+                        </Typography>
+                        <Typography variant="caption" sx={{ color: '#10b981', fontWeight: 700, width: 45, textAlign: 'right' }}>
+                          {p.growth}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  );
+                })}
+              </Box>
+            </Box>
           </Card>
         </Grid>
 
@@ -704,54 +718,58 @@ export default function DashboardView() {
             </Box>
 
             {/* Orders list */}
-            {[
-              { id: '12345', name: 'John Doe', amount: '$120.00', status: 'Completed', color: '#10b981', bg: '#dcfce7', avatarBg: '#ede9fe', avatarColor: '#7c3aed', initials: 'JD' },
-              { id: '12344', name: 'Sarah Miller', amount: '$89.00', status: 'Processing', color: '#0284c7', bg: '#e0f2fe', avatarBg: '#fce7f3', avatarColor: '#db2777', initials: 'SM' },
-              { id: '12343', name: 'Robert Lee', amount: '$250.00', status: 'Completed', color: '#10b981', bg: '#dcfce7', avatarBg: '#ffedd5', avatarColor: '#ea580c', initials: 'RL' },
-              { id: '12342', name: 'Emma Parker', amount: '$65.00', status: 'Pending', color: '#b88019', bg: 'rgba(229, 169, 60, 0.15)', avatarBg: 'rgba(229, 169, 60, 0.1)', avatarColor: '#e5a93c', initials: 'EP' }
-            ].map((ord, idx) => (
-              <Box
-                key={idx}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  py: 1.1,
-                  borderBottom: idx < 3 ? '1px solid #f8fafc' : 'none'
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
-                  <Avatar sx={{ width: 32, height: 32, bgcolor: ord.avatarBg, color: ord.avatarColor, fontSize: '0.75rem', fontWeight: 700 }}>
-                    {ord.initials}
-                  </Avatar>
-                  <Box>
-                    <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem', lineHeight: 1.1 }}>
-                      {ord.name}
-                    </Typography>
-                    <Typography variant="caption" sx={{ color: '#94a3b8', fontSize: '0.7rem' }}>
-                      #{ord.id}
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem' }}>
-                    {ord.amount}
-                  </Typography>
-                  <Chip
-                    size="small"
-                    label={ord.status}
+            <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <Box sx={{ minWidth: 310 }}>
+                {[
+                  { id: '12345', name: 'John Doe', amount: '$120.00', status: 'Completed', color: '#10b981', bg: '#dcfce7', avatarBg: '#ede9fe', avatarColor: '#7c3aed', initials: 'JD' },
+                  { id: '12344', name: 'Sarah Miller', amount: '$89.00', status: 'Processing', color: '#0284c7', bg: '#e0f2fe', avatarBg: '#fce7f3', avatarColor: '#db2777', initials: 'SM' },
+                  { id: '12343', name: 'Robert Lee', amount: '$250.00', status: 'Completed', color: '#10b981', bg: '#dcfce7', avatarBg: '#ffedd5', avatarColor: '#ea580c', initials: 'RL' },
+                  { id: '12342', name: 'Emma Parker', amount: '$65.00', status: 'Pending', color: '#b88019', bg: 'rgba(229, 169, 60, 0.15)', avatarBg: 'rgba(229, 169, 60, 0.1)', avatarColor: '#e5a93c', initials: 'EP' }
+                ].map((ord, idx) => (
+                  <Box
+                    key={idx}
                     sx={{
-                      bgcolor: ord.bg,
-                      color: ord.color,
-                      fontWeight: 700,
-                      fontSize: '0.7rem',
-                      height: 22,
-                      borderRadius: '50px'
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      py: 1.1,
+                      borderBottom: idx < 3 ? '1px solid #f8fafc' : 'none'
                     }}
-                  />
-                </Box>
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
+                      <Avatar sx={{ width: 32, height: 32, bgcolor: ord.avatarBg, color: ord.avatarColor, fontSize: '0.75rem', fontWeight: 700 }}>
+                        {ord.initials}
+                      </Avatar>
+                      <Box>
+                        <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem', lineHeight: 1.1 }}>
+                          {ord.name}
+                        </Typography>
+                        <Typography variant="caption" sx={{ color: '#94a3b8', fontSize: '0.7rem' }}>
+                          #{ord.id}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem' }}>
+                        {ord.amount}
+                      </Typography>
+                      <Chip
+                        size="small"
+                        label={ord.status}
+                        sx={{
+                          bgcolor: ord.bg,
+                          color: ord.color,
+                          fontWeight: 700,
+                          fontSize: '0.7rem',
+                          height: 22,
+                          borderRadius: '50px'
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                ))}
               </Box>
-            ))}
+            </Box>
           </Card>
         </Grid>
 

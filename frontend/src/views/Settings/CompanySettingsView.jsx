@@ -171,7 +171,7 @@ export default function CompanySettingsView() {
             />
           </Grid>
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="contained" onClick={handleSaveCompany}>
+            <Button variant="contained" onClick={handleSaveCompany} sx={{ width: { xs: '100%', sm: 'auto' } }}>
               Save Profile Changes
             </Button>
           </Grid>
@@ -179,8 +179,8 @@ export default function CompanySettingsView() {
       </Card>
 
       {/* Financial Periods & Monthly Period Locking */}
-      <Card sx={{ p: 3 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+      <Card sx={{ p: { xs: 2, sm: 3 } }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2, mb: 2 }}>
           <Box>
             <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
               Financial Period Locking & Fiscal Year Status
@@ -195,51 +195,54 @@ export default function CompanySettingsView() {
             startIcon={<CloseYearIcon />}
             disabled={activePeriod.isClosed}
             onClick={() => setConfirmClosePeriod(activePeriod)}
+            sx={{ width: { xs: '100%', sm: 'auto' } }}
           >
             {activePeriod.isClosed ? 'Year Closed' : 'Execute Year-End Close'}
           </Button>
         </Box>
 
-        <Table size="small" sx={{ border: '1px solid #e2e8f0' }}>
-          <TableHead sx={{ backgroundColor: '#f8fafc' }}>
-            <TableRow>
-              <TableCell sx={{ fontWeight: 700 }}>Month</TableCell>
-              <TableCell sx={{ fontWeight: 700 }}>Period</TableCell>
-              <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
-              <TableCell align="right" sx={{ fontWeight: 700 }}>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sampleMonths.map((m) => {
-              const isLocked = activePeriod.lockedMonths?.includes(m);
-              return (
-                <TableRow key={m}>
-                  <TableCell sx={{ fontWeight: 600 }}>{m}</TableCell>
-                  <TableCell>{activePeriod.name || 'FY 2026-2027'}</TableCell>
-                  <TableCell>
-                    <Chip
-                      size="small"
-                      label={isLocked ? 'Locked' : 'Open for Posting'}
-                      color={isLocked ? 'error' : 'success'}
-                      sx={{ fontWeight: 600, fontSize: '0.72rem' }}
-                    />
-                  </TableCell>
-                  <TableCell align="right">
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      color={isLocked ? 'success' : 'error'}
-                      startIcon={isLocked ? <UnlockIcon /> : <LockIcon />}
-                      onClick={() => handleToggleMonthLock(activePeriod.id, m, isLocked)}
-                    >
-                      {isLocked ? 'Unlock Month' : 'Lock Month'}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <Box sx={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <Table size="small" sx={{ minWidth: 480, border: '1px solid #e2e8f0' }}>
+            <TableHead sx={{ backgroundColor: '#f8fafc' }}>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 700 }}>Month</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>Period</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
+                <TableCell align="right" sx={{ fontWeight: 700 }}>Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {sampleMonths.map((m) => {
+                const isLocked = activePeriod.lockedMonths?.includes(m);
+                return (
+                  <TableRow key={m}>
+                    <TableCell sx={{ fontWeight: 600 }}>{m}</TableCell>
+                    <TableCell>{activePeriod.name || 'FY 2026-2027'}</TableCell>
+                    <TableCell>
+                      <Chip
+                        size="small"
+                        label={isLocked ? 'Locked' : 'Open for Posting'}
+                        color={isLocked ? 'error' : 'success'}
+                        sx={{ fontWeight: 600, fontSize: '0.72rem' }}
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color={isLocked ? 'success' : 'error'}
+                        startIcon={isLocked ? <UnlockIcon /> : <LockIcon />}
+                        onClick={() => handleToggleMonthLock(activePeriod.id, m, isLocked)}
+                      >
+                        {isLocked ? 'Unlock Month' : 'Lock Month'}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </Box>
       </Card>
 
       {/* Confirm Year-End Close */}

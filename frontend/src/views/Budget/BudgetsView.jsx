@@ -124,13 +124,13 @@ export default function BudgetsView() {
   ];
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 } }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2, mb: 3 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             Budget Management & Variance Analysis
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
             Set annual and department spending limits and analyze actual ledger variances in real-time
           </Typography>
         </Box>
@@ -138,7 +138,7 @@ export default function BudgetsView() {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setOpenModal(true)}
-          sx={{ borderRadius: '12px', textTransform: 'none', px: 2.5 }}
+          sx={{ width: { xs: '100%', sm: 'auto' }, borderRadius: '12px', textTransform: 'none', px: 2.5 }}
         >
           New Budget
         </Button>
@@ -152,9 +152,20 @@ export default function BudgetsView() {
       />
 
       {/* Modal */}
-      <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: '20px' } }}>
-        <DialogTitle sx={{ fontWeight: 800, pt: 3, px: 3 }}>Create Department Budget</DialogTitle>
-        <DialogContent dividers sx={{ p: 3 }}>
+      <Dialog
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: { xs: '16px', sm: '20px' },
+            m: { xs: 1.5, sm: 2 }
+          }
+        }}
+      >
+        <DialogTitle sx={{ fontWeight: 800, pt: 3, px: 3, fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>Create Department Budget</DialogTitle>
+        <DialogContent dividers sx={{ p: { xs: 2, sm: 3 } }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField

@@ -183,8 +183,8 @@ export default function ReconciliationView() {
       </Card>
 
       {/* Balance Verification Bar */}
-      <Card sx={{ p: 2, mb: 3, backgroundColor: isBalanced ? '#ecfdf5' : '#fef2f2', border: `1px solid ${isBalanced ? '#a7f3d0' : '#fecaca'}` }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Card sx={{ p: { xs: 1.5, sm: 2 }, mb: 3, backgroundColor: isBalanced ? '#ecfdf5' : '#fef2f2', border: `1px solid ${isBalanced ? '#a7f3d0' : '#fecaca'}` }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'stretch', md: 'center' }, gap: 2 }}>
           <Box>
             <Typography variant="subtitle2" sx={{ fontWeight: 800, color: isBalanced ? '#065f46' : '#991b1b' }}>
               {isBalanced ? '✓ Reconciled: Zero Difference between Statement and Cleared Book' : `Difference: ₹${difference.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`}
@@ -193,7 +193,7 @@ export default function ReconciliationView() {
               Matched {selectedTxnIds.length} of {transactions.length} transactions
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', gap: { xs: 2, sm: 3, md: 4 }, alignItems: 'center', flexWrap: 'wrap', justifyContent: { xs: 'space-between', md: 'flex-end' } }}>
             <Box>
               <Typography variant="caption" sx={{ color: '#64748b' }}>Cleared Deposits</Typography>
               <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#059669' }}>+₹{matchedCredits.toLocaleString('en-IN')}</Typography>
@@ -211,6 +211,7 @@ export default function ReconciliationView() {
               startIcon={<ReconcileIcon />}
               onClick={handleCompleteReconciliation}
               disabled={loading}
+              sx={{ width: { xs: '100%', sm: 'auto' } }}
             >
               Complete Reconciliation
             </Button>
@@ -219,7 +220,7 @@ export default function ReconciliationView() {
       </Card>
 
       {/* Transactions Check Table */}
-      <Card sx={{ p: 2.5 }}>
+      <Card sx={{ p: { xs: 1.5, sm: 2.5 } }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
             Unreconciled & Cleared Transactions
@@ -227,49 +228,51 @@ export default function ReconciliationView() {
           <Button size="small" onClick={selectAll}>Select All</Button>
         </Box>
 
-        <Table size="small" sx={{ border: '1px solid #e2e8f0' }}>
-          <TableHead sx={{ backgroundColor: '#f8fafc' }}>
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  indeterminate={selectedTxnIds.length > 0 && selectedTxnIds.length < transactions.length}
-                  checked={transactions.length > 0 && selectedTxnIds.length === transactions.length}
-                  onChange={selectAll}
-                />
-              </TableCell>
-              <TableCell sx={{ fontWeight: 700 }}>Date</TableCell>
-              <TableCell sx={{ fontWeight: 700 }}>Reference</TableCell>
-              <TableCell sx={{ fontWeight: 700 }}>Narration</TableCell>
-              <TableCell sx={{ fontWeight: 700 }}>Type</TableCell>
-              <TableCell align="right" sx={{ fontWeight: 700 }}>Amount (₹)</TableCell>
-              <TableCell align="center" sx={{ fontWeight: 700 }}>Status</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {transactions.map((t) => {
-              const isSelected = selectedTxnIds.includes(t.id);
-              return (
-                <TableRow key={t.id} hover onClick={() => toggleSelect(t.id)} sx={{ cursor: 'pointer' }}>
-                  <TableCell padding="checkbox">
-                    <Checkbox checked={isSelected} />
-                  </TableCell>
-                  <TableCell>{t.date}</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>{t.reference}</TableCell>
-                  <TableCell>{t.description}</TableCell>
-                  <TableCell>
-                    <Chip size="small" label={t.type} color={t.type === 'CREDIT' ? 'success' : 'error'} />
-                  </TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 700, color: t.type === 'CREDIT' ? '#059669' : '#dc2626' }}>
-                    {t.type === 'CREDIT' ? '+' : '-'}₹{t.amount?.toLocaleString('en-IN')}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Chip size="small" label={isSelected ? 'Matched' : 'Unmatched'} color={isSelected ? 'primary' : 'default'} />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <Box sx={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <Table size="small" sx={{ minWidth: 650, border: '1px solid #e2e8f0' }}>
+            <TableHead sx={{ backgroundColor: '#f8fafc' }}>
+              <TableRow>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    indeterminate={selectedTxnIds.length > 0 && selectedTxnIds.length < transactions.length}
+                    checked={transactions.length > 0 && selectedTxnIds.length === transactions.length}
+                    onChange={selectAll}
+                  />
+                </TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>Date</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>Reference</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>Narration</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>Type</TableCell>
+                <TableCell align="right" sx={{ fontWeight: 700 }}>Amount (₹)</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 700 }}>Status</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {transactions.map((t) => {
+                const isSelected = selectedTxnIds.includes(t.id);
+                return (
+                  <TableRow key={t.id} hover onClick={() => toggleSelect(t.id)} sx={{ cursor: 'pointer' }}>
+                    <TableCell padding="checkbox">
+                      <Checkbox checked={isSelected} />
+                    </TableCell>
+                    <TableCell>{t.date}</TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>{t.reference}</TableCell>
+                    <TableCell>{t.description}</TableCell>
+                    <TableCell>
+                      <Chip size="small" label={t.type} color={t.type === 'CREDIT' ? 'success' : 'error'} />
+                    </TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 700, color: t.type === 'CREDIT' ? '#059669' : '#dc2626' }}>
+                      {t.type === 'CREDIT' ? '+' : '-'}₹{t.amount?.toLocaleString('en-IN')}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Chip size="small" label={isSelected ? 'Matched' : 'Unmatched'} color={isSelected ? 'primary' : 'default'} />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </Box>
       </Card>
     </Box>
   );

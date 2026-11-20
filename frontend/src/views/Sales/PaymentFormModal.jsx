@@ -120,8 +120,16 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle sx={{ fontWeight: 800 }}>Record Customer Payment Receipt</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="md"
+      fullWidth
+      PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
+    >
+      <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>
+        Record Customer Payment Receipt
+      </DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent dividers sx={{ p: 3 }}>
           <Grid container spacing={2.5} sx={{ mb: 3 }}>
@@ -222,43 +230,45 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
               No unpaid invoices found for this customer. Payment will be held as customer advance.
             </Typography>
           ) : (
-            <Table size="small" sx={{ mb: 2, border: '1px solid #e2e8f0' }}>
-              <TableHead sx={{ backgroundColor: '#f8fafc' }}>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 700 }}>Invoice #</TableCell>
-                  <TableCell sx={{ fontWeight: 700 }}>Date</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 700 }}>Total (₹)</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 700 }}>Outstanding (₹)</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 700, width: 150 }}>Allocate (₹)</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {unpaidInvoices.map((inv) => (
-                  <TableRow key={inv.id}>
-                    <TableCell sx={{ fontWeight: 600, color: '#2563eb' }}>{inv.invoiceNumber}</TableCell>
-                    <TableCell>{inv.invoiceDate}</TableCell>
-                    <TableCell align="right">₹{inv.grandTotal?.toLocaleString('en-IN')}</TableCell>
-                    <TableCell align="right" sx={{ color: '#dc2626', fontWeight: 600 }}>
-                      ₹{inv.outstandingAmount?.toLocaleString('en-IN')}
-                    </TableCell>
-                    <TableCell align="right">
-                      <TextField
-                        type="number"
-                        size="small"
-                        inputProps={{ min: 0, max: inv.outstandingAmount, step: 0.01 }}
-                        value={allocations[inv.id] !== undefined ? allocations[inv.id] : ''}
-                        onChange={(e) => handleAllocChange(inv.id, e.target.value)}
-                        sx={{ width: 130 }}
-                      />
-                    </TableCell>
+            <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', mb: 2 }}>
+              <Table size="small" sx={{ minWidth: 550, border: '1px solid #e2e8f0' }}>
+                <TableHead sx={{ backgroundColor: '#f8fafc' }}>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 700 }}>Invoice #</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Date</TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 700 }}>Total (₹)</TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 700 }}>Outstanding (₹)</TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 700, width: 150 }}>Allocate (₹)</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {unpaidInvoices.map((inv) => (
+                    <TableRow key={inv.id}>
+                      <TableCell sx={{ fontWeight: 600, color: '#2563eb' }}>{inv.invoiceNumber}</TableCell>
+                      <TableCell>{inv.invoiceDate}</TableCell>
+                      <TableCell align="right">₹{inv.grandTotal?.toLocaleString('en-IN')}</TableCell>
+                      <TableCell align="right" sx={{ color: '#dc2626', fontWeight: 600 }}>
+                        ₹{inv.outstandingAmount?.toLocaleString('en-IN')}
+                      </TableCell>
+                      <TableCell align="right">
+                        <TextField
+                          type="number"
+                          size="small"
+                          inputProps={{ min: 0, max: inv.outstandingAmount, step: 0.01 }}
+                          value={allocations[inv.id] !== undefined ? allocations[inv.id] : ''}
+                          onChange={(e) => handleAllocChange(inv.id, e.target.value)}
+                          sx={{ width: 130 }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
           )}
 
           {/* Allocation summary */}
-          <Box sx={{ p: 2, backgroundColor: '#f8fafc', borderRadius: 2, display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ p: 2, backgroundColor: '#f8fafc', borderRadius: 2, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1.5 }}>
             <Box>
               <Typography variant="caption" sx={{ color: '#64748b' }}>Allocated to Invoices</Typography>
               <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>₹{totalAllocated.toLocaleString('en-IN')}</Typography>

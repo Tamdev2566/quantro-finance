@@ -114,12 +114,12 @@ export default function TaxSummaryView() {
   ];
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 } }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
           GST Tax Summary & Filings Overview
         </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
           Configurable Indian GST: CGST, SGST, IGST tax breakdown and Input Tax Credit (ITC) reconciliation
         </Typography>
       </Box>

@@ -140,12 +140,12 @@ export default function CreditNotesView() {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             Credit Notes (Receivable Reductions)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8' }}>
+          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
             Sales returns, dispute resolutions, and automated reversal of revenues and tax liabilities
           </Typography>
         </Box>
@@ -157,6 +157,7 @@ export default function CreditNotesView() {
             bgcolor: '#e5a93c',
             borderRadius: '14px',
             fontWeight: 700,
+            width: { xs: '100%', sm: 'auto' },
             boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
             '&:hover': { bgcolor: '#4b4bc0' }
           }}
@@ -173,8 +174,16 @@ export default function CreditNotesView() {
       />
 
       {/* Credit Note Dialog */}
-      <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ fontWeight: 800 }}>Issue Sales Credit Note</DialogTitle>
+      <Dialog
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
+      >
+        <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>
+          Issue Sales Credit Note
+        </DialogTitle>
         <DialogContent dividers sx={{ p: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={8}>

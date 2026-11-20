@@ -99,8 +99,16 @@ export default function JournalFormModal({ open, onClose, onSuccess }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
-      <DialogTitle sx={{ fontWeight: 800 }}>Create Double-Entry Journal Entry</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="lg"
+      fullWidth
+      PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
+    >
+      <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>
+        Create Double-Entry Journal Entry
+      </DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent dividers sx={{ p: 3 }}>
           <Grid container spacing={2.5} sx={{ mb: 3 }}>
@@ -171,68 +179,70 @@ export default function JournalFormModal({ open, onClose, onSuccess }) {
           <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>
             Journal Debits & Credits (Double-Entry Engine)
           </Typography>
-          <Table size="small" sx={{ mb: 2, border: '1px solid #e2e8f0' }}>
-            <TableHead sx={{ backgroundColor: '#151621' }}>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 700, width: 280, color: '#ffffff' }}>Ledger Account</TableCell>
-                <TableCell sx={{ fontWeight: 700, color: '#ffffff' }}>Line Description / Narration</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 700, width: 140, color: '#ffffff' }}>Debit (₹)</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 700, width: 140, color: '#ffffff' }}>Credit (₹)</TableCell>
-                <TableCell sx={{ width: 50 }}></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {fields.map((field, index) => (
-                <TableRow key={field.id}>
-                  <TableCell>
-                    <TextField
-                      select
-                      fullWidth
-                      size="small"
-                      {...register(`lines.${index}.accountCode`, { required: true })}
-                    >
-                      {accounts.map((acc) => (
-                        <MenuItem key={acc.code} value={acc.code}>
-                          {acc.code} – {acc.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      placeholder="Line narration..."
-                      {...register(`lines.${index}.description`)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      type="number"
-                      size="small"
-                      inputProps={{ min: 0, step: 0.01 }}
-                      {...register(`lines.${index}.debit`, { valueAsNumber: true })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      type="number"
-                      size="small"
-                      inputProps={{ min: 0, step: 0.01 }}
-                      {...register(`lines.${index}.credit`, { valueAsNumber: true })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    {fields.length > 2 && (
-                      <IconButton size="small" color="error" onClick={() => remove(index)}>
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                    )}
-                  </TableCell>
+          <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', mb: 2 }}>
+            <Table size="small" sx={{ minWidth: 620, border: '1px solid #e2e8f0' }}>
+              <TableHead sx={{ backgroundColor: '#151621' }}>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 700, width: 280, color: '#ffffff' }}>Ledger Account</TableCell>
+                  <TableCell sx={{ fontWeight: 700, color: '#ffffff' }}>Line Description / Narration</TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 700, width: 140, color: '#ffffff' }}>Debit (₹)</TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 700, width: 140, color: '#ffffff' }}>Credit (₹)</TableCell>
+                  <TableCell sx={{ width: 50 }}></TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {fields.map((field, index) => (
+                  <TableRow key={field.id}>
+                    <TableCell>
+                      <TextField
+                        select
+                        fullWidth
+                        size="small"
+                        {...register(`lines.${index}.accountCode`, { required: true })}
+                      >
+                        {accounts.map((acc) => (
+                          <MenuItem key={acc.code} value={acc.code}>
+                            {acc.code} – {acc.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        placeholder="Line narration..."
+                        {...register(`lines.${index}.description`)}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        type="number"
+                        size="small"
+                        inputProps={{ min: 0, step: 0.01 }}
+                        {...register(`lines.${index}.debit`, { valueAsNumber: true })}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        type="number"
+                        size="small"
+                        inputProps={{ min: 0, step: 0.01 }}
+                        {...register(`lines.${index}.credit`, { valueAsNumber: true })}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      {fields.length > 2 && (
+                        <IconButton size="small" color="error" onClick={() => remove(index)}>
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
 
           <Button
             size="small"
