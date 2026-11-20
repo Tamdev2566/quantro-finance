@@ -41,7 +41,7 @@ export default function DataTable({
       sx={{
         width: '100%',
         backgroundColor: '#ffffff',
-        borderRadius: { xs: '14px', sm: '20px' },
+        borderRadius: { xs: '4px', sm: '6px' },
         border: '1px solid #e2e8f0',
         boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.05)',
         overflow: 'hidden'

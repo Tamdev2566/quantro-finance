@@ -200,7 +200,7 @@ export default function VendorsView() {
           onClick={handleOpenCreate}
           sx={{
             bgcolor: '#e5a93c',
-            borderRadius: '14px',
+            borderRadius: '4px',
             fontWeight: 700,
             width: { xs: '100%', sm: 'auto' },
             boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
@@ -329,7 +329,7 @@ export default function VendorsView() {
             <Button onClick={() => setOpenModal(false)} color="inherit">
               Cancel
             </Button>
-            <Button type="submit" variant="contained" sx={{ bgcolor: '#e5a93c', borderRadius: '12px' }}>
+            <Button type="submit" variant="contained" sx={{ bgcolor: '#e5a93c', borderRadius: '4px' }}>
               {editingVendor ? 'Update Vendor' : 'Save Vendor'}
             </Button>
           </DialogActions>

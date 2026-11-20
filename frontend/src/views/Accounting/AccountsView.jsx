@@ -177,7 +177,7 @@ export default function AccountsView() {
           sx={{
             width: { xs: '100%', sm: 'auto' },
             bgcolor: '#e5a93c',
-            borderRadius: '14px',
+            borderRadius: '4px',
             fontWeight: 700,
             boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
             '&:hover': { bgcolor: '#4b4bc0' }

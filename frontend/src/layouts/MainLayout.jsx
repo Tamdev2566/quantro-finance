@@ -30,13 +30,22 @@ export default function MainLayout() {
     <Box
       sx={{
         display: 'flex',
-        minHeight: '100vh',
+        height: '100vh',
+        maxHeight: '100vh',
         backgroundColor: '#0c0d14', // Quantro Charcoal Canvas
         overflow: 'hidden'
       }}
     >
       {/* Desktop Sidebar (hidden on mobile/tablet) */}
-      <Box sx={{ display: { xs: 'none', md: 'block' }, flexShrink: 0 }}>
+      <Box
+        sx={{
+          display: { xs: 'none', md: 'block' },
+          flexShrink: 0,
+          width: 260,
+          height: '100vh',
+          overflow: 'hidden'
+        }}
+      >
         <Sidebar />
       </Box>
 
@@ -50,9 +59,11 @@ export default function MainLayout() {
           display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': {
             width: 260,
+            height: '100vh',
             boxSizing: 'border-box',
             backgroundColor: '#0c0d14',
-            borderRight: '1px solid rgba(255, 255, 255, 0.08)'
+            borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+            overflow: 'hidden'
           }
         }}
       >
@@ -74,14 +85,14 @@ export default function MainLayout() {
         {/* Dark Top Header with Mobile Hamburger Menu */}
         <Header onDrawerToggle={handleDrawerToggle} />
 
-        {/* Large Rounded White Canvas Workspace (Quantro) */}
+        {/* Clean Canvas Workspace (Quantro) */}
         <Box
           component="main"
           sx={{
             flexGrow: 1,
             mb: { xs: 1.5, md: 2.5 },
             backgroundColor: '#ffffff',
-            borderRadius: { xs: '18px', sm: '24px', md: '28px' },
+            borderRadius: { xs: '8px', sm: '12px' },
             p: { xs: 1.5, sm: 2.5, md: 3.5 },
             boxShadow: '0 20px 45px -15px rgba(0, 0, 0, 0.5)',
             border: '1px solid rgba(255, 255, 255, 0.05)',
@@ -104,7 +115,7 @@ export default function MainLayout() {
           severity={notification?.severity || 'info'}
           sx={{
             width: '100%',
-            borderRadius: '14px',
+            borderRadius: '4px',
             boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
             fontWeight: 600,
             backgroundColor: notification?.severity === 'success' ? '#10b981' : undefined,

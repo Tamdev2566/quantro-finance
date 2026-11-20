@@ -85,20 +85,20 @@ export const theme = createTheme({
     }
   },
   shape: {
-    borderRadius: 16
+    borderRadius: 4
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 14,
+          borderRadius: 4,
           boxShadow: 'none',
           fontWeight: 700,
           padding: '8px 18px',
           textTransform: 'none',
           transition: 'all 0.2s ease-in-out',
           '&:hover': {
-            boxShadow: '0 6px 16px -2px rgba(229, 169, 60, 0.35)',
+            boxShadow: '0 4px 12px -2px rgba(229, 169, 60, 0.35)',
             transform: 'translateY(-1px)'
           }
         },
@@ -123,7 +123,7 @@ export const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 24,
+          borderRadius: 6,
           backgroundColor: '#ffffff',
           border: '1px solid #f1f5f9',
           boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.03)',
@@ -134,14 +134,14 @@ export const theme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 20
+          borderRadius: 6
         }
       }
     },
     MuiChip: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          borderRadius: 4,
           fontWeight: 600
         }
       }
@@ -149,7 +149,7 @@ export const theme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: 14,
+          borderRadius: 4,
           backgroundColor: '#ffffff',
           '& fieldset': {
             borderColor: '#e2e8f0'
@@ -161,6 +161,20 @@ export const theme = createTheme({
             borderColor: '#e5a93c',
             borderWidth: '1.5px'
           }
+        }
+      }
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4
+        }
+      }
+    },
+    MuiFilledInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4
         }
       }
     }

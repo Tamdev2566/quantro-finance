@@ -192,7 +192,7 @@ export default function LoginView() {
                 sx={{
                   width: 42,
                   height: 42,
-                  borderRadius: '12px',
+                  borderRadius: '4px',
                   background: 'linear-gradient(135deg, #f3c64f 0%, #d49b28 50%, #b88019 100%)',
                   display: 'flex',
                   alignItems: 'center',
@@ -287,7 +287,7 @@ export default function LoginView() {
           </Box>
 
           {error && (
-            <Alert severity="error" sx={{ mb: 3, borderRadius: '14px', backgroundColor: '#fee2e2' }}>
+            <Alert severity="error" sx={{ mb: 3, borderRadius: '4px', backgroundColor: '#fee2e2' }}>
               {error}
             </Alert>
           )}
@@ -298,7 +298,7 @@ export default function LoginView() {
               mb: 3,
               p: 2,
               bgcolor: '#1a1b29',
-              borderRadius: '18px',
+              borderRadius: '6px',
               border: '1px solid #282a3d'
             }}
           >
@@ -319,7 +319,7 @@ export default function LoginView() {
                     justifyContent: 'space-between',
                     p: 1.1,
                     px: 1.5,
-                    borderRadius: '12px',
+                    borderRadius: '4px',
                     bgcolor: '#12131d',
                     border: '1px solid #232537',
                     cursor: 'pointer',
@@ -353,7 +353,7 @@ export default function LoginView() {
                       fontWeight: 800,
                       bgcolor: 'rgba(229, 169, 60, 0.15)',
                       color: '#e5a93c',
-                      borderRadius: '6px'
+                      borderRadius: '4px'
                     }}
                   />
                 </Box>
@@ -383,7 +383,7 @@ export default function LoginView() {
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       backgroundColor: '#1a1b28',
-                      borderRadius: '14px',
+                      borderRadius: '4px',
                       color: '#ffffff',
                       '& fieldset': { borderColor: '#282a3d' },
                       '&:hover fieldset': { borderColor: '#475569' },
@@ -414,7 +414,7 @@ export default function LoginView() {
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       backgroundColor: '#1a1b28',
-                      borderRadius: '14px',
+                      borderRadius: '4px',
                       color: '#ffffff',
                       '& fieldset': { borderColor: '#282a3d' },
                       '&:hover fieldset': { borderColor: '#475569' },
@@ -454,7 +454,7 @@ export default function LoginView() {
                   color: '#000000',
                   fontWeight: 800,
                   fontSize: '0.95rem',
-                  borderRadius: '14px',
+                  borderRadius: '4px',
                   boxShadow: '0 4px 18px rgba(229, 169, 60, 0.4)',
                   '&:hover': {
                     background: 'linear-gradient(135deg, #e5a93c 0%, #b88019 100%)',

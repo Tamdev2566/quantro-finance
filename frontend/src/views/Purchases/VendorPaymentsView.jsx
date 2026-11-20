@@ -200,7 +200,7 @@ export default function VendorPaymentsView() {
           onClick={() => setOpenModal(true)}
           sx={{
             bgcolor: '#e5a93c',
-            borderRadius: '14px',
+            borderRadius: '4px',
             fontWeight: 700,
             width: { xs: '100%', sm: 'auto' },
             boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
@@ -325,7 +325,7 @@ export default function VendorPaymentsView() {
             </Typography>
           ) : (
             <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', mb: 2 }}>
-              <Table size="small" sx={{ minWidth: 550, border: '1px solid #f1f5f9', borderRadius: '12px' }}>
+              <Table size="small" sx={{ minWidth: 550, border: '1px solid #f1f5f9', borderRadius: '4px' }}>
                 <TableHead sx={{ bgcolor: '#f8fafc' }}>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Bill #</TableCell>
@@ -365,7 +365,7 @@ export default function VendorPaymentsView() {
           <Button onClick={() => setOpenModal(false)} color="inherit">
             Cancel
           </Button>
-          <Button variant="contained" onClick={handlePay} sx={{ bgcolor: '#e5a93c', borderRadius: '12px' }}>
+          <Button variant="contained" onClick={handlePay} sx={{ bgcolor: '#e5a93c', borderRadius: '4px' }}>
             Disburse Payment
           </Button>
         </DialogActions>

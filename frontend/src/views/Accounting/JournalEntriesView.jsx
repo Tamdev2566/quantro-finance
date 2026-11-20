@@ -155,7 +155,7 @@ export default function JournalEntriesView() {
           onClick={() => setOpenCreateModal(true)}
           sx={{
             bgcolor: '#e5a93c',
-            borderRadius: '14px',
+            borderRadius: '4px',
             fontWeight: 700,
             width: { xs: '100%', sm: 'auto' },
             boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
@@ -198,7 +198,7 @@ export default function JournalEntriesView() {
           Journal Voucher #{selectedJournal?.journalNumber} ({selectedJournal?.status})
         </DialogTitle>
         <DialogContent dividers sx={{ p: 3 }}>
-          <Box sx={{ mb: 2.5, p: 2, bgcolor: '#f8fafc', borderRadius: '14px', border: '1px solid #f1f5f9' }}>
+          <Box sx={{ mb: 2.5, p: 2, bgcolor: '#f8fafc', borderRadius: '4px', border: '1px solid #f1f5f9' }}>
             <Typography variant="body2"><strong>Description:</strong> {selectedJournal?.description}</Typography>
             <Typography variant="body2"><strong>Posting Date:</strong> {selectedJournal?.postingDate}</Typography>
             <Typography variant="body2"><strong>Module Source:</strong> {selectedJournal?.sourceModule}</Typography>
@@ -208,7 +208,7 @@ export default function JournalEntriesView() {
           <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1 }}>
             Double-Entry Ledger Lines:
           </Typography>
-          <Table size="small" sx={{ border: '1px solid #f1f5f9', borderRadius: '12px' }}>
+          <Table size="small" sx={{ border: '1px solid #f1f5f9', borderRadius: '4px' }}>
             <TableHead sx={{ bgcolor: '#151621' }}>
               <TableRow>
                 <TableCell sx={{ fontWeight: 700, fontSize: '0.78rem', color: '#ffffff' }}>Account Code</TableCell>

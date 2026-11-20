@@ -123,7 +123,7 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
         sx={{
           mb: 3,
           '& .MuiTab-root': {
-            borderRadius: '12px',
+            borderRadius: '4px',
             textTransform: 'none',
             fontWeight: 600,
             fontSize: '0.9rem',

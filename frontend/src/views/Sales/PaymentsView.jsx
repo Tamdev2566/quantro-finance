@@ -138,7 +138,7 @@ export default function PaymentsView() {
           onClick={() => setOpenModal(true)}
           sx={{
             bgcolor: '#e5a93c',
-            borderRadius: '14px',
+            borderRadius: '4px',
             fontWeight: 700,
             boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
             '&:hover': { bgcolor: '#4b4bc0' }

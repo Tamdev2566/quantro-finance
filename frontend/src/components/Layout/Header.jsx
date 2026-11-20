@@ -54,7 +54,7 @@ export default function Header({ onDrawerToggle }) {
               color: '#ffffff',
               backgroundColor: '#161722',
               border: '1px solid #232537',
-              borderRadius: '12px',
+              borderRadius: '4px',
               p: 0.8,
               '&:hover': { backgroundColor: '#1e202f', color: '#e5a93c' }
             }}
@@ -68,7 +68,7 @@ export default function Header({ onDrawerToggle }) {
               sx={{
                 width: 28,
                 height: 28,
-                borderRadius: '8px',
+                borderRadius: '4px',
                 background: 'linear-gradient(135deg, #f3c64f 0%, #d49b28 50%, #b88019 100%)',
                 display: 'flex',
                 alignItems: 'center',
@@ -100,7 +100,7 @@ export default function Header({ onDrawerToggle }) {
               height: 34,
               backgroundColor: '#161722',
               border: '1px solid #232537',
-              borderRadius: '50%',
+              borderRadius: '4px',
               color: '#94a3b8'
             }}
           >
@@ -121,13 +121,13 @@ export default function Header({ onDrawerToggle }) {
         </Box>
       </Box>
 
-      {/* Search Bar matching Quantro design */}
+      {/* Search Bar with clean sharp border */}
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           backgroundColor: '#161722',
-          borderRadius: '50px',
+          borderRadius: '4px',
           border: '1px solid #232537',
           px: 2,
           py: 0.8,
@@ -155,14 +155,14 @@ export default function Header({ onDrawerToggle }) {
       {/* Right Controls (Desktop/Tablet): Date Range, Notification, Profile */}
       <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: 1.5, order: 2 }}>
         
-        {/* Date Range Selector Pill */}
+        {/* Date Range Selector */}
         <Box
           sx={{
             display: { xs: 'none', md: 'flex' },
             alignItems: 'center',
             gap: 1.2,
             backgroundColor: '#161722',
-            borderRadius: '50px',
+            borderRadius: '4px',
             border: '1px solid #232537',
             px: 2,
             py: 0.8,
@@ -189,7 +189,7 @@ export default function Header({ onDrawerToggle }) {
             height: 40,
             backgroundColor: '#161722',
             border: '1px solid #232537',
-            borderRadius: '50%',
+            borderRadius: '4px',
             color: '#94a3b8',
             '&:hover': { backgroundColor: '#1e202f', color: '#e5a93c' }
           }}
@@ -204,7 +204,7 @@ export default function Header({ onDrawerToggle }) {
             height: 40,
             backgroundColor: '#161722',
             border: '1px solid #232537',
-            borderRadius: '50%',
+            borderRadius: '4px',
             color: '#94a3b8',
             '&:hover': { backgroundColor: '#1e202f', color: '#e5a93c' }
           }}
@@ -222,14 +222,14 @@ export default function Header({ onDrawerToggle }) {
           </Badge>
         </IconButton>
 
-        {/* User Profile Pill matching Quantro */}
+        {/* User Profile */}
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
             gap: 1.2,
             backgroundColor: '#161722',
-            borderRadius: '50px',
+            borderRadius: '4px',
             border: '1px solid #232537',
             p: 0.6,
             pr: 2

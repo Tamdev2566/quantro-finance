@@ -110,7 +110,7 @@ export default function GeneralLedgerView() {
               label="Select Ledger Account"
               value={selectedAccountCode}
               onChange={(e) => setSelectedAccountCode(e.target.value)}
-              sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
+              sx={{ '& .MuiOutlinedInput-root': { borderRadius: '4px' } }}
             >
               {accounts.map((a) => (
                 <MenuItem key={a.code} value={a.code}>

@@ -138,7 +138,7 @@ export default function BudgetsView() {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setOpenModal(true)}
-          sx={{ width: { xs: '100%', sm: 'auto' }, borderRadius: '12px', textTransform: 'none', px: 2.5 }}
+          sx={{ width: { xs: '100%', sm: 'auto' }, borderRadius: '4px', textTransform: 'none', px: 2.5 }}
         >
           New Budget
         </Button>
@@ -231,10 +231,10 @@ export default function BudgetsView() {
           </Grid>
         </DialogContent>
         <DialogActions sx={{ px: 3, py: 2.5 }}>
-          <Button onClick={() => setOpenModal(false)} color="inherit" sx={{ borderRadius: '10px' }}>
+          <Button onClick={() => setOpenModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
             Cancel
           </Button>
-          <Button onClick={handleCreate} variant="contained" sx={{ borderRadius: '10px', px: 3 }}>
+          <Button onClick={handleCreate} variant="contained" sx={{ borderRadius: '4px', px: 3 }}>
             Save Budget
           </Button>
         </DialogActions>

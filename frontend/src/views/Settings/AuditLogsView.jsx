@@ -107,7 +107,7 @@ export default function AuditLogsView() {
           sx={{
             width: { xs: '100%', sm: 380 },
             backgroundColor: '#ffffff',
-            '& .MuiOutlinedInput-root': { borderRadius: '12px' }
+            '& .MuiOutlinedInput-root': { borderRadius: '4px' }
           }}
           InputProps={{
             startAdornment: (

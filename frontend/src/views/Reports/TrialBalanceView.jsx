@@ -103,7 +103,7 @@ export default function TrialBalanceView() {
             variant="outlined"
             startIcon={<PrintIcon />}
             onClick={() => window.print()}
-            sx={{ width: { xs: '100%', sm: 'auto' }, borderRadius: '12px', textTransform: 'none' }}
+            sx={{ width: { xs: '100%', sm: 'auto' }, borderRadius: '4px', textTransform: 'none' }}
           >
             Print
           </Button>

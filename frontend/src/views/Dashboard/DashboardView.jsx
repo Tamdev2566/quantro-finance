@@ -135,7 +135,7 @@ export default function DashboardView() {
           sx={{
             backgroundColor: '#12131c',
             color: '#ffffff',
-            borderRadius: '50px',
+            borderRadius: '4px',
             px: 2.8,
             py: 1.1,
             fontWeight: 700,
@@ -160,7 +160,7 @@ export default function DashboardView() {
           <Card
             sx={{
               p: 2.8,
-              borderRadius: '24px',
+              borderRadius: '6px',
               backgroundColor: '#151621',
               border: '1px solid #232537',
               boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
@@ -175,7 +175,7 @@ export default function DashboardView() {
                 sx={{
                   width: 38,
                   height: 38,
-                  borderRadius: '12px',
+                  borderRadius: '4px',
                   bgcolor: 'rgba(229, 169, 60, 0.15)',
                   display: 'flex',
                   alignItems: 'center',
@@ -212,7 +212,7 @@ export default function DashboardView() {
           <Card
             sx={{
               p: 2.8,
-              borderRadius: '24px',
+              borderRadius: '6px',
               backgroundColor: '#ffffff',
               border: '1px solid #f1f5f9',
               boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)',
@@ -227,7 +227,7 @@ export default function DashboardView() {
                 sx={{
                   width: 38,
                   height: 38,
-                  borderRadius: '12px',
+                  borderRadius: '4px',
                   bgcolor: '#f8fafc',
                   border: '1px solid #e2e8f0',
                   display: 'flex',
@@ -265,7 +265,7 @@ export default function DashboardView() {
           <Card
             sx={{
               p: 2.8,
-              borderRadius: '24px',
+              borderRadius: '6px',
               backgroundColor: '#ffffff',
               border: '1px solid #f1f5f9',
               boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)',
@@ -280,7 +280,7 @@ export default function DashboardView() {
                 sx={{
                   width: 38,
                   height: 38,
-                  borderRadius: '12px',
+                  borderRadius: '4px',
                   bgcolor: 'rgba(229, 169, 60, 0.1)',
                   display: 'flex',
                   alignItems: 'center',
@@ -317,7 +317,7 @@ export default function DashboardView() {
           <Card
             sx={{
               p: 2.8,
-              borderRadius: '24px',
+              borderRadius: '6px',
               backgroundColor: '#ffffff',
               border: '1px solid #f1f5f9',
               boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)',
@@ -332,7 +332,7 @@ export default function DashboardView() {
                 sx={{
                   width: 38,
                   height: 38,
-                  borderRadius: '12px',
+                  borderRadius: '4px',
                   bgcolor: '#f8fafc',
                   border: '1px solid #e2e8f0',
                   display: 'flex',
@@ -389,13 +389,13 @@ export default function DashboardView() {
               </Box>
 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                {/* Toggle Pill Buttons */}
-                <Box sx={{ display: 'flex', bgcolor: '#f8fafc', p: 0.4, borderRadius: '50px', border: '1px solid #e2e8f0' }}>
+                {/* Toggle Buttons */}
+                <Box sx={{ display: 'flex', bgcolor: '#f8fafc', p: 0.4, borderRadius: '4px', border: '1px solid #e2e8f0' }}>
                   <Button
                     size="small"
                     onClick={() => setViewType('revenue')}
                     sx={{
-                      borderRadius: '50px',
+                      borderRadius: '4px',
                       px: 2,
                       py: 0.4,
                       fontSize: '0.78rem',
@@ -413,7 +413,7 @@ export default function DashboardView() {
                     size="small"
                     onClick={() => setViewType('expenses')}
                     sx={{
-                      borderRadius: '50px',
+                      borderRadius: '4px',
                       px: 2,
                       py: 0.4,
                       fontSize: '0.78rem',
@@ -456,7 +456,7 @@ export default function DashboardView() {
                   <RechartsTooltip
                     contentStyle={{
                       backgroundColor: '#12131c',
-                      borderRadius: '12px',
+                      borderRadius: '4px',
                       border: '1px solid #232537',
                       color: '#ffffff',
                       boxShadow: '0 8px 24px rgba(0,0,0,0.25)'
@@ -697,7 +697,7 @@ export default function DashboardView() {
                             fontWeight: 700,
                             fontSize: '0.7rem',
                             height: 22,
-                            borderRadius: '50px'
+                            borderRadius: '4px'
                           }}
                         />
                       </Box>
