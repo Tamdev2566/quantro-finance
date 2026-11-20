@@ -121,6 +121,21 @@ export default function PaymentsView() {
     }
   ];
 
+  // Full-Screen Payment Receipt View
+  if (openModal) {
+    return (
+      <PaymentFormModal
+        open={true}
+        onClose={() => setOpenModal(false)}
+        onSuccess={(msg) => {
+          dispatch(showNotification({ message: msg, severity: 'success' }));
+          setOpenModal(false);
+          fetchPayments();
+        }}
+      />
+    );
+  }
+
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
@@ -165,14 +180,7 @@ export default function PaymentsView() {
         emptyMessage="No customer payments found."
       />
 
-      <PaymentFormModal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        onSuccess={(msg) => {
-          dispatch(showNotification({ message: msg, severity: 'success' }));
-          fetchPayments();
-        }}
-      />
+
 
       <ConfirmDialog
         open={Boolean(confirmReversePayment)}

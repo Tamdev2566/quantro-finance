@@ -4,10 +4,7 @@ import { apiClient } from '../../api/client';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Card,
   Button,
   Grid,
   TextField,
@@ -26,6 +23,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function VendorBillFormModal({ open, onClose, onSuccess }) {
   const [vendors, setVendors] = useState([]);
@@ -59,18 +57,15 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
   const watchedTaxInclusive = watch('isTaxInclusive');
 
   useEffect(() => {
-    if (open) {
-      Promise.all([apiClient.getVendors(), apiClient.getAccounts()]).then(([vRes, aRes]) => {
-        setVendors(vRes.data || []);
-        // Filter expense accounts
-        const expAccs = (aRes.data || []).filter((a) => a.type === 'Expenses');
-        setAccounts(expAccs);
-        if (vRes.data?.length > 0 && !watchedVendorId) {
-          setValue('vendorId', vRes.data[0].id);
-        }
-      });
-    }
-  }, [open]);
+    Promise.all([apiClient.getVendors(), apiClient.getAccounts()]).then(([vRes, aRes]) => {
+      setVendors(vRes.data || []);
+      const expAccs = (aRes.data || []).filter((a) => a.type === 'Expenses');
+      setAccounts(expAccs);
+      if (vRes.data?.length > 0 && !watchedVendorId) {
+        setValue('vendorId', vRes.data[0].id);
+      }
+    });
+  }, []);
 
   // Preview calculations
   let subtotal = 0;
@@ -118,18 +113,26 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="lg"
-      fullWidth
-      PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
-    >
-      <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>
-        Record Vendor / Supplier Bill
-      </DialogTitle>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent dividers sx={{ p: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+      <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={onClose}
+          sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
+        >
+          Back to Vendor Bills
+        </Button>
+      </Box>
+
+      <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+          Record Vendor / Supplier Bill
+        </Typography>
+        <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
+          Record purchase invoices, map expense accounts, and record input tax credits (ITC)
+        </Typography>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2.5} sx={{ mb: 3 }}>
             <Grid item xs={12} sm={4}>
               <TextField
@@ -138,6 +141,7 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
                 label="Vendor"
                 size="small"
                 {...register('vendorId', { required: 'Vendor is required' })}
+                error={!!errors.vendorId}
               >
                 {vendors.map((v) => (
                   <MenuItem key={v.id} value={v.id}>
@@ -149,10 +153,11 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
             <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
-                label="Vendor Invoice # (External Ref)"
+                required
+                label="Supplier Bill / Invoice #"
                 size="small"
-                placeholder="e.g. INV-998231"
-                {...register('vendorBillNumber', { required: 'Vendor Bill # is required' })}
+                placeholder="e.g. INV-SUPP-9821"
+                {...register('vendorBillNumber', { required: 'Bill number is required' })}
                 error={!!errors.vendorBillNumber}
               />
             </Grid>
@@ -160,10 +165,11 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
               <TextField
                 select
                 fullWidth
-                label="Expense / COGS Ledger Account"
+                label="Expense Account Mapping"
                 size="small"
                 {...register('expenseAccountCode')}
               >
+                <MenuItem value="">Auto-allocate per items</MenuItem>
                 {accounts.map((a) => (
                   <MenuItem key={a.code} value={a.code}>
                     {a.code} - {a.name}
@@ -185,8 +191,7 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
                       textField: {
                         fullWidth: true,
                         size: 'small',
-                        required: true,
-                        error: !!errors.billDate
+                        required: true
                       }
                     }}
                   />
@@ -205,8 +210,7 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
                     slotProps={{
                       textField: {
                         fullWidth: true,
-                        size: 'small',
-                        error: !!errors.dueDate
+                        size: 'small'
                       }
                     }}
                   />
@@ -221,154 +225,179 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
                 size="small"
                 {...register('paymentTerms')}
               >
-                <MenuItem value="Immediate">Immediate</MenuItem>
+                <MenuItem value="Immediate">Immediate / Due on Receipt</MenuItem>
                 <MenuItem value="Net 15">Net 15 Days</MenuItem>
                 <MenuItem value="Net 30">Net 30 Days</MenuItem>
                 <MenuItem value="Net 60">Net 60 Days</MenuItem>
               </TextField>
             </Grid>
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: 'center' }}>
               <FormControlLabel
-                control={<Switch {...register('isTaxInclusive')} />}
-                label="Tax Inclusive Pricing"
+                control={<Switch {...register('isTaxInclusive')} color="warning" />}
+                label={<Typography variant="body2" sx={{ fontWeight: 600 }}>Prices are Tax Inclusive</Typography>}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Bill Narration / Scope Description"
+                size="small"
+                placeholder="Purchase description or PO reference..."
+                {...register('description')}
               />
             </Grid>
           </Grid>
 
           {/* Line Items Table */}
-          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>
-            Bill Line Items & Expenses
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5, color: '#0f172a' }}>
+            Bill Purchased Items & Services:
           </Typography>
-          <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', mb: 2 }}>
-            <Table size="small" sx={{ minWidth: 650, border: '1px solid #e2e8f0' }}>
-              <TableHead sx={{ backgroundColor: '#151621' }}>
+
+          <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', mb: 3 }}>
+            <Table size="small" sx={{ minWidth: 700, border: '1px solid #f1f5f9', borderRadius: '4px' }}>
+              <TableHead sx={{ bgcolor: '#12131c' }}>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 700, color: '#ffffff' }}>Description</TableCell>
-                  <TableCell sx={{ fontWeight: 700, width: 90, color: '#ffffff' }}>Qty</TableCell>
-                  <TableCell sx={{ fontWeight: 700, width: 130, color: '#ffffff' }}>Unit Cost (₹)</TableCell>
-                  <TableCell sx={{ fontWeight: 700, width: 100, color: '#ffffff' }}>Disc %</TableCell>
-                  <TableCell sx={{ fontWeight: 700, width: 110, color: '#ffffff' }}>Input GST Rate</TableCell>
-                  <TableCell sx={{ fontWeight: 700, width: 120, color: '#ffffff' }}>Amount</TableCell>
-                  <TableCell sx={{ width: 50 }}></TableCell>
+                  <TableCell sx={{ color: '#ffffff', fontWeight: 700, width: '38%' }}>Item Description</TableCell>
+                  <TableCell sx={{ color: '#ffffff', fontWeight: 700, width: '12%' }} align="right">Qty</TableCell>
+                  <TableCell sx={{ color: '#ffffff', fontWeight: 700, width: '16%' }} align="right">Unit Price (₹)</TableCell>
+                  <TableCell sx={{ color: '#ffffff', fontWeight: 700, width: '12%' }} align="right">Disc %</TableCell>
+                  <TableCell sx={{ color: '#ffffff', fontWeight: 700, width: '14%' }} align="right">GST Rate</TableCell>
+                  <TableCell sx={{ color: '#ffffff', fontWeight: 700, width: '8%' }} align="center"></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {fields.map((field, index) => {
-                  const itemQty = parseFloat(watchedItems[index]?.quantity || 0);
-                  const itemPrice = parseFloat(watchedItems[index]?.unitPrice || 0);
-                  const itemDisc = parseFloat(watchedItems[index]?.discountPercent || 0);
-                  const lineAmt = itemQty * itemPrice * (1 - itemDisc / 100);
-
-                  return (
-                    <TableRow key={field.id}>
-                      <TableCell>
-                        <TextField
-                          fullWidth
-                          size="small"
-                          placeholder="Item or service name..."
-                          {...register(`items.${index}.description`, { required: true })}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          type="number"
-                          size="small"
-                          inputProps={{ min: 1 }}
-                          {...register(`items.${index}.quantity`, { required: true, valueAsNumber: true })}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          type="number"
-                          size="small"
-                          inputProps={{ min: 0, step: 0.01 }}
-                          {...register(`items.${index}.unitPrice`, { required: true, valueAsNumber: true })}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          type="number"
-                          size="small"
-                          inputProps={{ min: 0, max: 100 }}
-                          {...register(`items.${index}.discountPercent`, { valueAsNumber: true })}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          select
-                          size="small"
-                          fullWidth
-                          {...register(`items.${index}.taxRate`, { valueAsNumber: true })}
-                        >
-                          <MenuItem value={0}>0% (Exempt)</MenuItem>
-                          <MenuItem value={5}>5%</MenuItem>
-                          <MenuItem value={12}>12%</MenuItem>
-                          <MenuItem value={18}>18%</MenuItem>
-                          <MenuItem value={28}>28%</MenuItem>
-                        </TextField>
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600 }}>
-                        ₹{lineAmt.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
-                      </TableCell>
-                      <TableCell>
-                        {fields.length > 1 && (
-                          <IconButton size="small" color="error" onClick={() => remove(index)}>
-                            <DeleteIcon fontSize="small" />
-                          </IconButton>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                {fields.map((field, idx) => (
+                  <TableRow key={field.id}>
+                    <TableCell>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        placeholder="Item or service description..."
+                        {...register(`items.${idx}.description`, { required: true })}
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      <TextField
+                        size="small"
+                        type="number"
+                        inputProps={{ min: 1 }}
+                        sx={{ width: 80 }}
+                        {...register(`items.${idx}.quantity`, { required: true })}
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      <TextField
+                        size="small"
+                        type="number"
+                        inputProps={{ min: 0, step: 0.01 }}
+                        placeholder="0.00"
+                        sx={{ width: 120 }}
+                        {...register(`items.${idx}.unitPrice`, { required: true })}
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      <TextField
+                        size="small"
+                        type="number"
+                        inputProps={{ min: 0, max: 100 }}
+                        sx={{ width: 75 }}
+                        {...register(`items.${idx}.discountPercent`)}
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      <TextField
+                        select
+                        size="small"
+                        sx={{ width: 110 }}
+                        {...register(`items.${idx}.taxRate`)}
+                      >
+                        <MenuItem value={0}>0% (Exempt)</MenuItem>
+                        <MenuItem value={5}>5%</MenuItem>
+                        <MenuItem value={12}>12%</MenuItem>
+                        <MenuItem value={18}>18% (Standard)</MenuItem>
+                        <MenuItem value={28}>28%</MenuItem>
+                      </TextField>
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton
+                        size="small"
+                        color="error"
+                        disabled={fields.length === 1}
+                        onClick={() => remove(idx)}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </Box>
 
           <Button
-            size="small"
             startIcon={<AddIcon />}
-            onClick={() => append({ description: '', quantity: 1, unitPrice: 0, discountPercent: 0, taxRate: 18 })}
-            sx={{ mb: 2 }}
+            variant="outlined"
+            size="small"
+            onClick={() => append({ description: '', quantity: 1, unitPrice: '', discountPercent: 0, taxRate: 18 })}
+            sx={{ mb: 3, borderRadius: '4px', textTransform: 'none', fontWeight: 600 }}
           >
-            Add Line Item
+            Add Purchased Item
           </Button>
 
-          {/* Totals Summary */}
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Box sx={{ width: { xs: '100%', sm: 300 }, p: 2, backgroundColor: '#f8fafc', borderRadius: 2, border: '1px solid #e2e8f0' }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                <Typography variant="body2">Subtotal:</Typography>
-                <Typography variant="body2" sx={{ fontWeight: 600 }}>₹{subtotal.toLocaleString('en-IN')}</Typography>
+          {/* Notes and Totals */}
+          <Grid container spacing={3} sx={{ mt: 1 }}>
+            <Grid item xs={12} md={7}>
+              <TextField
+                fullWidth
+                multiline
+                rows={3}
+                label="Internal Audit & Payment Notes"
+                size="small"
+                placeholder="Disbursement remarks, PO reference, approval tags..."
+                {...register('notes')}
+              />
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <Box sx={{ p: 2.5, backgroundColor: '#f8fafc', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                  <Typography variant="body2" sx={{ color: '#64748b' }}>Subtotal:</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>₹{subtotal.toLocaleString('en-IN')}</Typography>
+                </Box>
+                {totalDiscount > 0 && (
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1, color: '#dc2626' }}>
+                    <Typography variant="body2">Discount:</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>-₹{totalDiscount.toLocaleString('en-IN')}</Typography>
+                  </Box>
+                )}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                  <Typography variant="body2" sx={{ color: '#64748b' }}>Taxable Value:</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>₹{taxableTotal.toLocaleString('en-IN')}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                  <Typography variant="body2" sx={{ color: '#64748b' }}>Input GST (ITC):</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>₹{totalTax.toLocaleString('en-IN')}</Typography>
+                </Box>
+                <Divider sx={{ my: 1.5 }} />
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>Bill Grand Total:</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#e5a93c' }}>
+                    ₹{grandTotal.toLocaleString('en-IN')}
+                  </Typography>
+                </Box>
               </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                <Typography variant="body2">Taxable Value:</Typography>
-                <Typography variant="body2" sx={{ fontWeight: 600 }}>₹{taxableTotal.toLocaleString('en-IN')}</Typography>
-              </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                <Typography variant="body2">Eligible Input GST (ITC):</Typography>
-                <Typography variant="body2" sx={{ fontWeight: 600, color: '#059669' }}>
-                  ₹{totalTax.toLocaleString('en-IN')}
-                </Typography>
-              </Box>
-              <Divider sx={{ my: 1 }} />
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>Total Bill Amount:</Typography>
-                <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#2563eb' }}>
-                  ₹{grandTotal.toLocaleString('en-IN')}
-                </Typography>
-              </Box>
-            </Box>
+            </Grid>
+          </Grid>
+
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4, pt: 3, borderTop: '1px solid #f1f5f9' }}>
+            <Button onClick={onClose} color="inherit" sx={{ borderRadius: '4px' }}>
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained" disabled={loading} sx={{ bgcolor: '#e5a93c', borderRadius: '4px', px: 4, fontWeight: 700 }}>
+              {loading ? 'Saving...' : 'Save Draft Vendor Bill'}
+            </Button>
           </Box>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={onClose} color="inherit">
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained" disabled={loading}>
-            {loading ? 'Saving...' : 'Save Draft Bill'}
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+        </form>
+      </Card>
+    </Box>
   );
 }

@@ -9,14 +9,9 @@ import {
   Grid,
   Card,
   CardContent,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   TextField,
   MenuItem,
   Chip,
-  Divider,
   Table,
   TableHead,
   TableBody,
@@ -24,6 +19,7 @@ import {
   TableCell,
   CircularProgress
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import TransferIcon from '@mui/icons-material/CompareArrows';
 import BankIcon from '@mui/icons-material/AccountBalance';
@@ -36,15 +32,15 @@ export default function BankAccountsView() {
   const [selectedAccountId, setSelectedAccountId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Transfer Modal
+  // Transfer Screen State
   const [openTransferModal, setOpenTransferModal] = useState(false);
-  const [fromCode, setFromCode] = useState('1020');
-  const [toCode, setToCode] = useState('1010');
+  const [fromCode, setFromCode] = useState('');
+  const [toCode, setToCode] = useState('');
   const [transferAmount, setTransferAmount] = useState('');
   const [transferRef, setTransferRef] = useState('');
   const [transferDesc, setTransferDesc] = useState('');
 
-  // New Bank Account Modal
+  // New Bank Account Screen State
   const [openNewAccountModal, setOpenNewAccountModal] = useState(false);
   const [newAccData, setNewAccData] = useState({
     accountName: '',
@@ -62,10 +58,13 @@ export default function BankAccountsView() {
         apiClient.getBankAccounts(),
         apiClient.getBankTransactions()
       ]);
-      setBankAccounts(accRes.data || []);
+      const accounts = accRes.data || [];
+      setBankAccounts(accounts);
       setTransactions(txnRes.data || []);
-      if (accRes.data?.length > 0 && !selectedAccountId) {
-        setSelectedAccountId(accRes.data[0].id);
+      if (accounts.length > 0) {
+        if (!selectedAccountId) setSelectedAccountId(accounts[0].id);
+        if (!fromCode) setFromCode(accounts[0].ledgerAccountCode || '1020');
+        if (!toCode) setToCode('1010');
       }
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -95,6 +94,8 @@ export default function BankAccountsView() {
       dispatch(showNotification({ message: 'Fund transfer posted with balanced journal entry!', severity: 'success' }));
       setOpenTransferModal(false);
       setTransferAmount('');
+      setTransferRef('');
+      setTransferDesc('');
       fetchData();
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -106,6 +107,14 @@ export default function BankAccountsView() {
       await apiClient.createBankAccount(newAccData);
       dispatch(showNotification({ message: 'Bank account added successfully', severity: 'success' }));
       setOpenNewAccountModal(false);
+      setNewAccData({
+        accountName: '',
+        accountNumber: '',
+        bankName: '',
+        ifsc: '',
+        branch: '',
+        openingBalance: 0
+      });
       fetchData();
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -115,153 +124,31 @@ export default function BankAccountsView() {
   const selectedAccount = bankAccounts.find((b) => b.id === selectedAccountId);
   const accountTransactions = transactions.filter((t) => t.bankAccountId === selectedAccountId);
 
-  return (
-    <Box sx={{ p: { xs: 0.5, sm: 1.5, md: 2 } }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
-        <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
-            Bank & Cash Management
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
-            Multi-currency accounts, cash withdrawals, deposits, and internal ledger transfers
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>
+  // Dedicated Full-Screen: Internal Fund Transfer
+  if (openTransferModal) {
+    return (
+      <Box sx={{ width: '100%', maxWidth: 800, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <Button
-            variant="outlined"
-            startIcon={<TransferIcon />}
-            onClick={() => setOpenTransferModal(true)}
-            sx={{ flex: { xs: 1, sm: 'none' } }}
+            startIcon={<ArrowBackIcon />}
+            onClick={() => setOpenTransferModal(false)}
+            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
           >
-            Fund Transfer
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => setOpenNewAccountModal(true)}
-            sx={{ flex: { xs: 1, sm: 'none' } }}
-          >
-            Add Bank Account
+            Back to Bank Accounts
           </Button>
         </Box>
-      </Box>
 
-      {/* Account Cards */}
-      <Grid container spacing={2.5} sx={{ mb: 3 }}>
-        {bankAccounts.map((acc) => {
-          const isSelected = acc.id === selectedAccountId;
-          return (
-            <Grid item xs={12} sm={6} md={4} key={acc.id}>
-              <Card
-                onClick={() => setSelectedAccountId(acc.id)}
-                sx={{
-                  cursor: 'pointer',
-                  border: isSelected ? '2px solid #2563eb' : '1px solid #e2e8f0',
-                  boxShadow: isSelected ? '0 4px 12px rgba(37,99,235,0.1)' : 'none',
-                  transition: 'all 0.2s ease',
-                  '&:hover': { borderColor: '#2563eb' }
-                }}
-              >
-                <CardContent sx={{ p: 2.5 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <BankIcon color="primary" fontSize="small" />
-                      <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                        {acc.bankName}
-                      </Typography>
-                    </Box>
-                    <Chip label="Active" size="small" color="success" sx={{ fontSize: '0.7rem', height: 20 }} />
-                  </Box>
-                  <Typography variant="caption" sx={{ color: '#64748b', display: 'block', mb: 1.5 }}>
-                    {acc.accountName} • A/c: {acc.accountNumber}
-                  </Typography>
-                  <Typography variant="h5" sx={{ fontWeight: 800, color: '#2563eb' }}>
-                    ₹{acc.currentBalance?.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
+        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+              Internal Fund Transfer
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+              Move money between bank accounts or petty cash ledger. Creates a balanced contra journal entry automatically.
+            </Typography>
+          </Box>
 
-      {/* Selected Account Transaction Statement */}
-      <Card sx={{ p: 2.5 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 0.5 }}>
-          Account Statement: {selectedAccount?.accountName || 'Bank Transactions'}
-        </Typography>
-        <Typography variant="caption" sx={{ color: '#64748b', display: 'block', mb: 2 }}>
-          IFSC: {selectedAccount?.ifsc || 'N/A'} | Ledger Code: {selectedAccount?.ledgerAccountCode}
-        </Typography>
-
-        <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-          <Table size="small" sx={{ minWidth: 650, border: '1px solid #e2e8f0' }}>
-            <TableHead sx={{ backgroundColor: '#151621' }}>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 700, color: '#ffffff' }}>Date</TableCell>
-                <TableCell sx={{ fontWeight: 700, color: '#ffffff' }}>Reference</TableCell>
-                <TableCell sx={{ fontWeight: 700, color: '#ffffff' }}>Narration / Description</TableCell>
-                <TableCell sx={{ fontWeight: 700, color: '#ffffff' }}>Type</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 700, color: '#ffffff' }}>Amount (₹)</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 700, color: '#ffffff' }}>Running Balance (₹)</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 700, color: '#ffffff' }}>Reconciled</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {accountTransactions.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={7} align="center" sx={{ py: 3, color: '#64748b' }}>
-                    No transactions recorded yet for this account.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                accountTransactions.map((t) => (
-                  <TableRow key={t.id}>
-                    <TableCell>{t.date}</TableCell>
-                    <TableCell sx={{ fontWeight: 600 }}>{t.reference}</TableCell>
-                    <TableCell>{t.description}</TableCell>
-                    <TableCell>
-                      <Chip
-                        size="small"
-                        label={t.type}
-                        color={t.type === 'CREDIT' ? 'success' : 'error'}
-                        sx={{ fontWeight: 600, fontSize: '0.72rem' }}
-                      />
-                    </TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 700, color: t.type === 'CREDIT' ? '#059669' : '#dc2626' }}>
-                      {t.type === 'CREDIT' ? '+' : '-'}₹{t.amount?.toLocaleString('en-IN')}
-                    </TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 600 }}>
-                      ₹{t.runningBalance?.toLocaleString('en-IN')}
-                    </TableCell>
-                    <TableCell align="center">
-                      <Chip
-                        size="small"
-                        label={t.reconciled ? 'Matched' : 'Unreconciled'}
-                        variant={t.reconciled ? 'filled' : 'outlined'}
-                        color={t.reconciled ? 'success' : 'default'}
-                        sx={{ fontSize: '0.7rem' }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </Box>
-      </Card>
-
-      {/* Fund Transfer Modal */}
-      <Dialog
-        open={openTransferModal}
-        onClose={() => setOpenTransferModal(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
-      >
-        <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>Internal Fund Transfer</DialogTitle>
-        <DialogContent dividers sx={{ p: 3 }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2.5}>
             <Grid item xs={12} sm={6}>
               <TextField
                 select
@@ -302,6 +189,7 @@ export default function BankAccountsView() {
                 size="small"
                 type="number"
                 label="Amount (₹)"
+                placeholder="0.00"
                 value={transferAmount}
                 onChange={(e) => setTransferAmount(e.target.value)}
                 inputProps={{ min: 0.01, step: 0.01 }}
@@ -312,6 +200,7 @@ export default function BankAccountsView() {
                 fullWidth
                 size="small"
                 label="Reference / Check #"
+                placeholder="e.g. FT-2026-001"
                 value={transferRef}
                 onChange={(e) => setTransferRef(e.target.value)}
               />
@@ -327,33 +216,56 @@ export default function BankAccountsView() {
               />
             </Grid>
           </Grid>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={() => setOpenTransferModal(false)} color="inherit">
-            Cancel
-          </Button>
-          <Button onClick={handleTransfer} variant="contained">
-            Execute Transfer
-          </Button>
-        </DialogActions>
-      </Dialog>
 
-      {/* Add Bank Account Modal */}
-      <Dialog
-        open={openNewAccountModal}
-        onClose={() => setOpenNewAccountModal(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
-      >
-        <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>Add Bank Account</DialogTitle>
-        <DialogContent dividers sx={{ p: 3 }}>
-          <Grid container spacing={2}>
+          <Box sx={{ mt: 3.5, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+            <Button onClick={() => setOpenTransferModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
+              Cancel
+            </Button>
+            <Button
+              onClick={handleTransfer}
+              variant="contained"
+              disabled={!transferAmount || parseFloat(transferAmount) <= 0 || fromCode === toCode}
+              sx={{ bgcolor: '#e5a93c', color: '#000000', fontWeight: 700, borderRadius: '4px', '&:hover': { bgcolor: '#d49b28' } }}
+            >
+              Execute Transfer
+            </Button>
+          </Box>
+        </Card>
+      </Box>
+    );
+  }
+
+  // Dedicated Full-Screen: Add Bank Account
+  if (openNewAccountModal) {
+    return (
+      <Box sx={{ width: '100%', maxWidth: 800, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => setOpenNewAccountModal(false)}
+            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
+          >
+            Back to Bank Accounts
+          </Button>
+        </Box>
+
+        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+              Add Bank Account
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+              Register a new operational bank or cash account with ledger linkage and opening balance.
+            </Typography>
+          </Box>
+
+          <Grid container spacing={2.5}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
                 size="small"
                 label="Account Title (e.g. Operating Current A/c)"
+                placeholder="e.g. HDFC Operating Current Account"
                 value={newAccData.accountName}
                 onChange={(e) => setNewAccData({ ...newAccData, accountName: e.target.value })}
               />
@@ -363,6 +275,7 @@ export default function BankAccountsView() {
                 fullWidth
                 size="small"
                 label="Bank Name (e.g. Axis Bank)"
+                placeholder="e.g. HDFC Bank"
                 value={newAccData.bankName}
                 onChange={(e) => setNewAccData({ ...newAccData, bankName: e.target.value })}
               />
@@ -372,6 +285,7 @@ export default function BankAccountsView() {
                 fullWidth
                 size="small"
                 label="Account Number"
+                placeholder="e.g. 50200012345678"
                 value={newAccData.accountNumber}
                 onChange={(e) => setNewAccData({ ...newAccData, accountNumber: e.target.value })}
               />
@@ -381,6 +295,7 @@ export default function BankAccountsView() {
                 fullWidth
                 size="small"
                 label="IFSC Code"
+                placeholder="e.g. HDFC0001234"
                 value={newAccData.ifsc}
                 onChange={(e) => setNewAccData({ ...newAccData, ifsc: e.target.value })}
               />
@@ -391,21 +306,160 @@ export default function BankAccountsView() {
                 size="small"
                 type="number"
                 label="Opening Balance (₹)"
+                placeholder="0.00"
                 value={newAccData.openingBalance}
                 onChange={(e) => setNewAccData({ ...newAccData, openingBalance: parseFloat(e.target.value || 0) })}
               />
             </Grid>
           </Grid>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={() => setOpenNewAccountModal(false)} color="inherit">
-            Cancel
+
+          <Box sx={{ mt: 3.5, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+            <Button onClick={() => setOpenNewAccountModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCreateAccount}
+              variant="contained"
+              disabled={!newAccData.accountName || !newAccData.bankName || !newAccData.accountNumber}
+              sx={{ bgcolor: '#e5a93c', color: '#000000', fontWeight: 700, borderRadius: '4px', '&:hover': { bgcolor: '#d49b28' } }}
+            >
+              Save Bank Account
+            </Button>
+          </Box>
+        </Card>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ p: { xs: 0.5, sm: 1.5, md: 2 } }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+            Bank & Cash Management
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+            Multi-currency accounts, cash withdrawals, deposits, and internal ledger transfers
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>
+          <Button
+            variant="outlined"
+            startIcon={<TransferIcon />}
+            onClick={() => setOpenTransferModal(true)}
+            sx={{ flex: { xs: 1, sm: 'none' }, borderRadius: '4px', textTransform: 'none' }}
+          >
+            Fund Transfer
           </Button>
-          <Button onClick={handleCreateAccount} variant="contained">
-            Save Bank Account
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => setOpenNewAccountModal(true)}
+            sx={{ flex: { xs: 1, sm: 'none' }, borderRadius: '4px', textTransform: 'none', bgcolor: '#e5a93c', color: '#000', fontWeight: 700, '&:hover': { bgcolor: '#d49b28' } }}
+          >
+            Add Bank Account
           </Button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      </Box>
+
+      {/* Account Cards */}
+      <Grid container spacing={2.5} sx={{ mb: 3 }}>
+        {bankAccounts.map((b) => (
+          <Grid item xs={12} sm={6} md={4} key={b.id}>
+            <Card
+              onClick={() => setSelectedAccountId(b.id)}
+              sx={{
+                cursor: 'pointer',
+                p: 2.5,
+                borderRadius: '4px',
+                border: selectedAccountId === b.id ? '2px solid #e5a93c' : '1px solid #e2e8f0',
+                boxShadow: selectedAccountId === b.id ? '0 4px 16px rgba(229, 169, 60, 0.2)' : '0 1px 3px rgba(0,0,0,0.05)',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+                <BankIcon sx={{ color: '#e5a93c', fontSize: 28 }} />
+                <Chip label={b.currency} size="small" sx={{ fontWeight: 700, borderRadius: '4px' }} />
+              </Box>
+              <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+                {b.accountName}
+              </Typography>
+              <Typography variant="caption" sx={{ color: '#64748b', display: 'block', mb: 1.5 }}>
+                {b.bankName} • {b.accountNumber}
+              </Typography>
+              <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+                ₹{(b.currentBalance || 0).toLocaleString('en-IN')}
+              </Typography>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      {/* Transaction Feed */}
+      <Card sx={{ border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+        <Box sx={{ p: 2.5, borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+            Transaction Feed – {selectedAccount?.accountName || 'All'}
+          </Typography>
+          <Chip label={`${accountTransactions.length} items`} size="small" sx={{ borderRadius: '4px' }} />
+        </Box>
+        <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <Table size="small">
+            <TableHead sx={{ bgcolor: '#151621' }}>
+              <TableRow>
+                <TableCell sx={{ color: '#ffffff', fontWeight: 700 }}>Date</TableCell>
+                <TableCell sx={{ color: '#ffffff', fontWeight: 700 }}>Reference</TableCell>
+                <TableCell sx={{ color: '#ffffff', fontWeight: 700 }}>Description</TableCell>
+                <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700 }}>Deposit (₹)</TableCell>
+                <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700 }}>Withdrawal (₹)</TableCell>
+                <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700 }}>Balance (₹)</TableCell>
+                <TableCell align="center" sx={{ color: '#ffffff', fontWeight: 700 }}>Status</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
+                    <CircularProgress size={24} sx={{ color: '#e5a93c' }} />
+                  </TableCell>
+                </TableRow>
+              ) : accountTransactions.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7} align="center" sx={{ py: 4, color: '#94a3b8' }}>
+                    No bank transactions recorded yet.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                accountTransactions.map((t) => (
+                  <TableRow key={t.id}>
+                    <TableCell sx={{ fontWeight: 600 }}>{t.date}</TableCell>
+                    <TableCell>{t.reference || '—'}</TableCell>
+                    <TableCell>{t.description}</TableCell>
+                    <TableCell align="right" sx={{ color: '#16a34a', fontWeight: 700 }}>
+                      {t.type === 'DEPOSIT' ? `+₹${t.amount.toLocaleString('en-IN')}` : '—'}
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: '#dc2626', fontWeight: 700 }}>
+                      {t.type === 'WITHDRAWAL' ? `-₹${t.amount.toLocaleString('en-IN')}` : '—'}
+                    </TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 700 }}>
+                      ₹{(t.runningBalance || 0).toLocaleString('en-IN')}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Chip
+                        size="small"
+                        label={t.reconciled ? 'Matched' : 'Unreconciled'}
+                        variant={t.reconciled ? 'filled' : 'outlined'}
+                        color={t.reconciled ? 'success' : 'default'}
+                        sx={{ fontSize: '0.7rem', borderRadius: '4px' }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </Box>
+      </Card>
     </Box>
   );
 }

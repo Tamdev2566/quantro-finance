@@ -196,6 +196,31 @@ export default function InvoicesView() {
     }
   ];
 
+  const handleEdit = (inv) => {
+    setSelectedInvoiceForEdit(inv);
+    setOpenCreateModal(true);
+  };
+
+  // Full-Screen Invoice Creation / Edit View
+  if (openCreateModal || selectedInvoiceForEdit) {
+    return (
+      <InvoiceFormModal
+        open={true}
+        invoiceToEdit={selectedInvoiceForEdit}
+        onClose={() => {
+          setOpenCreateModal(false);
+          setSelectedInvoiceForEdit(null);
+        }}
+        onSuccess={(msg) => {
+          dispatch(showNotification({ message: msg, severity: 'success' }));
+          setOpenCreateModal(false);
+          setSelectedInvoiceForEdit(null);
+          fetchInvoices();
+        }}
+      />
+    );
+  }
+
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       {/* View Header */}
@@ -257,28 +282,6 @@ export default function InvoicesView() {
         rows={filteredInvoices}
         loading={loading}
         emptyMessage="No invoices found matching criteria."
-      />
-
-      {/* Create Modal */}
-      <InvoiceFormModal
-        open={openCreateModal}
-        onClose={() => setOpenCreateModal(false)}
-        onSuccess={(msg) => {
-          dispatch(showNotification({ message: msg, severity: 'success' }));
-          fetchInvoices();
-        }}
-      />
-
-      {/* Edit Modal */}
-      <InvoiceFormModal
-        open={Boolean(selectedInvoiceForEdit)}
-        invoiceToEdit={selectedInvoiceForEdit}
-        onClose={() => setSelectedInvoiceForEdit(null)}
-        onSuccess={(msg) => {
-          dispatch(showNotification({ message: msg, severity: 'success' }));
-          setSelectedInvoiceForEdit(null);
-          fetchInvoices();
-        }}
       />
 
       {/* Printable Invoice Modal */}

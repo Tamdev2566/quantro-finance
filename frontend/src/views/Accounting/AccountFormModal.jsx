@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { apiClient } from '../../api/client';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Card,
   Button,
   Grid,
   TextField,
   MenuItem,
   FormControlLabel,
-  Switch
+  Switch,
+  Typography,
+  Box
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ACCOUNT_CATEGORIES = {
   Assets: ['Cash', 'Bank', 'Accounts Receivable', 'Inventory', 'Fixed Assets', 'Prepaid Expenses', 'Input GST', 'Other Assets'],
@@ -89,24 +89,27 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="sm"
-      fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: { xs: '16px', sm: '20px' },
-          m: { xs: 1.5, sm: 2 }
-        }
-      }}
-    >
-      <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
-        {accountToEdit ? `Edit Account: ${accountToEdit.code}` : 'Create Chart of Accounts Code'}
-      </DialogTitle>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent dividers sx={{ p: { xs: 2, sm: 3 } }}>
-          <Grid container spacing={2}>
+    <Box sx={{ width: '100%', maxWidth: 1000, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+      <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={onClose}
+          sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
+        >
+          Back to Chart of Accounts
+        </Button>
+      </Box>
+
+      <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+          {accountToEdit ? `Edit Ledger Account: ${accountToEdit.code} - ${accountToEdit.name}` : 'New Chart of Accounts Entry'}
+        </Typography>
+        <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
+          Define general ledger hierarchy, asset/liability classifications, and financial statement mapping
+        </Typography>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2.5}>
             <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
@@ -123,7 +126,7 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
                 fullWidth
                 size="small"
                 label="Account Name"
-                placeholder="e.g. Secondary Bank Account"
+                placeholder="e.g. Corporate HDFC Current A/c"
                 {...register('name', { required: 'Name is required' })}
                 error={!!errors.name}
               />
@@ -133,7 +136,7 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
                 select
                 fullWidth
                 size="small"
-                label="Account Type"
+                label="Account Classification (Type)"
                 disabled={Boolean(accountToEdit?.isSystem)}
                 {...register('type', { required: true })}
               >
@@ -149,7 +152,7 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
                 select
                 fullWidth
                 size="small"
-                label="Account Category"
+                label="Sub-Category"
                 disabled={Boolean(accountToEdit?.isSystem)}
                 {...register('category', { required: true })}
               >
@@ -164,7 +167,8 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
               <TextField
                 fullWidth
                 size="small"
-                label="Description"
+                label="Account Purpose & Description"
+                placeholder="Internal audit and accounting description..."
                 {...register('description')}
               />
             </Grid>
@@ -175,6 +179,7 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
                   size="small"
                   type="number"
                   label="Opening Balance (₹)"
+                  placeholder="0.00"
                   inputProps={{ step: 0.01 }}
                   {...register('openingBalance', { valueAsNumber: true })}
                 />
@@ -182,21 +187,22 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
             )}
             <Grid item xs={12} sm={6}>
               <FormControlLabel
-                control={<Switch defaultChecked {...register('isActive')} />}
-                label="Account Active"
+                control={<Switch defaultChecked {...register('isActive')} color="success" />}
+                label={<Typography variant="body2" sx={{ fontWeight: 600 }}>Account Active & Posting Enabled</Typography>}
               />
             </Grid>
           </Grid>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={onClose} color="inherit">
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained" disabled={loading}>
-            {loading ? 'Saving...' : 'Save Account'}
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4, pt: 3, borderTop: '1px solid #f1f5f9' }}>
+            <Button onClick={onClose} color="inherit" sx={{ borderRadius: '4px' }}>
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained" disabled={loading} sx={{ bgcolor: '#e5a93c', borderRadius: '4px', px: 4, fontWeight: 700 }}>
+              {loading ? 'Saving...' : 'Save Account'}
+            </Button>
+          </Box>
+        </form>
+      </Card>
+    </Box>
   );
 }

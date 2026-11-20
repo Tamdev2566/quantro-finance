@@ -104,7 +104,7 @@ export default function AccountsView() {
           <Chip
             label={t}
             size="small"
-            sx={{ bgcolor: `${color}15`, color, fontWeight: 700, fontSize: '0.72rem', borderRadius: '8px' }}
+            sx={{ bgcolor: `${color}15`, color, fontWeight: 700, fontSize: '0.72rem', borderRadius: '4px' }}
           />
         );
       }
@@ -158,6 +158,23 @@ export default function AccountsView() {
       )
     }
   ];
+
+  // Full-Screen Account Form View
+  if (openModal) {
+    return (
+      <AccountFormModal
+        open={true}
+        accountToEdit={accountToEdit}
+        onClose={() => { setOpenModal(false); setAccountToEdit(null); }}
+        onSuccess={(msg) => {
+          dispatch(showNotification({ message: msg, severity: 'success' }));
+          setOpenModal(false);
+          setAccountToEdit(null);
+          fetchAccounts();
+        }}
+      />
+    );
+  }
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>

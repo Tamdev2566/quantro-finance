@@ -4,29 +4,25 @@ import { apiClient } from '../../api/client';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Box,
+  Card,
   Button,
   Grid,
   TextField,
   MenuItem,
   Typography,
-  Box,
   IconButton,
   Table,
   TableHead,
   TableBody,
   TableRow,
-  TableCell,
-  Divider,
-  Alert
+  TableCell
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function JournalFormModal({ open, onClose, onSuccess }) {
+export default function JournalFormModal({ onClose, onSuccess }) {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -51,12 +47,10 @@ export default function JournalFormModal({ open, onClose, onSuccess }) {
   const watchedLines = watch('lines') || [];
 
   useEffect(() => {
-    if (open) {
-      apiClient.getAccounts().then((res) => {
-        setAccounts(res.data?.filter((a) => a.isActive) || []);
-      });
-    }
-  }, [open]);
+    apiClient.getAccounts().then((res) => {
+      setAccounts(res.data?.filter((a) => a.isActive) || []);
+    }).catch(console.error);
+  }, []);
 
   let totalDebit = 0;
   let totalCredit = 0;
@@ -90,7 +84,6 @@ export default function JournalFormModal({ open, onClose, onSuccess }) {
       });
 
       onSuccess('Journal entry posted successfully to General Ledger!');
-      onClose();
     } catch (err) {
       alert(err.message);
     } finally {
@@ -99,18 +92,28 @@ export default function JournalFormModal({ open, onClose, onSuccess }) {
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="lg"
-      fullWidth
-      PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
-    >
-      <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>
-        Create Double-Entry Journal Entry
-      </DialogTitle>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent dividers sx={{ p: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1100, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+      <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={onClose}
+          sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
+        >
+          Back to Journal Entries
+        </Button>
+      </Box>
+
+      <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+            Create Double-Entry Journal Entry
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+            Post a balanced manual journal voucher directly to the General Ledger. Total Debits must equal Total Credits.
+          </Typography>
+        </Box>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2.5} sx={{ mb: 3 }}>
             <Grid item xs={12} sm={3}>
               <Controller
@@ -170,6 +173,7 @@ export default function JournalFormModal({ open, onClose, onSuccess }) {
                 fullWidth
                 size="small"
                 label="Entry Description"
+                placeholder="e.g. Monthly rent adjustment"
                 {...register('description', { required: true })}
               />
             </Grid>
@@ -247,14 +251,14 @@ export default function JournalFormModal({ open, onClose, onSuccess }) {
           <Button
             size="small"
             startIcon={<AddIcon />}
-            onClick={() => append({ accountCode: '1010', debit: 0, credit: 0, description: '' })}
-            sx={{ mb: 2 }}
+            onClick={() => append({ accountCode: '', debit: 0, credit: 0, description: '' })}
+            sx={{ mb: 2, borderRadius: '4px' }}
           >
             Add Journal Line
           </Button>
 
           {/* Balance Verification Box */}
-          <Box sx={{ p: 2, backgroundColor: isBalanced ? '#ecfdf5' : '#fef2f2', borderRadius: 2, border: `1px solid ${isBalanced ? '#a7f3d0' : '#fecaca'}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ p: 2, backgroundColor: isBalanced ? '#ecfdf5' : '#fef2f2', borderRadius: '4px', border: `1px solid ${isBalanced ? '#a7f3d0' : '#fecaca'}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Box>
               <Typography variant="body2" sx={{ fontWeight: 700, color: isBalanced ? '#065f46' : '#991b1b' }}>
                 {isBalanced ? '✓ Balanced: Total Debits equal Total Credits' : `⚠ Unbalanced by ₹${diff.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`}
@@ -271,16 +275,28 @@ export default function JournalFormModal({ open, onClose, onSuccess }) {
               </Box>
             </Box>
           </Box>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={onClose} color="inherit">
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained" disabled={!isBalanced || loading}>
-            {loading ? 'Posting...' : 'Post Journal Entry'}
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+
+          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+            <Button onClick={onClose} color="inherit" sx={{ borderRadius: '4px' }}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!isBalanced || loading}
+              sx={{
+                bgcolor: '#e5a93c',
+                color: '#000000',
+                fontWeight: 700,
+                borderRadius: '4px',
+                '&:hover': { bgcolor: '#d49b28' }
+              }}
+            >
+              {loading ? 'Posting...' : 'Post Journal Entry'}
+            </Button>
+          </Box>
+        </form>
+      </Card>
+    </Box>
   );
 }

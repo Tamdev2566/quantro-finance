@@ -7,10 +7,7 @@ import {
   Box,
   Typography,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Card,
   Grid,
   TextField,
   Chip,
@@ -21,13 +18,14 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/EditOutlined';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function VendorsView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingVendor, setEditingVendor] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -71,7 +69,7 @@ export default function VendorsView() {
       address: '',
       isActive: true
     });
-    setOpenModal(true);
+    setIsFormOpen(true);
   };
 
   const handleOpenEdit = (vendor) => {
@@ -87,7 +85,7 @@ export default function VendorsView() {
       address: vendor.address || '',
       isActive: vendor.isActive !== undefined ? vendor.isActive : true
     });
-    setOpenModal(true);
+    setIsFormOpen(true);
   };
 
   const handleSubmit = async (e) => {
@@ -98,9 +96,9 @@ export default function VendorsView() {
         dispatch(showNotification({ message: 'Vendor updated successfully', severity: 'success' }));
       } else {
         await apiClient.createVendor(formData);
-        dispatch(showNotification({ message: 'Vendor added successfully', severity: 'success' }));
+        dispatch(showNotification({ message: 'Vendor registered successfully', severity: 'success' }));
       }
-      setOpenModal(false);
+      setIsFormOpen(false);
       setEditingVendor(null);
       fetchVendors();
     } catch (err) {
@@ -120,11 +118,11 @@ export default function VendorsView() {
       )
     },
     {
-      header: 'Supplier Legal Name',
+      header: 'Vendor / Supplier Name',
       field: 'name',
       minWidth: 200,
       render: (row) => (
-        <Typography variant="body2" sx={{ fontWeight: 700, color: '#e5a93c' }}>
+        <Typography variant="body2" sx={{ fontWeight: 700, color: '#0f172a' }}>
           {row.name}
         </Typography>
       )
@@ -133,49 +131,39 @@ export default function VendorsView() {
     { header: 'GSTIN', field: 'gstin', width: 170 },
     { header: 'State', field: 'state', width: 140 },
     {
-      header: 'Payable Balance (₹)',
+      header: 'Payables Due (₹)',
       align: 'right',
       render: (row) => (
         <Typography
           variant="body2"
           sx={{
-            fontWeight: 800,
-            color: row.balance > 0 ? '#ef4444' : '#16a34a'
+            fontWeight: 700,
+            color: (row.currentBalance || 0) > 0 ? '#ef4444' : '#64748b'
           }}
         >
-          ₹{(row.balance !== undefined ? row.balance : 0).toLocaleString('en-IN')}
+          ₹{(row.currentBalance || 0).toLocaleString('en-IN')}
         </Typography>
       )
     },
     {
       header: 'Status',
-      align: 'center',
+      width: 110,
       render: (row) => (
         <Chip
-          label={row.isActive ? 'Active' : 'Inactive'}
           size="small"
-          color={row.isActive ? 'success' : 'default'}
-          sx={{ fontWeight: 700, fontSize: '0.72rem', borderRadius: '8px' }}
+          label={row.isActive !== false ? 'Active' : 'Inactive'}
+          color={row.isActive !== false ? 'success' : 'default'}
+          sx={{ fontWeight: 700, fontSize: '0.72rem', borderRadius: '4px' }}
         />
       )
     },
     {
       header: 'Actions',
-      align: 'center',
       width: 90,
+      align: 'center',
       render: (row) => (
         <Tooltip title="Edit Vendor">
-          <IconButton
-            size="small"
-            onClick={() => handleOpenEdit(row)}
-            sx={{
-              color: '#e5a93c',
-              border: '1px solid #fed7aa',
-              borderRadius: '8px',
-              p: '5px',
-              '&:hover': { bgcolor: '#fffbeb', borderColor: '#e5a93c' }
-            }}
-          >
+          <IconButton size="small" onClick={() => handleOpenEdit(row)} sx={{ color: '#64748b', '&:hover': { color: '#e5a93c' } }}>
             <EditIcon fontSize="small" />
           </IconButton>
         </Tooltip>
@@ -183,55 +171,30 @@ export default function VendorsView() {
     }
   ];
 
-  return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
-        <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
-            Vendor / Supplier Master Directory
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
-            Supplier tax registration, procurement ledger attribution, and current accounts payable
-          </Typography>
+  // Dedicated Full-Screen Create/Edit Screen
+  if (isFormOpen) {
+    return (
+      <Box sx={{ width: '100%', maxWidth: 1000, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => setIsFormOpen(false)}
+            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
+          >
+            Back to Vendors Master
+          </Button>
         </Box>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={handleOpenCreate}
-          sx={{
-            bgcolor: '#e5a93c',
-            borderRadius: '4px',
-            fontWeight: 700,
-            width: { xs: '100%', sm: 'auto' },
-            boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
-            '&:hover': { bgcolor: '#4b4bc0' }
-          }}
-        >
-          New Vendor
-        </Button>
-      </Box>
 
-      <DataTable
-        columns={columns}
-        rows={vendors}
-        loading={loading}
-        emptyMessage="No vendors registered."
-      />
+        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+            {editingVendor ? `Edit Vendor (${editingVendor.id})` : 'New Vendor / Supplier Master'}
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
+            Register supplier procurement details, GSTIN tax credentials, and jurisdiction mapping
+          </Typography>
 
-      {/* Vendor Modal */}
-      <Dialog
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
-      >
-        <DialogTitle sx={{ fontWeight: 800 }}>
-          {editingVendor ? `Edit Vendor (${editingVendor.id})` : 'Add Supplier / Vendor'}
-        </DialogTitle>
-        <form onSubmit={handleSubmit}>
-          <DialogContent dividers sx={{ p: 3 }}>
-            <Grid container spacing={2}>
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={2.5}>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -240,6 +203,7 @@ export default function VendorsView() {
                   size="small"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="e.g. Tata Steel Ltd"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -249,6 +213,7 @@ export default function VendorsView() {
                   size="small"
                   value={formData.contactPerson}
                   onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
+                  placeholder="e.g. Sanjay Sharma"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -256,8 +221,10 @@ export default function VendorsView() {
                   fullWidth
                   label="Email Address"
                   size="small"
+                  type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="e.g. billing@supplier.com"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -267,16 +234,17 @@ export default function VendorsView() {
                   size="small"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  placeholder="e.g. +91 98765 12345"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  label="GSTIN"
+                  label="GSTIN (15-digit Tax ID)"
                   size="small"
                   value={formData.gstin}
                   onChange={(e) => setFormData({ ...formData, gstin: e.target.value.toUpperCase() })}
-                  placeholder="27AABCA1234F1Z5"
+                  placeholder="27AABCT1234F1Z6"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -286,6 +254,7 @@ export default function VendorsView() {
                   size="small"
                   value={formData.state}
                   onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                  placeholder="e.g. Maharashtra"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -302,11 +271,12 @@ export default function VendorsView() {
                 <TextField
                   fullWidth
                   multiline
-                  rows={2}
-                  label="Vendor Address"
+                  rows={3}
+                  label="Vendor Business Address"
                   size="small"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  placeholder="Complete registered supplier address..."
                 />
               </Grid>
               {editingVendor && (
@@ -324,17 +294,55 @@ export default function VendorsView() {
                 </Grid>
               )}
             </Grid>
-          </DialogContent>
-          <DialogActions sx={{ px: 3, py: 2 }}>
-            <Button onClick={() => setOpenModal(false)} color="inherit">
-              Cancel
-            </Button>
-            <Button type="submit" variant="contained" sx={{ bgcolor: '#e5a93c', borderRadius: '4px' }}>
-              {editingVendor ? 'Update Vendor' : 'Save Vendor'}
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4, pt: 3, borderTop: '1px solid #f1f5f9' }}>
+              <Button onClick={() => setIsFormOpen(false)} color="inherit" sx={{ borderRadius: '4px' }}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="contained" sx={{ bgcolor: '#e5a93c', borderRadius: '4px', px: 4, fontWeight: 700 }}>
+                {editingVendor ? 'Update Vendor' : 'Save Vendor Master'}
+              </Button>
+            </Box>
+          </form>
+        </Card>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+            Vendors Master
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+            Supplier tax registration, procurement ledger attribution, and current accounts payable
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleOpenCreate}
+          sx={{
+            bgcolor: '#e5a93c',
+            borderRadius: '4px',
+            fontWeight: 700,
+            width: { xs: '100%', sm: 'auto' },
+            boxShadow: '0 4px 14px rgba(229, 169, 60, 0.3)',
+            '&:hover': { bgcolor: '#b88019' }
+          }}
+        >
+          New Vendor
+        </Button>
+      </Box>
+
+      <DataTable
+        columns={columns}
+        rows={vendors}
+        loading={loading}
+        emptyMessage="No vendors registered."
+      />
     </Box>
   );
 }

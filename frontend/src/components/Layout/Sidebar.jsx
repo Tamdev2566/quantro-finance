@@ -301,7 +301,7 @@ export default function Sidebar({ onItemClick }) {
             {renderSubItem('Sales Invoices', '/invoices')}
             {renderSubItem('Customer Receipts', '/payments')}
             {renderSubItem('Credit Notes', '/credit-notes')}
-            {renderSubItem('Customers Directory', '/customers')}
+            {renderSubItem('Customer Master', '/customers')}
             {renderSubItem('Receivables Aging', '/receivables-aging')}
           </List>
         </Collapse>

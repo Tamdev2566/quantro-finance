@@ -53,6 +53,7 @@ export default function App() {
           <Route path="/payments" element={<PaymentsView />} />
           <Route path="/credit-notes" element={<CreditNotesView />} />
           <Route path="/customers" element={<CustomersView />} />
+          <Route path="/customer-master" element={<CustomersView />} />
           <Route path="/receivables-aging" element={<AgingReportsView defaultType="receivables" />} />
 
           {/* Purchases & Payables */}

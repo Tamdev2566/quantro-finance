@@ -9,16 +9,14 @@ import {
   Box,
   Typography,
   Button,
-  Chip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Card,
   Grid,
   TextField,
-  MenuItem
+  MenuItem,
+  Chip
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function CreditNotesView() {
   const dispatch = useDispatch();
@@ -28,29 +26,19 @@ export default function CreditNotesView() {
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
 
-  // Form state
+  // Form State
   const [invoiceId, setInvoiceId] = useState('');
   const [noteDate, setNoteDate] = useState(new Date().toISOString().slice(0, 10));
   const [reason, setReason] = useState('Sales Return');
-  const [itemDesc, setItemDesc] = useState('');
   const [amount, setAmount] = useState('');
   const [taxRate, setTaxRate] = useState(18);
+  const [itemDesc, setItemDesc] = useState('');
 
   const fetchCreditNotes = async () => {
     try {
       setLoading(true);
-      const [cnRes, invRes] = await Promise.all([
-        apiClient.getCreditNotes(),
-        apiClient.getInvoices()
-      ]);
-      setCreditNotes(cnRes.data || []);
-      const eligible = (invRes.data || []).filter(
-        (i) => i.status === 'Posted' || i.status === 'Partially Paid' || i.status === 'Paid'
-      );
-      setInvoices(eligible);
-      if (eligible.length > 0 && !invoiceId) {
-        setInvoiceId(eligible[0].id);
-      }
+      const res = await apiClient.getCreditNotes();
+      setCreditNotes(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
     } finally {
@@ -58,148 +46,142 @@ export default function CreditNotesView() {
     }
   };
 
+  const fetchInvoices = async () => {
+    try {
+      const res = await apiClient.getInvoices();
+      setInvoices((res.data || []).filter((i) => i.status === 'Posted' || i.status === 'Paid' || i.status === 'Partially Paid'));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchCreditNotes();
+    fetchInvoices();
   }, [refreshKey]);
+
+  const handleOpenCreate = () => {
+    setInvoiceId('');
+    setNoteDate(new Date().toISOString().slice(0, 10));
+    setReason('Sales Return');
+    setAmount('');
+    setTaxRate(18);
+    setItemDesc('');
+    setOpenModal(true);
+  };
 
   const handleCreate = async () => {
     if (!invoiceId || !amount || parseFloat(amount) <= 0) {
-      alert('Please select an invoice and enter a valid taxable amount');
+      alert('Please select an invoice and enter a valid credit amount');
       return;
     }
+
     try {
       await apiClient.createCreditNote({
         invoiceId,
-        date: noteDate,
+        noteDate,
         reason,
-        items: [
-          {
-            description: itemDesc,
-            quantity: 1,
-            unitPrice: parseFloat(amount),
-            taxRate: Number(taxRate)
-          }
-        ]
+        amount: parseFloat(amount),
+        taxRate: parseFloat(taxRate),
+        itemDescription: itemDesc
       });
-      dispatch(showNotification({ message: 'Credit Note issued & double-entry revenue reversed!', severity: 'success' }));
+      dispatch(showNotification({ message: 'Credit Note issued & double-entry ledger posted!', severity: 'success' }));
       setOpenModal(false);
-      setAmount('');
       fetchCreditNotes();
     } catch (err) {
-      dispatch(showNotification({ message: err.message, severity: 'error' }));
+      alert(err.message);
     }
   };
 
   const columns = [
     {
       header: 'Credit Note #',
-      field: 'creditNoteNumber',
-      width: 140,
+      field: 'noteNumber',
+      width: 150,
       render: (row) => (
-        <Typography variant="body2" sx={{ fontWeight: 700, color: '#ef4444' }}>
-          {row.creditNoteNumber}
+        <Typography variant="body2" sx={{ fontWeight: 700, color: '#e5a93c' }}>
+          {row.noteNumber}
         </Typography>
       )
     },
-    { header: 'Invoice #', field: 'invoiceNumber', width: 140 },
-    { header: 'Customer', field: 'customerName', minWidth: 170 },
-    { header: 'Date', field: 'date', width: 110 },
-    { header: 'Reason', field: 'reason', width: 150 },
+    { header: 'Date', field: 'noteDate', width: 120 },
+    { header: 'Original Invoice #', field: 'invoiceNumber', width: 160 },
+    { header: 'Customer', field: 'customerName', minWidth: 200 },
+    { header: 'Reason', field: 'reason', width: 170 },
     {
       header: 'Taxable (₹)',
       align: 'right',
-      render: (row) => `₹${(row.taxableTotal || 0).toLocaleString('en-IN')}`
+      render: (row) => `₹${(row.subtotal || 0).toLocaleString('en-IN')}`
     },
     {
-      header: 'GST Total (₹)',
+      header: 'Tax Reversal (₹)',
       align: 'right',
-      render: (row) => `₹${(row.totalTax || 0).toLocaleString('en-IN')}`
+      render: (row) => `₹${(row.taxAmount || 0).toLocaleString('en-IN')}`
     },
     {
-      header: 'Grand Total (₹)',
+      header: 'Total Credit (₹)',
       align: 'right',
       render: (row) => (
         <Typography variant="body2" sx={{ fontWeight: 800, color: '#ef4444' }}>
-          ₹{(row.grandTotal || 0).toLocaleString('en-IN')}
+          -₹{(row.grandTotal || 0).toLocaleString('en-IN')}
         </Typography>
       )
     },
     {
       header: 'Status',
-      align: 'center',
+      width: 110,
       render: (row) => (
         <Chip
-          label={row.status}
           size="small"
-          color="secondary"
-          sx={{ fontWeight: 700, fontSize: '0.72rem', borderRadius: '8px' }}
+          label={row.status || 'Posted'}
+          color={row.status === 'Draft' ? 'default' : 'success'}
+          sx={{ fontWeight: 700, fontSize: '0.72rem', borderRadius: '4px' }}
         />
       )
     }
   ];
 
-  return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
-        <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
-            Credit Notes (Receivable Reductions)
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
-            Sales returns, dispute resolutions, and automated reversal of revenues and tax liabilities
-          </Typography>
+  // Dedicated Full-Screen Create Credit Note Screen
+  if (openModal) {
+    return (
+      <Box sx={{ width: '100%', maxWidth: 1000, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => setOpenModal(false)}
+            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
+          >
+            Back to Credit Notes
+          </Button>
         </Box>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenModal(true)}
-          sx={{
-            bgcolor: '#e5a93c',
-            borderRadius: '4px',
-            fontWeight: 700,
-            width: { xs: '100%', sm: 'auto' },
-            boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
-            '&:hover': { bgcolor: '#4b4bc0' }
-          }}
-        >
-          Issue Credit Note
-        </Button>
-      </Box>
 
-      <DataTable
-        columns={columns}
-        rows={creditNotes}
-        loading={loading}
-        emptyMessage="No credit notes issued."
-      />
+        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+            Issue Sales Credit Note
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
+            Adjust billed receivables, account for sales returns, and automatically reverse GST liability
+          </Typography>
 
-      {/* Credit Note Dialog */}
-      <Dialog
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
-      >
-        <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>
-          Issue Sales Credit Note
-        </DialogTitle>
-        <DialogContent dividers sx={{ p: 3 }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2.5}>
             <Grid item xs={12} sm={8}>
               <TextField
                 select
                 fullWidth
-                label="Select Eligible Invoice"
+                label="Select Eligible Posted Invoice"
                 size="small"
                 value={invoiceId}
                 onChange={(e) => setInvoiceId(e.target.value)}
               >
-                {invoices.map((inv) => (
-                  <MenuItem key={inv.id} value={inv.id}>
-                    {inv.invoiceNumber} - {inv.customerName} (₹{inv.grandTotal?.toLocaleString('en-IN')})
-                  </MenuItem>
-                ))}
+                {invoices.length === 0 ? (
+                  <MenuItem value="" disabled>No posted invoices found</MenuItem>
+                ) : (
+                  invoices.map((inv) => (
+                    <MenuItem key={inv.id} value={inv.id}>
+                      {inv.invoiceNumber} - {inv.customerName} (₹{inv.grandTotal?.toLocaleString('en-IN')})
+                    </MenuItem>
+                  ))
+                )}
               </TextField>
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -224,10 +206,10 @@ export default function CreditNotesView() {
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               >
-                <MenuItem value="Sales Return">Sales Return</MenuItem>
-                <MenuItem value="Post-sale Discount">Post-sale Discount</MenuItem>
+                <MenuItem value="Sales Return">Sales Return / Goods Returned</MenuItem>
+                <MenuItem value="Post-sale Discount">Post-sale Volume Rebate / Discount</MenuItem>
                 <MenuItem value="Invoice Error Correction">Invoice Error Correction</MenuItem>
-                <MenuItem value="Service Cancellation">Service Cancellation</MenuItem>
+                <MenuItem value="Service Cancellation">Service Cancellation / Partial Delivery</MenuItem>
               </TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -242,17 +224,18 @@ export default function CreditNotesView() {
                 <MenuItem value={0}>0% (Exempt)</MenuItem>
                 <MenuItem value={5}>5%</MenuItem>
                 <MenuItem value={12}>12%</MenuItem>
-                <MenuItem value={18}>18%</MenuItem>
+                <MenuItem value={18}>18% (Standard)</MenuItem>
                 <MenuItem value={28}>28%</MenuItem>
               </TextField>
             </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Item / Service Description"
+                label="Adjustment Narration / Description"
                 size="small"
                 value={itemDesc}
                 onChange={(e) => setItemDesc(e.target.value)}
+                placeholder="Reason details and credit note narration..."
               />
             </Grid>
             <Grid item xs={12}>
@@ -265,19 +248,58 @@ export default function CreditNotesView() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
+                inputProps={{ min: 0.01, step: 0.01 }}
               />
             </Grid>
           </Grid>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={() => setOpenModal(false)} color="inherit">
-            Cancel
-          </Button>
-          <Button variant="contained" onClick={handleCreate} sx={{ bgcolor: '#e5a93c', borderRadius: '4px' }}>
-            Post Credit Note
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4, pt: 3, borderTop: '1px solid #f1f5f9' }}>
+            <Button onClick={() => setOpenModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={handleCreate} sx={{ bgcolor: '#e5a93c', borderRadius: '4px', px: 4, fontWeight: 700 }}>
+              Post Credit Note
+            </Button>
+          </Box>
+        </Card>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+            Credit Notes (Receivable Reductions)
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+            Sales returns, dispute resolutions, and automated reversal of revenues and tax liabilities
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleOpenCreate}
+          sx={{
+            bgcolor: '#e5a93c',
+            borderRadius: '4px',
+            fontWeight: 700,
+            width: { xs: '100%', sm: 'auto' },
+            boxShadow: '0 4px 14px rgba(229, 169, 60, 0.3)',
+            '&:hover': { bgcolor: '#b88019' }
+          }}
+        >
+          Issue Credit Note
+        </Button>
+      </Box>
+
+      <DataTable
+        columns={columns}
+        rows={creditNotes}
+        loading={loading}
+        emptyMessage="No credit notes issued."
+      />
     </Box>
   );
 }

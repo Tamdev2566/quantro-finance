@@ -10,16 +10,13 @@ import {
   Box,
   Typography,
   Button,
-  Chip,
-  IconButton,
-  Tooltip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Card,
   Grid,
   TextField,
   MenuItem,
+  Chip,
+  IconButton,
+  Tooltip,
   Table,
   TableHead,
   TableBody,
@@ -28,6 +25,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import UndoIcon from '@mui/icons-material/Undo';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function VendorPaymentsView() {
   const dispatch = useDispatch();
@@ -36,33 +34,24 @@ export default function VendorPaymentsView() {
   const [vendors, setVendors] = useState([]);
   const [bankAccounts, setBankAccounts] = useState([]);
   const [unpaidBills, setUnpaidBills] = useState([]);
+  const [allocations, setAllocations] = useState({});
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [confirmReverse, setConfirmReverse] = useState(null);
 
-  // Form state
+  // Form State
   const [selectedVendorId, setSelectedVendorId] = useState('');
   const [paymentDate, setPaymentDate] = useState(new Date().toISOString().slice(0, 10));
   const [paymentMethod, setPaymentMethod] = useState('Bank Transfer');
   const [bankAccountId, setBankAccountId] = useState('');
   const [amount, setAmount] = useState('');
   const [reference, setReference] = useState('');
-  const [allocations, setAllocations] = useState({});
 
   const fetchPayments = async () => {
     try {
       setLoading(true);
-      const [pRes, vRes, bRes] = await Promise.all([
-        apiClient.getVendorPayments(),
-        apiClient.getVendors(),
-        apiClient.getBankAccounts()
-      ]);
-      setPayments(pRes.data || []);
-      setVendors(vRes.data || []);
-      setBankAccounts(bRes.data || []);
-      if (vRes.data?.length > 0 && !selectedVendorId) {
-        setSelectedVendorId(vRes.data[0].id);
-      }
+      const res = await apiClient.getVendorPayments();
+      setPayments(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
     } finally {
@@ -70,38 +59,71 @@ export default function VendorPaymentsView() {
     }
   };
 
+  const fetchDependencies = async () => {
+    try {
+      const [vRes, bRes] = await Promise.all([apiClient.getVendors(), apiClient.getBankAccounts()]);
+      setVendors(vRes.data || []);
+      setBankAccounts(bRes.data || []);
+      if (bRes.data?.length > 0) setBankAccountId(bRes.data[0].id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchPayments();
+    fetchDependencies();
   }, [refreshKey]);
 
   useEffect(() => {
     if (selectedVendorId) {
       apiClient.getVendorBills().then((res) => {
-        const vBills = (res.data || []).filter(
+        const matching = (res.data || []).filter(
           (b) => b.vendorId === selectedVendorId && (b.status === 'Posted' || b.status === 'Partially Paid') && b.outstandingAmount > 0
         );
-        setUnpaidBills(vBills);
-        const initial = {};
-        vBills.forEach((b) => {
-          initial[b.id] = 0;
-        });
-        setAllocations(initial);
-      });
-    }
-  }, [selectedVendorId]);
+        setUnpaidBills(matching);
 
-  const handlePay = async (e) => {
-    e.preventDefault();
-    if (!amount || parseFloat(amount) <= 0) {
-      dispatch(showNotification({ message: 'Enter a valid payment amount', severity: 'error' }));
+        // Auto-allocate
+        const alloc = {};
+        let rem = parseFloat(amount || 0);
+        matching.forEach((b) => {
+          if (rem > 0) {
+            const take = Math.min(rem, b.outstandingAmount);
+            alloc[b.id] = take;
+            rem -= take;
+          } else {
+            alloc[b.id] = 0;
+          }
+        });
+        setAllocations(alloc);
+      });
+    } else {
+      setUnpaidBills([]);
+      setAllocations({});
+    }
+  }, [selectedVendorId, amount]);
+
+  const handleOpenCreate = () => {
+    setSelectedVendorId(vendors[0]?.id || '');
+    setPaymentDate(new Date().toISOString().slice(0, 10));
+    setPaymentMethod('Bank Transfer');
+    setBankAccountId(bankAccounts[0]?.id || '');
+    setAmount('');
+    setReference('');
+    setOpenModal(true);
+  };
+
+  const handlePay = async () => {
+    if (!selectedVendorId || !amount || parseFloat(amount) <= 0 || !bankAccountId) {
+      alert('Please select a vendor, enter amount, and select payment bank account.');
       return;
     }
 
-    const billAllocations = Object.entries(allocations)
-      .filter(([_, amt]) => parseFloat(amt) > 0)
-      .map(([billId, amt]) => ({ billId, amount: parseFloat(amt) }));
-
     try {
+      const allocPayload = Object.entries(allocations)
+        .filter(([_, amt]) => parseFloat(amt) > 0)
+        .map(([billId, amt]) => ({ billId, amount: parseFloat(amt) }));
+
       await apiClient.createVendorPayment({
         vendorId: selectedVendorId,
         paymentDate,
@@ -109,66 +131,68 @@ export default function VendorPaymentsView() {
         bankAccountId,
         amount: parseFloat(amount),
         reference,
-        allocations: billAllocations
+        allocations: allocPayload
       });
-      dispatch(showNotification({ message: 'Vendor payment recorded and AP reduced successfully', severity: 'success' }));
+
+      dispatch(showNotification({ message: 'Vendor payment disbursed and Accounts Payable debited!', severity: 'success' }));
       setOpenModal(false);
       fetchPayments();
     } catch (err) {
-      dispatch(showNotification({ message: err.message, severity: 'error' }));
+      alert(err.message);
     }
   };
 
   const handleReverse = async () => {
     if (!confirmReverse) return;
     try {
-      await apiClient.reverseVendorPayment(confirmReverse.id, { reason: 'Disbursement reversal' });
-      dispatch(showNotification({ message: `Vendor payment ${confirmReverse.paymentNumber} reversed`, severity: 'success' }));
+      await apiClient.reverseVendorPayment(confirmReverse.id, { reason: 'Controller disbursement void' });
+      dispatch(showNotification({ message: 'Vendor disbursement reversed successfully!', severity: 'info' }));
       setConfirmReverse(null);
       fetchPayments();
     } catch (err) {
-      dispatch(showNotification({ message: err.message, severity: 'error' }));
+      alert(err.message);
     }
   };
 
   const columns = [
     {
-      header: 'Disbursement #',
+      header: 'Payment #',
       field: 'paymentNumber',
-      width: 150,
+      width: 140,
       render: (row) => (
         <Typography variant="body2" sx={{ fontWeight: 700, color: '#e5a93c' }}>
           {row.paymentNumber}
         </Typography>
       )
     },
-    { header: 'Vendor', field: 'vendorName', minWidth: 170 },
-    { header: 'Date', field: 'paymentDate', width: 110 },
-    { header: 'Method', field: 'paymentMethod', width: 130 },
-    { header: 'Reference', field: 'reference', width: 130 },
+    { header: 'Payment Date', field: 'paymentDate', width: 130 },
+    { header: 'Vendor / Payee', field: 'vendorName', minWidth: 200 },
+    { header: 'Method', field: 'paymentMethod', width: 140 },
+    { header: 'Reference', field: 'reference', width: 150 },
     {
-      header: 'Amount Paid (₹)',
+      header: 'Disbursed (₹)',
       align: 'right',
       render: (row) => (
-        <Typography variant="body2" sx={{ fontWeight: 800, color: '#ef4444' }}>
+        <Typography variant="body2" sx={{ fontWeight: 700, color: '#ef4444' }}>
           ₹{(row.amount || 0).toLocaleString('en-IN')}
         </Typography>
       )
     },
     {
       header: 'Status',
-      align: 'center',
+      width: 120,
       render: (row) => (
         <Chip
-          label={row.status}
           size="small"
-          color={row.status === 'Posted' ? 'success' : 'error'}
-          sx={{ fontWeight: 700, fontSize: '0.72rem', borderRadius: '8px' }}
+          label={row.status}
+          color={row.status === 'Reversed' ? 'error' : 'success'}
+          sx={{ fontWeight: 700, fontSize: '0.72rem', borderRadius: '4px' }}
         />
       )
     },
     {
       header: 'Actions',
+      width: 90,
       align: 'center',
       render: (row) => {
         if (row.status === 'Reversed') return '—';
@@ -183,53 +207,28 @@ export default function VendorPaymentsView() {
     }
   ];
 
-  return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
-        <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
-            Vendor Payments & Disbursements
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
-            Pay supplier bills, manage Accounts Payable reductions, and record bank ledger debits
-          </Typography>
+  // Dedicated Full-Screen Vendor Payment Screen
+  if (openModal) {
+    return (
+      <Box sx={{ width: '100%', maxWidth: 1100, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => setOpenModal(false)}
+            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
+          >
+            Back to Vendor Payments
+          </Button>
         </Box>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenModal(true)}
-          sx={{
-            bgcolor: '#e5a93c',
-            borderRadius: '4px',
-            fontWeight: 700,
-            width: { xs: '100%', sm: 'auto' },
-            boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
-            '&:hover': { bgcolor: '#4b4bc0' }
-          }}
-        >
-          Pay Vendor
-        </Button>
-      </Box>
 
-      <DataTable
-        columns={columns}
-        rows={payments}
-        loading={loading}
-        emptyMessage="No vendor payments found."
-      />
+        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+            Record Vendor Disbursement
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
+            Disburse supplier payment, allocate against unpaid vendor bills, and credit banking ledger
+          </Typography>
 
-      {/* Pay Vendor Modal */}
-      <Dialog
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        maxWidth="md"
-        fullWidth
-        PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
-      >
-        <DialogTitle sx={{ fontWeight: 800, fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>
-          Record Vendor Payment
-        </DialogTitle>
-        <DialogContent dividers sx={{ p: 3 }}>
           <Grid container spacing={2.5} sx={{ mb: 3 }}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -242,7 +241,7 @@ export default function VendorPaymentsView() {
               >
                 {vendors.map((v) => (
                   <MenuItem key={v.id} value={v.id}>
-                    {v.name}
+                    {v.name} (Payable: ₹{(v.currentBalance || 0).toLocaleString('en-IN')})
                   </MenuItem>
                 ))}
               </TextField>
@@ -270,17 +269,17 @@ export default function VendorPaymentsView() {
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
               >
-                <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
-                <MenuItem value="UPI">UPI</MenuItem>
-                <MenuItem value="Cheque">Cheque</MenuItem>
-                <MenuItem value="Cash">Cash</MenuItem>
+                <MenuItem value="Bank Transfer">Bank Transfer / NEFT</MenuItem>
+                <MenuItem value="UPI">UPI / Instant Transfer</MenuItem>
+                <MenuItem value="Cheque">Corporate Cheque</MenuItem>
+                <MenuItem value="Cash">Cash Disbursement</MenuItem>
               </TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 select
                 fullWidth
-                label="Paid From (Bank / Cash)"
+                label="Paid From (Bank / Cash Account)"
                 size="small"
                 value={bankAccountId}
                 onChange={(e) => setBankAccountId(e.target.value)}
@@ -301,6 +300,7 @@ export default function VendorPaymentsView() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
+                inputProps={{ min: 0.01, step: 0.01 }}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -315,30 +315,30 @@ export default function VendorPaymentsView() {
             </Grid>
           </Grid>
 
-          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1.5 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1.5, color: '#0f172a' }}>
             Allocate to Outstanding Vendor Bills:
           </Typography>
 
           {unpaidBills.length === 0 ? (
             <Typography variant="body2" sx={{ color: '#94a3b8', fontStyle: 'italic', py: 2 }}>
-              No unpaid bills found for this vendor. Amount will be recorded as unallocated advance.
+              No unpaid bills found for this vendor. Amount will be recorded as unallocated supplier advance.
             </Typography>
           ) : (
-            <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', mb: 2 }}>
-              <Table size="small" sx={{ minWidth: 550, border: '1px solid #f1f5f9', borderRadius: '4px' }}>
-                <TableHead sx={{ bgcolor: '#f8fafc' }}>
+            <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', mb: 3 }}>
+              <Table size="small" sx={{ minWidth: 600, border: '1px solid #f1f5f9', borderRadius: '4px' }}>
+                <TableHead sx={{ bgcolor: '#12131c' }}>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Bill #</TableCell>
-                    <TableCell sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Date</TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Bill Total (₹)</TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Due (₹)</TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 700, fontSize: '0.78rem' }}>Allocate Payment (₹)</TableCell>
+                    <TableCell sx={{ color: '#ffffff', fontWeight: 700 }}>Bill #</TableCell>
+                    <TableCell sx={{ color: '#ffffff', fontWeight: 700 }}>Bill Date</TableCell>
+                    <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700 }}>Bill Total (₹)</TableCell>
+                    <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700 }}>Due (₹)</TableCell>
+                    <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700, width: 150 }}>Allocate (₹)</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {unpaidBills.map((b) => (
                     <TableRow key={b.id}>
-                      <TableCell sx={{ fontWeight: 600 }}>{b.billNumber}</TableCell>
+                      <TableCell sx={{ fontWeight: 600, color: '#e5a93c' }}>{b.billNumber}</TableCell>
                       <TableCell>{b.billDate}</TableCell>
                       <TableCell align="right">₹{b.grandTotal.toLocaleString('en-IN')}</TableCell>
                       <TableCell align="right" sx={{ color: '#ef4444', fontWeight: 700 }}>
@@ -360,16 +360,54 @@ export default function VendorPaymentsView() {
               </Table>
             </Box>
           )}
-        </DialogContent>
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={() => setOpenModal(false)} color="inherit">
-            Cancel
-          </Button>
-          <Button variant="contained" onClick={handlePay} sx={{ bgcolor: '#e5a93c', borderRadius: '4px' }}>
-            Disburse Payment
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4, pt: 3, borderTop: '1px solid #f1f5f9' }}>
+            <Button onClick={() => setOpenModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={handlePay} sx={{ bgcolor: '#e5a93c', borderRadius: '4px', px: 4, fontWeight: 700 }}>
+              Disburse Payment
+            </Button>
+          </Box>
+        </Card>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+            Vendor Payments & Disbursements
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+            Pay supplier bills, manage Accounts Payable reductions, and record bank ledger debits
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleOpenCreate}
+          sx={{
+            bgcolor: '#e5a93c',
+            borderRadius: '4px',
+            fontWeight: 700,
+            width: { xs: '100%', sm: 'auto' },
+            boxShadow: '0 4px 14px rgba(229, 169, 60, 0.3)',
+            '&:hover': { bgcolor: '#b88019' }
+          }}
+        >
+          Pay Vendor
+        </Button>
+      </Box>
+
+      <DataTable
+        columns={columns}
+        rows={payments}
+        loading={loading}
+        emptyMessage="No vendor payments found."
+      />
 
       <ConfirmDialog
         open={Boolean(confirmReverse)}

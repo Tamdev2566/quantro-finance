@@ -4,10 +4,7 @@ import { apiClient } from '../../api/client';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Card,
   Button,
   Grid,
   TextField,
@@ -18,6 +15,7 @@ import {
   Box,
   Divider
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function ExpenseFormModal({ open, onClose, onSuccess }) {
   const [categories, setCategories] = useState([]);
@@ -51,13 +49,14 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
   const watchedTaxInclusive = watch('isTaxInclusive');
 
   useEffect(() => {
-    if (open) {
-      Promise.all([apiClient.getExpenseCategories(), apiClient.getBankAccounts()]).then(([cRes, bRes]) => {
-        setCategories(cRes.data || []);
-        setBankAccounts(bRes.data || []);
-      });
-    }
-  }, [open]);
+    Promise.all([apiClient.getExpenseCategories(), apiClient.getBankAccounts()]).then(([cRes, bRes]) => {
+      setCategories(cRes.data || []);
+      setBankAccounts(bRes.data || []);
+      if (bRes.data?.length > 0) {
+        setValue('bankAccountId', bRes.data[0].id);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const selected = categories.find((c) => c.name === watchedCategory);
@@ -96,10 +95,26 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle sx={{ fontWeight: 800 }}>Record Direct Operating Expense</DialogTitle>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent dividers sx={{ p: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1100, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+      <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={onClose}
+          sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
+        >
+          Back to Expenses
+        </Button>
+      </Box>
+
+      <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+          Record Operating Expense
+        </Typography>
+        <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
+          Log direct operational expenses, allocate department categories, and claim input GST
+        </Typography>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2.5} sx={{ mb: 2 }}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -143,18 +158,20 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
                 fullWidth
                 size="small"
                 label="Payee / Merchant"
-                placeholder="Vendor or payee..."
+                placeholder="Vendor or payee name..."
                 {...register('vendorName')}
               />
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
-                size="small"
+                required
                 type="number"
                 label="Amount (₹)"
+                size="small"
+                placeholder="0.00"
                 inputProps={{ min: 0.01, step: 0.01 }}
-                {...register('amount', { required: 'Amount is required' })}
+                {...register('amount', { required: true })}
                 error={!!errors.amount}
               />
             </Grid>
@@ -163,16 +180,51 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
                 select
                 fullWidth
                 size="small"
-                label="Applicable GST Rate"
+                label="GST Tax Rate (%)"
                 {...register('taxRate')}
               >
-                <MenuItem value={0}>0% (Exempt)</MenuItem>
+                <MenuItem value={0}>0% (Exempt / Nil)</MenuItem>
                 <MenuItem value={5}>5%</MenuItem>
                 <MenuItem value={12}>12%</MenuItem>
-                <MenuItem value={18}>18%</MenuItem>
+                <MenuItem value={18}>18% (Standard)</MenuItem>
                 <MenuItem value={28}>28%</MenuItem>
               </TextField>
             </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                fullWidth
+                type="number"
+                size="small"
+                label="Discount (₹)"
+                placeholder="0.00"
+                {...register('discount')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <TextField
+                fullWidth
+                size="small"
+                label="Expense Narration / Purpose"
+                placeholder="Business purpose, project, or travel details..."
+                {...register('description')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'center' }}>
+              <FormControlLabel
+                control={<Switch {...register('isTaxInclusive')} color="warning" />}
+                label={<Typography variant="body2" sx={{ fontWeight: 600 }}>Amount is Tax Inclusive</Typography>}
+              />
+            </Grid>
+          </Grid>
+
+          <Divider sx={{ my: 2.5 }} />
+
+          {/* Payment & Settlement Details */}
+          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1.5, color: '#0f172a' }}>
+            Payment & Settlement Mode:
+          </Typography>
+
+          <Grid container spacing={2.5} sx={{ mb: 2 }}>
             <Grid item xs={12} sm={4}>
               <TextField
                 select
@@ -181,18 +233,19 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
                 label="Payment Method"
                 {...register('paymentMethod')}
               >
-                <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
-                <MenuItem value="Card">Corporate Credit Card</MenuItem>
-                <MenuItem value="UPI">UPI</MenuItem>
-                <MenuItem value="Cash">Petty Cash</MenuItem>
+                <MenuItem value="Bank Transfer">Bank Transfer / Net Banking</MenuItem>
+                <MenuItem value="UPI / QR">UPI / Immediate Transfer</MenuItem>
+                <MenuItem value="Corporate Card">Corporate Credit / Debit Card</MenuItem>
+                <MenuItem value="Petty Cash">Petty Cash Voucher</MenuItem>
+                <MenuItem value="Cheque">Bank Cheque</MenuItem>
               </TextField>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
               <TextField
                 select
                 fullWidth
                 size="small"
-                label="Paid From Account"
+                label="Disbursed From (Bank / Cash Account)"
                 {...register('bankAccountId')}
               >
                 {bankAccounts.map((b) => (
@@ -202,73 +255,61 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
                 size="small"
-                label="Reference / Invoice / Receipt #"
+                label="Payment Ref / Cheque / UTR #"
+                placeholder="UTR, transaction ID..."
                 {...register('reference')}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                size="small"
-                label="Expense Description / Purpose"
-                {...register('description', { required: true })}
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={<Switch defaultChecked {...register('isItcEligible')} color="success" />}
+                label={<Typography variant="body2" sx={{ fontWeight: 600 }}>Eligible for Input Tax Credit (ITC)</Typography>}
               />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={6}>
               <FormControlLabel
-                control={<Switch {...register('isTaxInclusive')} />}
-                label="Tax Inclusive Price"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <FormControlLabel
-                control={<Switch defaultChecked {...register('isItcEligible')} />}
-                label="Eligible for Input Tax Credit"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <FormControlLabel
-                control={<Switch {...register('isInterState')} />}
-                label="Inter-State (IGST)"
+                control={<Switch {...register('isInterState')} color="warning" />}
+                label={<Typography variant="body2" sx={{ fontWeight: 600 }}>Inter-State Supplier (IGST)</Typography>}
               />
             </Grid>
           </Grid>
 
           {/* Tax breakdown summary box */}
-          <Box sx={{ p: 2, backgroundColor: '#f8fafc', borderRadius: 2, border: '1px solid #e2e8f0', mt: 2 }}>
+          <Box sx={{ p: 2.5, backgroundColor: '#f8fafc', borderRadius: '4px', border: '1px solid #e2e8f0', mt: 2 }}>
             <Grid container spacing={2}>
-              <Grid item xs={4}>
+              <Grid item xs={12} sm={4}>
                 <Typography variant="caption" sx={{ color: '#64748b' }}>Taxable Expense</Typography>
                 <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>₹{taxable.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</Typography>
               </Grid>
-              <Grid item xs={4}>
-                <Typography variant="caption" sx={{ color: '#64748b' }}>Input GST (ITC)</Typography>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#059669' }}>
+              <Grid item xs={12} sm={4}>
+                <Typography variant="caption" sx={{ color: '#64748b' }}>Input GST (ITC Credit)</Typography>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#10b981' }}>
                   ₹{tax.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                 </Typography>
               </Grid>
-              <Grid item xs={4}>
-                <Typography variant="caption" sx={{ color: '#64748b' }}>Total Payout</Typography>
-                <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#2563eb' }}>
+              <Grid item xs={12} sm={4}>
+                <Typography variant="caption" sx={{ color: '#64748b' }}>Total Cash Outflow</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 800, color: '#e5a93c' }}>
                   ₹{total.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                 </Typography>
               </Grid>
             </Grid>
           </Box>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={onClose} color="inherit">
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained" disabled={loading}>
-            {loading ? 'Posting...' : 'Record & Post Expense'}
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4, pt: 3, borderTop: '1px solid #f1f5f9' }}>
+            <Button onClick={onClose} color="inherit" sx={{ borderRadius: '4px' }}>
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained" disabled={loading} sx={{ bgcolor: '#e5a93c', borderRadius: '4px', px: 4, fontWeight: 700 }}>
+              {loading ? 'Posting...' : 'Record & Post Expense'}
+            </Button>
+          </Box>
+        </form>
+      </Card>
+    </Box>
   );
 }

@@ -7,10 +7,7 @@ import {
   Box,
   Typography,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Card,
   Grid,
   TextField,
   Chip,
@@ -21,13 +18,14 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/EditOutlined';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function CustomersView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -71,7 +69,7 @@ export default function CustomersView() {
       address: '',
       isActive: true
     });
-    setOpenModal(true);
+    setIsFormOpen(true);
   };
 
   const handleOpenEdit = (customer) => {
@@ -87,7 +85,7 @@ export default function CustomersView() {
       address: customer.address || '',
       isActive: customer.isActive !== undefined ? customer.isActive : true
     });
-    setOpenModal(true);
+    setIsFormOpen(true);
   };
 
   const handleSubmit = async (e) => {
@@ -100,7 +98,7 @@ export default function CustomersView() {
         await apiClient.createCustomer(formData);
         dispatch(showNotification({ message: 'Customer registered successfully', severity: 'success' }));
       }
-      setOpenModal(false);
+      setIsFormOpen(false);
       setEditingCustomer(null);
       fetchCustomers();
     } catch (err) {
@@ -139,43 +137,33 @@ export default function CustomersView() {
         <Typography
           variant="body2"
           sx={{
-            fontWeight: 800,
-            color: row.balance > 0 ? '#ef4444' : row.balance < 0 ? '#16a34a' : '#64748b'
+            fontWeight: 700,
+            color: (row.currentBalance || 0) > 0 ? '#ef4444' : '#10b981'
           }}
         >
-          ₹{(row.balance !== undefined ? row.balance : 0).toLocaleString('en-IN')}
+          ₹{(row.currentBalance || 0).toLocaleString('en-IN')}
         </Typography>
       )
     },
     {
       header: 'Status',
-      align: 'center',
+      width: 110,
       render: (row) => (
         <Chip
-          label={row.isActive ? 'Active' : 'Inactive'}
           size="small"
-          color={row.isActive ? 'success' : 'default'}
-          sx={{ fontWeight: 700, fontSize: '0.72rem', borderRadius: '8px' }}
+          label={row.isActive !== false ? 'Active' : 'Inactive'}
+          color={row.isActive !== false ? 'success' : 'default'}
+          sx={{ fontWeight: 700, fontSize: '0.72rem', borderRadius: '4px' }}
         />
       )
     },
     {
       header: 'Actions',
-      align: 'center',
       width: 90,
+      align: 'center',
       render: (row) => (
         <Tooltip title="Edit Customer">
-          <IconButton
-            size="small"
-            onClick={() => handleOpenEdit(row)}
-            sx={{
-              color: '#e5a93c',
-              border: '1px solid #fed7aa',
-              borderRadius: '8px',
-              p: '5px',
-              '&:hover': { bgcolor: '#fffbeb', borderColor: '#e5a93c' }
-            }}
-          >
+          <IconButton size="small" onClick={() => handleOpenEdit(row)} sx={{ color: '#64748b', '&:hover': { color: '#e5a93c' } }}>
             <EditIcon fontSize="small" />
           </IconButton>
         </Tooltip>
@@ -183,55 +171,30 @@ export default function CustomersView() {
     }
   ];
 
-  return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
-        <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
-            Customer Master Directory
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
-            GSTIN identification, state tax jurisdiction mapping, and live outstanding balances
-          </Typography>
+  // Dedicated Full-Screen Create/Edit Screen
+  if (isFormOpen) {
+    return (
+      <Box sx={{ width: '100%', maxWidth: 1000, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => setIsFormOpen(false)}
+            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
+          >
+            Back to Customer Master
+          </Button>
         </Box>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={handleOpenCreate}
-          sx={{
-            bgcolor: '#e5a93c',
-            borderRadius: '4px',
-            fontWeight: 700,
-            width: { xs: '100%', sm: 'auto' },
-            boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
-            '&:hover': { bgcolor: '#4b4bc0' }
-          }}
-        >
-          New Customer
-        </Button>
-      </Box>
 
-      <DataTable
-        columns={columns}
-        rows={customers}
-        loading={loading}
-        emptyMessage="No customers registered."
-      />
+        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+            {editingCustomer ? `Edit Customer (${editingCustomer.id})` : 'New Customer Master'}
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
+            Register client billing details, GSTIN tax credentials, and jurisdiction mapping
+          </Typography>
 
-      {/* Customer Modal */}
-      <Dialog
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{ sx: { borderRadius: { xs: '16px', sm: '20px' }, m: { xs: 1.5, sm: 2 } } }}
-      >
-        <DialogTitle sx={{ fontWeight: 800 }}>
-          {editingCustomer ? `Edit Customer (${editingCustomer.id})` : 'Add New Customer'}
-        </DialogTitle>
-        <form onSubmit={handleSubmit}>
-          <DialogContent dividers sx={{ p: 3 }}>
-            <Grid container spacing={2}>
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={2.5}>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -240,6 +203,7 @@ export default function CustomersView() {
                   size="small"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="e.g. Reliance Retail Ltd"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -249,6 +213,7 @@ export default function CustomersView() {
                   size="small"
                   value={formData.contactPerson}
                   onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
+                  placeholder="e.g. Rajesh Kumar"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -256,8 +221,10 @@ export default function CustomersView() {
                   fullWidth
                   label="Email Address"
                   size="small"
+                  type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="e.g. accounts@client.com"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -267,6 +234,7 @@ export default function CustomersView() {
                   size="small"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  placeholder="e.g. +91 98765 43210"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -286,6 +254,7 @@ export default function CustomersView() {
                   size="small"
                   value={formData.state}
                   onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                  placeholder="e.g. Tamil Nadu"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -295,18 +264,19 @@ export default function CustomersView() {
                   size="small"
                   value={formData.stateCode}
                   onChange={(e) => setFormData({ ...formData, stateCode: e.target.value })}
-                  placeholder="e.g. 27"
+                  placeholder="e.g. 33"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
                   multiline
-                  rows={2}
+                  rows={3}
                   label="Billing Address"
                   size="small"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  placeholder="Complete registered business address..."
                 />
               </Grid>
               {editingCustomer && (
@@ -324,17 +294,55 @@ export default function CustomersView() {
                 </Grid>
               )}
             </Grid>
-          </DialogContent>
-          <DialogActions sx={{ px: 3, py: 2 }}>
-            <Button onClick={() => setOpenModal(false)} color="inherit">
-              Cancel
-            </Button>
-            <Button type="submit" variant="contained" sx={{ bgcolor: '#e5a93c', borderRadius: '4px' }}>
-              {editingCustomer ? 'Update Customer' : 'Save Customer'}
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4, pt: 3, borderTop: '1px solid #f1f5f9' }}>
+              <Button onClick={() => setIsFormOpen(false)} color="inherit" sx={{ borderRadius: '4px' }}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="contained" sx={{ bgcolor: '#e5a93c', borderRadius: '4px', px: 4, fontWeight: 700 }}>
+                {editingCustomer ? 'Update Customer' : 'Save Customer Master'}
+              </Button>
+            </Box>
+          </form>
+        </Card>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+            Customer Master
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+            GSTIN identification, state tax jurisdiction mapping, and live outstanding accounts receivable
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleOpenCreate}
+          sx={{
+            bgcolor: '#e5a93c',
+            borderRadius: '4px',
+            fontWeight: 700,
+            width: { xs: '100%', sm: 'auto' },
+            boxShadow: '0 4px 14px rgba(229, 169, 60, 0.3)',
+            '&:hover': { bgcolor: '#b88019' }
+          }}
+        >
+          New Customer
+        </Button>
+      </Box>
+
+      <DataTable
+        columns={columns}
+        rows={customers}
+        loading={loading}
+        emptyMessage="No customers registered."
+      />
     </Box>
   );
 }

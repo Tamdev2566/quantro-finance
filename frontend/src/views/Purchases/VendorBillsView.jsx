@@ -151,6 +151,21 @@ export default function VendorBillsView() {
     }
   ];
 
+  // Full-Screen Vendor Bill Form View
+  if (openCreateModal) {
+    return (
+      <VendorBillFormModal
+        open={true}
+        onClose={() => setOpenCreateModal(false)}
+        onSuccess={(msg) => {
+          dispatch(showNotification({ message: msg, severity: 'success' }));
+          setOpenCreateModal(false);
+          fetchBills();
+        }}
+      />
+    );
+  }
+
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
@@ -211,14 +226,7 @@ export default function VendorBillsView() {
         emptyMessage="No vendor bills found."
       />
 
-      <VendorBillFormModal
-        open={openCreateModal}
-        onClose={() => setOpenCreateModal(false)}
-        onSuccess={(msg) => {
-          dispatch(showNotification({ message: msg, severity: 'success' }));
-          fetchBills();
-        }}
-      />
+
 
       <ConfirmDialog
         open={Boolean(confirmPostBill)}

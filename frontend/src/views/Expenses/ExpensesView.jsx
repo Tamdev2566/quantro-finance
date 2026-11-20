@@ -112,6 +112,21 @@ export default function ExpensesView() {
     }
   ];
 
+  // Full-Screen Record Expense View
+  if (openModal) {
+    return (
+      <ExpenseFormModal
+        open={true}
+        onClose={() => setOpenModal(false)}
+        onSuccess={(msg) => {
+          dispatch(showNotification({ message: msg, severity: 'success' }));
+          setOpenModal(false);
+          fetchExpenses();
+        }}
+      />
+    );
+  }
+
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
@@ -174,14 +189,7 @@ export default function ExpensesView() {
         emptyMessage="No expenses recorded."
       />
 
-      <ExpenseFormModal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        onSuccess={(msg) => {
-          dispatch(showNotification({ message: msg, severity: 'success' }));
-          fetchExpenses();
-        }}
-      />
+
     </Box>
   );
 }

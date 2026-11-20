@@ -138,6 +138,19 @@ export default function JournalEntriesView() {
     }
   ];
 
+  if (openCreateModal) {
+    return (
+      <JournalFormModal
+        onClose={() => setOpenCreateModal(false)}
+        onSuccess={(msg) => {
+          dispatch(showNotification({ message: msg, severity: 'success' }));
+          setOpenCreateModal(false);
+          fetchJournals();
+        }}
+      />
+    );
+  }
+
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
@@ -181,15 +194,6 @@ export default function JournalEntriesView() {
         rows={filtered}
         loading={loading}
         emptyMessage="No journal entries found."
-      />
-
-      <JournalFormModal
-        open={openCreateModal}
-        onClose={() => setOpenCreateModal(false)}
-        onSuccess={(msg) => {
-          dispatch(showNotification({ message: msg, severity: 'success' }));
-          fetchJournals();
-        }}
       />
 
       {/* Journal Lines Inspection Dialog */}

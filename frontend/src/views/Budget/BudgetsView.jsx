@@ -5,17 +5,15 @@ import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import {
   Box,
+  Card,
   Typography,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Grid,
   TextField,
   MenuItem,
   Chip
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function BudgetsView() {
@@ -64,6 +62,14 @@ export default function BudgetsView() {
       });
       dispatch(showNotification({ message: 'Budget target configured successfully', severity: 'success' }));
       setOpenModal(false);
+      setFormData({
+        name: '',
+        accountCode: '',
+        department: 'General',
+        fiscalYear: '2026-2027',
+        periodType: 'Annual',
+        budgetAmount: ''
+      });
       fetchBudgets();
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -116,62 +122,43 @@ export default function BudgetsView() {
             fontWeight: 600,
             backgroundColor: r.isExceeded ? '#fef2f2' : '#f0fdf4',
             color: r.isExceeded ? '#dc2626' : '#16a34a',
-            borderRadius: '8px'
+            borderRadius: '4px'
           }}
         />
       )
     }
   ];
 
-  return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2, mb: 3 }}>
-        <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
-            Budget Management & Variance Analysis
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
-            Set annual and department spending limits and analyze actual ledger variances in real-time
-          </Typography>
+  if (openModal) {
+    return (
+      <Box sx={{ width: '100%', maxWidth: 800, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => setOpenModal(false)}
+            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
+          >
+            Back to Budgets
+          </Button>
         </Box>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenModal(true)}
-          sx={{ width: { xs: '100%', sm: 'auto' }, borderRadius: '4px', textTransform: 'none', px: 2.5 }}
-        >
-          New Budget
-        </Button>
-      </Box>
 
-      <DataTable
-        columns={columns}
-        rows={budgetList}
-        loading={loading}
-        emptyMessage="No department budgets found. Click 'New Budget' to configure targets."
-      />
+        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+              Create Department Budget
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+              Configure spending limits and variance thresholds for cost centers and operational departments.
+            </Typography>
+          </Box>
 
-      {/* Modal */}
-      <Dialog
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          sx: {
-            borderRadius: { xs: '16px', sm: '20px' },
-            m: { xs: 1.5, sm: 2 }
-          }
-        }}
-      >
-        <DialogTitle sx={{ fontWeight: 800, pt: 3, px: 3, fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>Create Department Budget</DialogTitle>
-        <DialogContent dividers sx={{ p: { xs: 2, sm: 3 } }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2.5}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
                 size="small"
                 label="Budget Name"
+                placeholder="e.g. Q4 Marketing Growth Budget"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
@@ -223,22 +210,59 @@ export default function BudgetsView() {
                 size="small"
                 type="number"
                 label="Budget Amount (₹)"
+                placeholder="0.00"
                 value={formData.budgetAmount}
                 onChange={(e) => setFormData({ ...formData, budgetAmount: e.target.value })}
                 inputProps={{ min: 1 }}
               />
             </Grid>
           </Grid>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, py: 2.5 }}>
-          <Button onClick={() => setOpenModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
-            Cancel
-          </Button>
-          <Button onClick={handleCreate} variant="contained" sx={{ borderRadius: '4px', px: 3 }}>
-            Save Budget
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+          <Box sx={{ mt: 3.5, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+            <Button onClick={() => setOpenModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCreate}
+              variant="contained"
+              disabled={!formData.name || !formData.accountCode || !formData.budgetAmount}
+              sx={{ bgcolor: '#e5a93c', color: '#000000', fontWeight: 700, borderRadius: '4px', '&:hover': { bgcolor: '#d49b28' } }}
+            >
+              Save Budget
+            </Button>
+          </Box>
+        </Card>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2, mb: 3 }}>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+            Budget Management & Variance Analysis
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+            Set annual and department spending limits and analyze actual ledger variances in real-time
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => setOpenModal(true)}
+          sx={{ width: { xs: '100%', sm: 'auto' }, borderRadius: '4px', textTransform: 'none', px: 2.5 }}
+        >
+          New Budget
+        </Button>
+      </Box>
+
+      <DataTable
+        columns={columns}
+        rows={budgetList}
+        loading={loading}
+        emptyMessage="No department budgets found. Click 'New Budget' to configure targets."
+      />
     </Box>
   );
 }
