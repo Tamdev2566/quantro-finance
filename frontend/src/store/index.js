@@ -1,76 +1,56 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import authReducer, { loginSuccess as authLogin, logout as authLogout } from './slices/authSlice';
+import uiReducer, {
+  setScreen,
+  setActiveTab,
+  showNotification,
+  clearNotification,
+  toggleThemeMode
+} from './slices/uiSlice';
+import financeReducer, {
+  setDashboardFilter,
+  triggerRefresh,
+  setCompany,
+  loginSuccess,
+  logout
+} from './slices/financeSlice';
+import { clearPersistedRoute } from '@history';
 
-// Retrieve initial user from session if available
-let initialUser = null;
-try {
-  const saved = localStorage.getItem('apex_user');
-  if (saved) {
-    initialUser = JSON.parse(saved);
-  }
-} catch (e) {
-  initialUser = null;
-}
-
-const financeSlice = createSlice({
-  name: 'finance',
-  initialState: {
-    user: initialUser,
-    isAuthenticated: Boolean(initialUser),
-    currentScreen: 'dashboard',
-    activeTab: 0,
-    notification: null, // { message, severity: 'success' | 'error' | 'info' | 'warning' }
-    dashboardFilter: 'This Financial Year',
-    refreshKey: 0,
-    company: null,
-    themeMode: 'light'
-  },
-  reducers: {
-    loginSuccess: (state, action) => {
-      state.user = action.payload;
-      state.isAuthenticated = true;
-      try {
-        localStorage.setItem('apex_user', JSON.stringify(action.payload));
-      } catch (e) {}
-    },
-    logout: (state) => {
-      state.user = null;
-      state.isAuthenticated = false;
-      try {
-        localStorage.removeItem('apex_user');
-      } catch (e) {}
-    },
-    setScreen: (state, action) => {
-      state.currentScreen = action.payload;
-    },
-    setActiveTab: (state, action) => {
-      state.activeTab = action.payload;
-    },
-    setDashboardFilter: (state, action) => {
-      state.dashboardFilter = action.payload;
-    },
-    showNotification: (state, action) => {
-      state.notification = {
-        message: action.payload.message,
-        severity: action.payload.severity || 'info',
-        key: Date.now()
-      };
-    },
-    clearNotification: (state) => {
-      state.notification = null;
-    },
-    triggerRefresh: (state) => {
-      state.refreshKey += 1;
-    },
-    setCompany: (state, action) => {
-      state.company = action.payload;
-    },
-    toggleThemeMode: (state) => {
-      state.themeMode = state.themeMode === 'light' ? 'dark' : 'light';
-    }
-  }
+// Combine child domain slices under parent app reducer
+const appReducer = combineReducers({
+  auth: authReducer,
+  ui: uiReducer,
+  finance: financeReducer
 });
 
-export const {
+/**
+ * Root Reducer Pattern:
+ * On logout, state is reset to `undefined` which forces all combined child slices
+ * to return their default pristine initial states in a single atomic action.
+ */
+export const rootReducer = (state, action) => {
+  if (
+    action.type === 'auth/logout' ||
+    action.type === 'finance/logout' ||
+    action.type === 'USER_LOGOUT' ||
+    action.type === 'RESET_STORE'
+  ) {
+    try {
+      localStorage.removeItem('apex_user');
+      clearPersistedRoute();
+    } catch (e) {}
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
+
+export const store = configureStore({
+  reducer: rootReducer
+});
+
+export const resetStore = () => ({ type: 'RESET_STORE' });
+
+export {
   loginSuccess,
   logout,
   setScreen,
@@ -81,12 +61,6 @@ export const {
   triggerRefresh,
   setCompany,
   toggleThemeMode
-} = financeSlice.actions;
-
-export const store = configureStore({
-  reducer: {
-    finance: financeSlice.reducer
-  }
-});
+};
 
 export default store;

@@ -9,8 +9,8 @@ import Header from '../components/Layout/Header';
 
 export default function MainLayout() {
   const dispatch = useDispatch();
-  const notification = useSelector((state) => state.finance.notification);
-  const user = useSelector((state) => state.finance.user);
+  const notification = useSelector((state) => state.ui?.notification ?? state.finance?.notification);
+  const user = useSelector((state) => state.auth?.user ?? state.finance?.user);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {

@@ -19,7 +19,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 export default function Header({ onDrawerToggle }) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.finance.user);
+  const user = useSelector((state) => state.auth?.user ?? state.finance?.user);
 
   return (
     <Box
