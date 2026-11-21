@@ -7,3 +7,5 @@ frontend/dist/
 .vscode/
 .idea/
 backend/finance/backups/
+.env
+backend/.env

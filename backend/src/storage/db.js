@@ -12,7 +12,7 @@ if (connectionString) {
     ssl: connectionString.includes('localhost') ? false : { rejectUnauthorized: false },
     max: 10,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000
+    connectionTimeoutMillis: 15000
   });
 
   pool.on('error', (err) => {
@@ -85,36 +85,37 @@ export async function syncRelationalTable(collection, data) {
       }
     } else if (collection === 'invoices') {
       for (const inv of data) {
-        if (!inv.id) continue;
+        if (!inv.id && !inv.invoiceNumber) continue;
         await pool.query(
           `INSERT INTO invoices (id, invoice_number, customer_id, issue_date, due_date, total_amount, status, data, created_at)
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
-           ON CONFLICT (id) DO UPDATE
-           SET invoice_number = EXCLUDED.invoice_number, status = EXCLUDED.status,
+           ON CONFLICT (invoice_number) DO UPDATE
+           SET id = EXCLUDED.id, status = EXCLUDED.status, customer_id = EXCLUDED.customer_id,
+               issue_date = EXCLUDED.issue_date, due_date = EXCLUDED.due_date,
                total_amount = EXCLUDED.total_amount, data = EXCLUDED.data`,
-          [inv.id, inv.invoiceNumber, inv.customerId || null, inv.issueDate || null, inv.dueDate || null, inv.totalAmount || 0, inv.status, JSON.stringify(inv)]
+          [inv.id, inv.invoiceNumber, inv.customerId || null, inv.invoiceDate || inv.issueDate || null, inv.dueDate || null, inv.grandTotal || inv.totalAmount || 0, inv.status, JSON.stringify(inv)]
         );
       }
     } else if (collection === 'payments') {
       for (const p of data) {
-        if (!p.id) continue;
+        if (!p.id && !p.paymentNumber) continue;
         await pool.query(
           `INSERT INTO payments (id, payment_number, payment_date, amount, payment_mode, data, created_at)
            VALUES ($1, $2, $3, $4, $5, $6, NOW())
-           ON CONFLICT (id) DO UPDATE
-           SET payment_number = EXCLUDED.payment_number, amount = EXCLUDED.amount,
+           ON CONFLICT (payment_number) DO UPDATE
+           SET id = EXCLUDED.id, amount = EXCLUDED.amount, payment_date = EXCLUDED.payment_date,
                payment_mode = EXCLUDED.payment_mode, data = EXCLUDED.data`,
-          [p.id, p.paymentNumber, p.paymentDate || null, p.amount || 0, p.paymentMode || '', JSON.stringify(p)]
+          [p.id, p.paymentNumber, p.paymentDate || null, p.amount || 0, p.paymentMode || p.paymentMethod || '', JSON.stringify(p)]
         );
       }
     } else if (collection === 'journal_entries') {
       for (const j of data) {
-        if (!j.id) continue;
+        if (!j.id && !j.journalNumber) continue;
         await pool.query(
           `INSERT INTO journal_entries (id, journal_number, posting_date, total_debit, total_credit, status, data, created_at)
            VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
-           ON CONFLICT (id) DO UPDATE
-           SET journal_number = EXCLUDED.journal_number, total_debit = EXCLUDED.total_debit,
+           ON CONFLICT (journal_number) DO UPDATE
+           SET id = EXCLUDED.id, posting_date = EXCLUDED.posting_date, total_debit = EXCLUDED.total_debit,
                total_credit = EXCLUDED.total_credit, status = EXCLUDED.status, data = EXCLUDED.data`,
           [j.id, j.journalNumber, j.postingDate || null, j.totalDebit || 0, j.totalCredit || 0, j.status, JSON.stringify(j)]
         );
