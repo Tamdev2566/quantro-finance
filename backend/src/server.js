@@ -30,7 +30,7 @@ app.get('/health', (req, res) => {
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
     version: jsonStore.version,
-    database: isPostgres() ? 'PostgreSQL' : 'JSON File Store'
+    database: isPostgres() ? 'PostgreSQL' : 'In-Memory Engine'
   });
 });
 
@@ -60,15 +60,16 @@ if (process.env.NODE_ENV !== 'test') {
     if (process.env.DATABASE_URL) {
       try {
         await initPostgres();
+        await jsonStore.loadFromPostgres();
       } catch (err) {
         console.error('Postgres init error:', err.message);
       }
     }
     console.log(`=======================================================`);
-    console.log(`  Apex Finance & Accounting Server Running`);
+    console.log(`  Quantro Finance & Accounting Server Running`);
     console.log(`  Port: http://localhost:${PORT}`);
     console.log(`  Healthcheck: http://localhost:${PORT}/health`);
-    console.log(`  Database: ${isPostgres() ? 'PostgreSQL (Render Cloud)' : 'Local File JSON'}`);
+    console.log(`  Database: ${isPostgres() ? 'PostgreSQL (Render Cloud Engine)' : 'In-Memory Engine'}`);
     console.log(`=======================================================`);
   });
 }
