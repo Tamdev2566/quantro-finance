@@ -7,9 +7,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "db:view": "node --env-file=.env scripts/inspectDb.js",
-    "db:seed": "node --env-file=.env scripts/seedDemoData.js",
-    "test": "node --env-file=.env --test tests/financeEngine.test.js"
+    "test": "node --test tests/financeEngine.test.js"
   },
   "dependencies": {
     "bignumber.js": "^9.1.2",
