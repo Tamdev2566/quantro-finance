@@ -94,7 +94,7 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1100, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
         <Button
           startIcon={<ArrowBackIcon />}

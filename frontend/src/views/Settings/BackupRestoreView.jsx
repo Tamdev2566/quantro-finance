@@ -104,7 +104,7 @@ export default function BackupRestoreView() {
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 960, mx: 'auto' }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 800 }}>

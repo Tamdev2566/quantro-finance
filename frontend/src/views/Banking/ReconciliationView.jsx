@@ -102,7 +102,7 @@ export default function ReconciliationView() {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ mb: 3 }}>
         <Typography variant="h5" sx={{ fontWeight: 800 }}>
           Bank Statement Reconciliation

@@ -142,7 +142,7 @@ export default function CreditNotesView() {
 
   if (openModal) {
     return (
-      <Box sx={{ width: '100%', maxWidth: 1000, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <Button
             startIcon={<ArrowBackIcon />}

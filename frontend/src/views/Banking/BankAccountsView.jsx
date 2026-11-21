@@ -124,7 +124,7 @@ export default function BankAccountsView() {
 
   if (openTransferModal) {
     return (
-      <Box sx={{ width: '100%', maxWidth: 800, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <Button
             startIcon={<ArrowBackIcon />}
@@ -234,7 +234,7 @@ export default function BankAccountsView() {
 
   if (openNewAccountModal) {
     return (
-      <Box sx={{ width: '100%', maxWidth: 800, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <Button
             startIcon={<ArrowBackIcon />}
@@ -328,7 +328,7 @@ export default function BankAccountsView() {
   }
 
   return (
-    <Box sx={{ p: { xs: 0.5, sm: 1.5, md: 2 } }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>

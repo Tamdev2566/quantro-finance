@@ -20,7 +20,7 @@ export default function ExpenseCategoriesView() {
   }, []);
 
   return (
-    <Box sx={{ p: 3, maxWidth: 800, mx: 'auto' }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ mb: 3 }}>
         <Typography variant="h5" sx={{ fontWeight: 800 }}>
           Expense Categories & Ledger Mapping

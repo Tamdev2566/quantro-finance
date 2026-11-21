@@ -88,7 +88,7 @@ export default function AuditLogsView() {
   ];
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 } }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ mb: 3 }}>
         <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
           Immutable Financial Audit Trail
