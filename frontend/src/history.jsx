@@ -1,5 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
-import { Router } from 'react-router-dom';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 const STORAGE_KEY = 'quantro_active_route';
@@ -47,25 +46,5 @@ history.listen(({ location }) => {
   }
 });
 
-export function HistoryRouter({ history: historyInstance = history, children }) {
-  const [state, setState] = useState({
-    action: historyInstance.action,
-    location: historyInstance.location
-  });
-
-  useLayoutEffect(() => {
-    return historyInstance.listen(setState);
-  }, [historyInstance]);
-
-  return (
-    <Router
-      navigator={historyInstance}
-      navigationType={state.action}
-      location={state.location}
-    >
-      {children}
-    </Router>
-  );
-}
-
+export { HistoryRouter };
 export default history;

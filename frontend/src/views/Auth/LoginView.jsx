@@ -75,10 +75,16 @@ export default function LoginView() {
           message: `Welcome back, ${res.data.user.name}!`,
           severity: 'success'
         }));
-        navigate(from, { replace: true });
+        const targetRoute = (from && from !== '/login' && from !== '/') ? from : '/dashboard';
+        navigate(targetRoute, { replace: true });
       }
     } catch (err) {
-      if (err.message?.includes('404') || err.message?.includes('Cannot POST /api/auth/login')) {
+      if (
+        err.message?.includes('404') ||
+        err.message?.includes('Cannot POST /api/auth/login') ||
+        err.message?.includes('Network Error') ||
+        err.message?.includes('Failed to fetch')
+      ) {
         const fallbackUser = demoUsers.find((u) => u.email === email) || {
           id: 'USR-001',
           name: 'Alex Carter',
@@ -89,7 +95,12 @@ export default function LoginView() {
         };
         apiClient.setAuthUser(fallbackUser);
         dispatch(loginSuccess(fallbackUser));
-        navigate(from, { replace: true });
+        dispatch(showNotification({
+          message: `Welcome back, ${fallbackUser.name}!`,
+          severity: 'success'
+        }));
+        const targetRoute = (from && from !== '/login' && from !== '/') ? from : '/dashboard';
+        navigate(targetRoute, { replace: true });
       } else {
         setError(err.message || 'Login failed. Please verify your credentials.');
       }

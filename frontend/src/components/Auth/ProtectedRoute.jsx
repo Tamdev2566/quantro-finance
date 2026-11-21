@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 
 export default function ProtectedRoute() {
-  const isAuthenticated = useSelector((state) => state.auth?.isAuthenticated ?? state.finance?.isAuthenticated);
+  const isAuthenticated = useSelector((state) => Boolean(state.auth?.isAuthenticated || state.finance?.isAuthenticated));
   const location = useLocation();
 
   if (!isAuthenticated) {

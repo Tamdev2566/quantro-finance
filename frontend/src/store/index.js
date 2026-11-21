@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import authReducer, { loginSuccess as authLogin, logout as authLogout } from './slices/authSlice';
+import authReducer, { loginSuccess, logout } from './slices/authSlice';
 import uiReducer, {
   setScreen,
   setActiveTab,
@@ -10,9 +10,7 @@ import uiReducer, {
 import financeReducer, {
   setDashboardFilter,
   triggerRefresh,
-  setCompany,
-  loginSuccess,
-  logout
+  setCompany
 } from './slices/financeSlice';
 import { clearPersistedRoute } from '@history';
 

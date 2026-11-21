@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { loginSuccess, logout } from './authSlice';
 
 let initialUser = null;
 try {
@@ -33,20 +34,6 @@ const financeSlice = createSlice({
     setCompany: (state, action) => {
       state.company = action.payload;
     },
-    loginSuccess: (state, action) => {
-      state.user = action.payload;
-      state.isAuthenticated = true;
-      try {
-        localStorage.setItem('apex_user', JSON.stringify(action.payload));
-      } catch (e) {}
-    },
-    logout: (state) => {
-      state.user = null;
-      state.isAuthenticated = false;
-      try {
-        localStorage.removeItem('apex_user');
-      } catch (e) {}
-    },
     showNotification: (state, action) => {
       state.notification = {
         message: action.payload.message,
@@ -66,6 +53,17 @@ const financeSlice = createSlice({
     toggleThemeMode: (state) => {
       state.themeMode = state.themeMode === 'light' ? 'dark' : 'light';
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginSuccess, (state, action) => {
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(logout, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+      });
   }
 });
 
@@ -73,8 +71,6 @@ export const {
   setDashboardFilter,
   triggerRefresh,
   setCompany,
-  loginSuccess,
-  logout,
   showNotification,
   clearNotification,
   setScreen,
