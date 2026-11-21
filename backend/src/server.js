@@ -5,6 +5,8 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import apiRouter from './routes/api.js';
 import jsonStore from './storage/jsonStore.js';
+import { initPostgres } from './storage/initDb.js';
+import { isPostgres } from './storage/db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,7 +29,8 @@ app.get('/health', (req, res) => {
     status: 'healthy',
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
-    version: jsonStore.version
+    version: jsonStore.version,
+    database: isPostgres() ? 'PostgreSQL' : 'JSON File Store'
   });
 });
 
@@ -53,13 +56,19 @@ app.use((err, req, res, next) => {
 });
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
+  app.listen(PORT, async () => {
+    if (process.env.DATABASE_URL) {
+      try {
+        await initPostgres();
+      } catch (err) {
+        console.error('Postgres init error:', err.message);
+      }
+    }
     console.log(`=======================================================`);
     console.log(`  Apex Finance & Accounting Server Running`);
     console.log(`  Port: http://localhost:${PORT}`);
     console.log(`  Healthcheck: http://localhost:${PORT}/health`);
-    console.log(`  API Base: http://localhost:${PORT}/api`);
-    console.log(`  Storage: backend/finance/storage (JSON file-based)`);
+    console.log(`  Database: ${isPostgres() ? 'PostgreSQL (Render Cloud)' : 'Local File JSON'}`);
     console.log(`=======================================================`);
   });
 }

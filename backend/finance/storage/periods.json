@@ -2,9 +2,9 @@
   {
     "id": "FY2026-2027",
     "name": "FY 2026-2027",
-    "startDate": "2026-04-01",
     "endDate": "2027-03-31",
     "isClosed": false,
+    "startDate": "2026-04-01",
     "lockedMonths": []
   }
 ]

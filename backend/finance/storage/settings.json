@@ -1,19 +1,5 @@
 {
   "version": "1.0.0",
-  "baseCurrency": "INR",
-  "currencySymbol": "₹",
-  "decimalPrecision": 2,
-  "financialYear": "2026-2027",
-  "currentFinancialYear": "2026-2027",
-  "companyStateCode": "27",
-  "taxJurisdiction": "India",
-  "roundDecimals": 2,
-  "approvalThresholds": {
-    "expenses": 50000,
-    "vendorBills": 100000,
-    "payments": 100000
-  },
-  "segregationOfDuties": true,
   "gstRates": [
     0,
     5,
@@ -21,6 +7,20 @@
     18,
     28
   ],
+  "baseCurrency": "INR",
+  "financialYear": "2026-2027",
+  "roundDecimals": 2,
+  "currencySymbol": "₹",
   "defaultGstRate": 18,
-  "autoPostRecurring": false
+  "taxJurisdiction": "India",
+  "companyStateCode": "27",
+  "decimalPrecision": 2,
+  "autoPostRecurring": false,
+  "approvalThresholds": {
+    "expenses": 50000,
+    "payments": 100000,
+    "vendorBills": 100000
+  },
+  "segregationOfDuties": true,
+  "currentFinancialYear": "2026-2027"
 }

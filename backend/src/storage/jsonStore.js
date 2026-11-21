@@ -3,6 +3,7 @@ import path from 'path';
 import { AsyncLocalStorage } from 'async_hooks';
 import { STORAGE_DIR, BACKUP_DIR, STORAGE_FILES } from '../config/constants.js';
 import { DEFAULT_ACCOUNTS } from '../accounting/defaultAccounts.js';
+import { pool, isPostgres } from './db.js';
 
 class JsonStore {
   constructor() {
@@ -15,7 +16,7 @@ class JsonStore {
     this.init();
   }
 
-  init() {
+  async init() {
     if (!fs.existsSync(this.storageDir)) {
       fs.mkdirSync(this.storageDir, { recursive: true });
     }
@@ -23,6 +24,7 @@ class JsonStore {
       fs.mkdirSync(this.backupDir, { recursive: true });
     }
 
+    // Initialize local JSON files if not present
     STORAGE_FILES.forEach((file) => {
       const filePath = path.join(this.storageDir, file);
       if (!fs.existsSync(filePath)) {
@@ -126,17 +128,38 @@ class JsonStore {
             TXN: 1000,
             REC: 100
           };
-        } else if (file === 'customers.json') {
-          initialData = [];
-        } else if (file === 'vendors.json') {
-          initialData = [];
-        } else if (file === 'bank_accounts.json') {
-          initialData = [];
         }
 
         this.atomicWriteSync(filePath, initialData);
       }
     });
+
+    // Populate in-memory cache from local disk first
+    STORAGE_FILES.forEach((file) => {
+      try {
+        const filePath = path.join(this.storageDir, file);
+        if (fs.existsSync(filePath)) {
+          this.inMemoryCache[file] = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        }
+      } catch (e) {}
+    });
+
+    // If PostgreSQL is connected, synchronize with cloud PostgreSQL
+    if (isPostgres()) {
+      try {
+        const res = await pool.query('SELECT collection, data FROM app_data');
+        res.rows.forEach((row) => {
+          const filename = `${row.collection}.json`;
+          this.inMemoryCache[filename] = row.data;
+          try {
+            this.atomicWriteSync(path.join(this.storageDir, filename), row.data);
+          } catch (e) {}
+        });
+        console.log(`Synced ${res.rows.length} collections from PostgreSQL database.`);
+      } catch (err) {
+        console.error('PostgreSQL sync failed, operating on local cache:', err.message);
+      }
+    }
   }
 
   atomicWriteSync(filePath, data) {
@@ -144,6 +167,22 @@ class JsonStore {
     const serialized = JSON.stringify(data, null, 2);
     fs.writeFileSync(tmpPath, serialized, 'utf8');
     fs.renameSync(tmpPath, filePath);
+  }
+
+  async syncToPostgres(filename, data) {
+    if (!isPostgres()) return;
+    try {
+      const collection = filename.replace('.json', '');
+      await pool.query(
+        `INSERT INTO app_data (collection, data, updated_at) 
+         VALUES ($1, $2, NOW()) 
+         ON CONFLICT (collection) 
+         DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
+        [collection, JSON.stringify(data)]
+      );
+    } catch (err) {
+      console.error(`Failed to persist '${filename}' to PostgreSQL:`, err.message);
+    }
   }
 
   async runExclusive(fn) {
@@ -169,12 +208,17 @@ class JsonStore {
 
   readSync(filename) {
     const safeFilename = path.basename(filename);
+    if (this.inMemoryCache[safeFilename] !== undefined) {
+      return this.inMemoryCache[safeFilename];
+    }
     const filePath = path.join(this.storageDir, safeFilename);
     if (!fs.existsSync(filePath)) {
       return [];
     }
     const raw = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(raw);
+    const data = JSON.parse(raw);
+    this.inMemoryCache[safeFilename] = data;
+    return data;
   }
 
   read(filename) {
@@ -187,8 +231,10 @@ class JsonStore {
 
   writeSync(filename, data) {
     const safeFilename = path.basename(filename);
+    this.inMemoryCache[safeFilename] = data;
     const filePath = path.join(this.storageDir, safeFilename);
     this.atomicWriteSync(filePath, data);
+    this.syncToPostgres(safeFilename, data);
   }
 
   async transaction(involvedFiles, executor) {
@@ -213,6 +259,8 @@ class JsonStore {
       try {
         const result = await executor(txContext);
         for (const file of involvedFiles) {
+          const safeFilename = path.basename(file);
+          this.inMemoryCache[safeFilename] = staged[file];
           this.writeSync(file, staged[file]);
         }
         return result;
@@ -279,7 +327,8 @@ class JsonStore {
       if (file !== 'backup_manifest.json') {
         const src = path.join(backupFolder, file);
         const dest = path.join(this.storageDir, file);
-        this.atomicWriteSync(dest, JSON.parse(fs.readFileSync(src, 'utf8')));
+        const parsed = JSON.parse(fs.readFileSync(src, 'utf8'));
+        this.writeSync(file, parsed);
       }
     });
 
