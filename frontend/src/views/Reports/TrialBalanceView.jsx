@@ -7,15 +7,17 @@ import {
   Box,
   Typography,
   Card,
-  Button,
   Chip
 } from '@mui/material';
-import PrintIcon from '@mui/icons-material/Print';
 import BalancedIcon from '@mui/icons-material/CheckCircle';
+
+import ReportActionsToolbar from '../../components/Common/ReportActionsToolbar';
+import { exportToExcel, exportToPdf } from '../../utils/reportExport';
 
 export default function TrialBalanceView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
+  const company = useSelector((state) => state.finance.company);
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,6 +39,85 @@ export default function TrialBalanceView() {
 
   const rows = report?.rows || [];
   const totals = report?.totals || {};
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleExportPdf = () => {
+    const tableRows = rows.map((r) => [
+      r.accountCode,
+      r.accountName,
+      r.accountType,
+      r.periodDebit ? `INR ${r.periodDebit.toLocaleString('en-IN')}` : '—',
+      r.periodCredit ? `INR ${r.periodCredit.toLocaleString('en-IN')}` : '—',
+      r.closingDebit ? `INR ${r.closingDebit.toLocaleString('en-IN')}` : '—',
+      r.closingCredit ? `INR ${r.closingCredit.toLocaleString('en-IN')}` : '—'
+    ]);
+
+    tableRows.push([
+      'TOTAL',
+      'Balanced Ledger Verification',
+      totals.isBalanced ? 'BALANCED' : 'UNBALANCED',
+      `INR ${(totals.periodDebit || 0).toLocaleString('en-IN')}`,
+      `INR ${(totals.periodCredit || 0).toLocaleString('en-IN')}`,
+      `INR ${(totals.closingDebit || 0).toLocaleString('en-IN')}`,
+      `INR ${(totals.closingCredit || 0).toLocaleString('en-IN')}`
+    ]);
+
+    exportToPdf({
+      title: 'Trial Balance Verification Report',
+      subtitle: 'Audit of Arithmetic Debit & Credit Integrity across Chart of Accounts',
+      company,
+      headers: ['Code', 'Account Name', 'Type', 'Period Debit', 'Period Credit', 'Closing Debit', 'Closing Credit'],
+      rows: tableRows,
+      fileName: 'Trial_Balance',
+      columnStyles: {
+        0: { cellWidth: 45 },
+        1: { cellWidth: 150 },
+        2: { cellWidth: 65 },
+        3: { halign: 'right' },
+        4: { halign: 'right' },
+        5: { halign: 'right', fontStyle: 'bold' },
+        6: { halign: 'right', fontStyle: 'bold' }
+      }
+    });
+  };
+
+  const handleExportExcel = () => {
+    const excelRows = [
+      [company?.legalName || company?.name || 'Apex Global Enterprises Private Limited'],
+      ['Trial Balance Report', 'FY 2026-2027'],
+      ['Generated On', new Date().toLocaleString('en-IN')],
+      [],
+      ['Account Code', 'Account Name', 'Type', 'Period Debit (INR)', 'Period Credit (INR)', 'Closing Debit (INR)', 'Closing Credit (INR)']
+    ];
+
+    rows.forEach((r) => {
+      excelRows.push([
+        r.accountCode,
+        r.accountName,
+        r.accountType,
+        r.periodDebit || 0,
+        r.periodCredit || 0,
+        r.closingDebit || 0,
+        r.closingCredit || 0
+      ]);
+    });
+
+    excelRows.push([]);
+    excelRows.push([
+      'TOTALS',
+      'All Accounts',
+      totals.isBalanced ? 'BALANCED' : 'UNBALANCED',
+      totals.periodDebit || 0,
+      totals.periodCredit || 0,
+      totals.closingDebit || 0,
+      totals.closingCredit || 0
+    ]);
+
+    exportToExcel('Trial_Balance', excelRows, 'Trial Balance');
+  };
 
   const columns = [
     { header: 'Code', field: 'accountCode', width: 100, cellStyle: { fontWeight: 700, color: '#e5a93c' } },
@@ -76,7 +157,7 @@ export default function TrialBalanceView() {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2, mb: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 2, mb: 3 }}>
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
             Trial Balance Report
@@ -85,7 +166,7 @@ export default function TrialBalanceView() {
             Verification of arithmetic accuracy across all debit and credit account balances
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' }, justifyContent: { xs: 'space-between', sm: 'flex-end' } }}>
+        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap' }}>
           {totals.isBalanced && (
             <Chip
               icon={<BalancedIcon sx={{ color: '#10b981 !important' }} />}
@@ -94,19 +175,16 @@ export default function TrialBalanceView() {
                 fontWeight: 600,
                 backgroundColor: '#f0fdf4',
                 color: '#16a34a',
-                borderRadius: '10px',
-                fontSize: { xs: '0.75rem', sm: '0.8125rem' }
+                borderRadius: '4px',
+                fontSize: '0.8rem'
               }}
             />
           )}
-          <Button
-            variant="outlined"
-            startIcon={<PrintIcon />}
-            onClick={() => window.print()}
-            sx={{ width: { xs: '100%', sm: 'auto' }, borderRadius: '4px', textTransform: 'none' }}
-          >
-            Print
-          </Button>
+          <ReportActionsToolbar
+            onPrint={handlePrint}
+            onExportPdf={handleExportPdf}
+            onExportExcel={handleExportExcel}
+          />
         </Box>
       </Box>
 
@@ -115,8 +193,8 @@ export default function TrialBalanceView() {
           p: { xs: 2, sm: 2.5 },
           mb: 3,
           backgroundColor: '#ffffff',
-          borderRadius: { xs: '16px', sm: '20px' },
-          border: '1px solid #f1f5f9',
+          borderRadius: '6px',
+          border: '1px solid #e2e8f0',
           boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.03)'
         }}
       >
@@ -148,13 +226,15 @@ export default function TrialBalanceView() {
         </Box>
       </Card>
 
-      <DataTable
-        columns={columns}
-        rows={rows}
-        loading={loading}
-        defaultPageSize={15}
-        emptyMessage="No trial balance figures generated yet."
-      />
+      <Box className="printable-report">
+        <DataTable
+          columns={columns}
+          rows={rows}
+          loading={loading}
+          defaultPageSize={25}
+          emptyMessage="No trial balance figures generated yet."
+        />
+      </Box>
     </Box>
   );
 }

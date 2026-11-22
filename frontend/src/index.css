@@ -30,19 +30,40 @@ body {
 }
 
 @media print {
+  header,
+  nav,
+  aside,
+  button,
+  .no-print,
+  .MuiDrawer-root,
+  .MuiAppBar-root {
+    display: none !important;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
   body * {
     visibility: hidden;
   }
-  #printable-invoice, #printable-invoice * {
+
+  #printable-invoice, #printable-invoice *,
+  .printable-report, .printable-report * {
     visibility: visible;
   }
-  #printable-invoice {
+
+  #printable-invoice,
+  .printable-report {
     position: absolute;
     left: 0;
     top: 0;
-    width: 100%;
-    margin: 0;
-    padding: 20px;
-    background: white;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 24px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
   }
 }

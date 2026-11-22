@@ -14,9 +14,13 @@ import {
 import Receipt from '@mui/icons-material/Receipt';
 import ShoppingCart from '@mui/icons-material/ShoppingCart';
 
+import ReportActionsToolbar from '../../components/Common/ReportActionsToolbar';
+import { exportToExcel, exportToPdf } from '../../utils/reportExport';
+
 export default function AgingReportsView({ defaultType = 'receivables' }) {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
+  const company = useSelector((state) => state.finance.company);
   const [tab, setTab] = useState(defaultType === 'payables' ? 1 : 0);
   const [recData, setRecData] = useState(null);
   const [payData, setPayData] = useState(null);
@@ -42,22 +46,101 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
     fetchAging();
   }, [refreshKey]);
 
-  const activeData = tab === 0 ? recData : payData;
+  const isReceivables = tab === 0;
+  const activeData = isReceivables ? recData : payData;
   const summary = activeData?.summary || {};
   const rows = activeData?.rows || [];
 
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleExportPdf = () => {
+    const tableRows = rows.map((r) => [
+      r.partyName,
+      `INR ${(r.current || 0).toLocaleString('en-IN')}`,
+      `INR ${(r.days31To60 || 0).toLocaleString('en-IN')}`,
+      `INR ${(r.days61To90 || 0).toLocaleString('en-IN')}`,
+      `INR ${(r.days90Plus || 0).toLocaleString('en-IN')}`,
+      `INR ${(r.totalOutstanding || 0).toLocaleString('en-IN')}`
+    ]);
+
+    tableRows.push([
+      'TOTAL AGING BUCKETS',
+      `INR ${(summary.current || 0).toLocaleString('en-IN')}`,
+      `INR ${(summary.days31To60 || 0).toLocaleString('en-IN')}`,
+      `INR ${(summary.days61To90 || 0).toLocaleString('en-IN')}`,
+      `INR ${(summary.days90Plus || 0).toLocaleString('en-IN')}`,
+      `INR ${(summary.totalOutstanding || 0).toLocaleString('en-IN')}`
+    ]);
+
+    exportToPdf({
+      title: isReceivables ? 'Accounts Receivable Aging Analysis' : 'Accounts Payable Aging Analysis',
+      subtitle: `Overdue exposure by aging bracket as on ${new Date().toLocaleDateString('en-IN')}`,
+      company,
+      headers: [isReceivables ? 'Customer Name' : 'Vendor Name', '0–30 Days', '31–60 Days', '61–90 Days', '90+ Days', 'Total Balance'],
+      rows: tableRows,
+      fileName: isReceivables ? 'Receivables_Aging_Report' : 'Payables_Aging_Report',
+      columnStyles: {
+        0: { cellWidth: 160 },
+        1: { halign: 'right' },
+        2: { halign: 'right' },
+        3: { halign: 'right' },
+        4: { halign: 'right' },
+        5: { halign: 'right', fontStyle: 'bold' }
+      }
+    });
+  };
+
+  const handleExportExcel = () => {
+    const excelRows = [
+      [company?.legalName || company?.name || 'Apex Global Enterprises Private Limited'],
+      [isReceivables ? 'Customer Receivables Aging Report' : 'Vendor Payables Aging Report'],
+      ['Generated On', new Date().toLocaleString('en-IN')],
+      [],
+      [isReceivables ? 'Customer Name' : 'Vendor Name', '0–30 Days (INR)', '31–60 Days (INR)', '61–90 Days (INR)', '90+ Days (INR)', 'Total Outstanding (INR)']
+    ];
+
+    rows.forEach((r) => {
+      excelRows.push([
+        r.partyName,
+        r.current || 0,
+        r.days31To60 || 0,
+        r.days61To90 || 0,
+        r.days90Plus || 0,
+        r.totalOutstanding || 0
+      ]);
+    });
+
+    excelRows.push([]);
+    excelRows.push([
+      'TOTAL OVERDUE',
+      summary.current || 0,
+      summary.days31To60 || 0,
+      summary.days61To90 || 0,
+      summary.days90Plus || 0,
+      summary.totalOutstanding || 0
+    ]);
+
+    exportToExcel(isReceivables ? 'Receivables_Aging' : 'Payables_Aging', excelRows, 'Aging Analysis');
+  };
+
   const columns = [
     {
-      header: tab === 0 ? 'Customer' : 'Vendor',
-      field: tab === 0 ? 'customerName' : 'vendorName',
+      header: isReceivables ? 'Customer Name' : 'Vendor Name',
+      field: 'partyName',
       minWidth: 200,
-      cellStyle: { fontWeight: 700, color: '#e5a93c' }
+      cellStyle: { fontWeight: 700, color: '#0f172a' }
     },
     {
-      header: 'Current (0–30 Days)',
+      header: '0–30 Days (Current)',
       field: 'current',
       align: 'right',
       width: 160,
+      cellStyle: (r) => ({
+        color: r.current > 0 ? '#10b981' : '#64748b',
+        fontWeight: r.current > 0 ? 600 : 400
+      }),
       render: (r) => (r.current ? `₹${r.current.toLocaleString('en-IN')}` : '₹0')
     },
     {
@@ -66,7 +149,7 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
       align: 'right',
       width: 150,
       cellStyle: (r) => ({
-        color: r.days31To60 > 0 ? '#d97706' : '#64748b',
+        color: r.days31To60 > 0 ? '#e5a93c' : '#64748b',
         fontWeight: r.days31To60 > 0 ? 600 : 400
       }),
       render: (r) => (r.days31To60 ? `₹${r.days31To60.toLocaleString('en-IN')}` : '₹0')
@@ -105,13 +188,21 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
-          Aging Analysis (Accounts Receivable & Payable)
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
-          Credit exposure and liability aging across 0-30, 31-60, 61-90, and 90+ day overdue buckets
-        </Typography>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 2, mb: 3 }}>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+            Aging Analysis (Accounts Receivable & Payable)
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+            Credit exposure and liability aging across 0-30, 31-60, 61-90, and 90+ day overdue buckets
+          </Typography>
+        </Box>
+
+        <ReportActionsToolbar
+          onPrint={handlePrint}
+          onExportPdf={handleExportPdf}
+          onExportExcel={handleExportExcel}
+        />
       </Box>
 
       <Tabs
@@ -158,12 +249,14 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
         </Grid>
       </Grid>
 
-      <DataTable
-        columns={columns}
-        rows={rows}
-        loading={loading}
-        emptyMessage="No overdue aging balances found in this ledger."
-      />
+      <Box className="printable-report">
+        <DataTable
+          columns={columns}
+          rows={rows}
+          loading={loading}
+          emptyMessage="No overdue aging balances found in this ledger."
+        />
+      </Box>
     </Box>
   );
 }

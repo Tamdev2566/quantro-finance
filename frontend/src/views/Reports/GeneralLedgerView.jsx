@@ -12,41 +12,137 @@ import {
   MenuItem
 } from '@mui/material';
 
+import ReportActionsToolbar from '../../components/Common/ReportActionsToolbar';
+import { exportToExcel, exportToPdf } from '../../utils/reportExport';
+
 export default function GeneralLedgerView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
+  const company = useSelector((state) => state.finance.company);
   const [accounts, setAccounts] = useState([]);
-  const [selectedAccountCode, setSelectedAccountCode] = useState('1200');
+  const [selectedAccountCode, setSelectedAccountCode] = useState('1020');
   const [ledgerData, setLedgerData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     apiClient.getAccounts().then((res) => {
-      setAccounts(res.data || []);
-      if (res.data?.length > 0 && !selectedAccountCode) {
-        setSelectedAccountCode(res.data[0].code);
+      const accs = res.data || [];
+      setAccounts(accs);
+      if (accs.length > 0 && !accs.find((a) => a.code === selectedAccountCode)) {
+        setSelectedAccountCode(accs[0].code);
       }
     });
   }, [refreshKey]);
 
-  useEffect(() => {
-    if (selectedAccountCode) {
+  const fetchLedger = async () => {
+    if (!selectedAccountCode) return;
+    try {
       setLoading(true);
-      apiClient.getGeneralLedger({ accountCode: selectedAccountCode })
-        .then((res) => {
-          setLedgerData(res.data);
-        })
-        .catch((err) => {
-          dispatch(showNotification({ message: err.message, severity: 'error' }));
-        })
-        .finally(() => setLoading(false));
+      const res = await apiClient.getGeneralLedger({ accountCode: selectedAccountCode });
+      setLedgerData(res.data);
+    } catch (err) {
+      dispatch(showNotification({ message: err.message, severity: 'error' }));
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchLedger();
   }, [selectedAccountCode, refreshKey]);
+
+  const currentAccount = accounts.find((a) => a.code === selectedAccountCode);
+  const entries = ledgerData?.entries || [];
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleExportPdf = () => {
+    const tableRows = entries.map((e) => [
+      e.postingDate || '',
+      e.journalNumber || '',
+      e.referenceNumber || '',
+      e.description || '',
+      e.debit ? `INR ${e.debit.toLocaleString('en-IN')}` : '—',
+      e.credit ? `INR ${e.credit.toLocaleString('en-IN')}` : '—',
+      `INR ${(e.runningBalance || 0).toLocaleString('en-IN')}`
+    ]);
+
+    tableRows.push([
+      'TOTALS',
+      '',
+      '',
+      `Closing Balance: INR ${(ledgerData?.closingBalance || 0).toLocaleString('en-IN')}`,
+      `INR ${(ledgerData?.totalDebit || 0).toLocaleString('en-IN')}`,
+      `INR ${(ledgerData?.totalCredit || 0).toLocaleString('en-IN')}`,
+      `INR ${(ledgerData?.closingBalance || 0).toLocaleString('en-IN')}`
+    ]);
+
+    exportToPdf({
+      title: `General Ledger: ${selectedAccountCode} - ${currentAccount?.name || ''}`,
+      subtitle: `Account Type: ${currentAccount?.type || ''} | Category: ${currentAccount?.category || ''}`,
+      company,
+      headers: ['Date', 'Journal #', 'Ref #', 'Description', 'Debit', 'Credit', 'Balance'],
+      rows: tableRows,
+      fileName: `General_Ledger_${selectedAccountCode}`,
+      columnStyles: {
+        0: { cellWidth: 55 },
+        1: { cellWidth: 70 },
+        2: { cellWidth: 60 },
+        3: { cellWidth: 150 },
+        4: { halign: 'right' },
+        5: { halign: 'right' },
+        6: { halign: 'right', fontStyle: 'bold' }
+      }
+    });
+  };
+
+  const handleExportExcel = () => {
+    const excelRows = [
+      [company?.legalName || company?.name || 'Apex Global Enterprises Private Limited'],
+      [`General Ledger Statement: ${selectedAccountCode} - ${currentAccount?.name || ''}`],
+      ['Opening Balance', ledgerData?.openingBalance || 0],
+      ['Total Debits', ledgerData?.totalDebit || 0],
+      ['Total Credits', ledgerData?.totalCredit || 0],
+      ['Closing Balance', ledgerData?.closingBalance || 0],
+      ['Generated On', new Date().toLocaleString('en-IN')],
+      [],
+      ['Date', 'Journal Number', 'Reference', 'Type', 'Description', 'Debit (INR)', 'Credit (INR)', 'Running Balance (INR)']
+    ];
+
+    entries.forEach((e) => {
+      excelRows.push([
+        e.postingDate,
+        e.journalNumber,
+        e.referenceNumber || '',
+        e.transactionType || '',
+        e.description,
+        e.debit || 0,
+        e.credit || 0,
+        e.runningBalance || 0
+      ]);
+    });
+
+    excelRows.push([]);
+    excelRows.push([
+      'TOTALS',
+      '',
+      '',
+      '',
+      'Net Account Movements',
+      ledgerData?.totalDebit || 0,
+      ledgerData?.totalCredit || 0,
+      ledgerData?.closingBalance || 0
+    ]);
+
+    exportToExcel(`General_Ledger_${selectedAccountCode}`, excelRows, 'General Ledger');
+  };
 
   const columns = [
     { header: 'Posting Date', field: 'postingDate', width: 120 },
     {
-      header: 'Journal #',
+      header: 'Journal Entry',
       field: 'journalNumber',
       width: 150,
       cellStyle: { fontWeight: 700, color: '#e5a93c' }
@@ -82,22 +178,30 @@ export default function GeneralLedgerView() {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
-          General Ledger & Account Statements
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
-          Real-time transaction audit trail, debit/credit entries, and incremental running balance
-        </Typography>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 2, mb: 3 }}>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+            General Ledger & Account Statements
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+            Real-time transaction audit trail, debit/credit entries, and incremental running balance
+          </Typography>
+        </Box>
+
+        <ReportActionsToolbar
+          onPrint={handlePrint}
+          onExportPdf={handleExportPdf}
+          onExportExcel={handleExportExcel}
+        />
       </Box>
 
       <Card
         sx={{
           p: { xs: 2, sm: 2.5 },
           mb: 3,
-          borderRadius: { xs: '16px', sm: '20px' },
+          borderRadius: '6px',
           boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.03)',
-          border: '1px solid #f1f5f9'
+          border: '1px solid #e2e8f0'
         }}
       >
         <Grid container spacing={3} alignItems="center">
@@ -149,12 +253,15 @@ export default function GeneralLedgerView() {
         </Grid>
       </Card>
 
-      <DataTable
-        columns={columns}
-        rows={ledgerData?.entries || []}
-        loading={loading}
-        emptyMessage="No ledger entries recorded for this account."
-      />
+      <Box className="printable-report">
+        <DataTable
+          columns={columns}
+          rows={entries}
+          loading={loading}
+          defaultPageSize={25}
+          emptyMessage="No ledger entries recorded for this account."
+        />
+      </Box>
     </Box>
   );
 }
