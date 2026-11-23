@@ -31,6 +31,11 @@ router.post('/auth/login', asyncHandler(async (req, res) => {
   res.json({ success: true, data: result });
 }));
 
+router.post('/auth/change-password', asyncHandler(async (req, res) => {
+  const result = authService.changePassword(req.body);
+  res.json({ success: true, ...result });
+}));
+
 router.get('/auth/users', asyncHandler(async (req, res) => {
   const users = authService.getAllUsers().map(({ password, ...u }) => u);
   res.json({ success: true, data: users });

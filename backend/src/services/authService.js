@@ -34,6 +34,39 @@ class AuthService {
     };
   }
 
+  changePassword({ email, currentPassword, newPassword }) {
+    const users = this.getAllUsers();
+    const cleanEmail = (email || '').trim().toLowerCase();
+
+    const userIndex = users.findIndex((u) => u.email.toLowerCase() === cleanEmail);
+    if (userIndex === -1) {
+      throw new Error('User account not found.');
+    }
+
+    const user = users[userIndex];
+    if (user.password && user.password !== currentPassword) {
+      throw new Error('Current password is incorrect.');
+    }
+
+    if (!newPassword || newPassword.trim().length < 4) {
+      throw new Error('New password must be at least 4 characters long.');
+    }
+
+    user.password = newPassword.trim();
+    users[userIndex] = user;
+    jsonStore.writeSync('users.json', users);
+
+    auditService.log({
+      action: 'PASSWORD_CHANGED',
+      entity: 'USER',
+      entityId: user.id,
+      details: { email: user.email },
+      user: user.name
+    });
+
+    return { message: 'Password updated successfully' };
+  }
+
   getUserById(id) {
     const users = this.getAllUsers();
     const user = users.find((u) => u.id === id);
