@@ -416,7 +416,10 @@ export default function Header({ onDrawerToggle }) {
             border: '1px solid #282a3d',
             borderRadius: '10px',
             boxShadow: '0 16px 40px rgba(0, 0, 0, 0.55)',
-            p: 0.8
+            p: 0.8,
+            '& .MuiListItemText-primary': {
+              color: '#ffffff'
+            }
           }
         }}
       >
@@ -483,19 +486,23 @@ export default function Header({ onDrawerToggle }) {
             setProfileModalOpen(true);
           }}
           sx={{
-            py: 1,
+            py: 1.1,
             px: 1.6,
             borderRadius: '6px',
-            color: '#e2e8f0',
-            '&:hover': { bgcolor: '#1c1e2e', color: '#e5a93c' }
+            color: '#ffffff',
+            '&:hover': {
+              bgcolor: '#1c1e2e',
+              '& .MuiListItemIcon-root': { color: '#e5a93c' },
+              '& .MuiListItemText-primary': { color: '#e5a93c' }
+            }
           }}
         >
-          <ListItemIcon sx={{ minWidth: 32, color: 'inherit' }}>
+          <ListItemIcon sx={{ minWidth: 32, color: '#cbd5e1' }}>
             <PersonOutlineIcon sx={{ fontSize: 19 }} />
           </ListItemIcon>
           <ListItemText
             primary="Profile & Permissions"
-            primaryTypographyProps={{ fontSize: '0.84rem', fontWeight: 600 }}
+            primaryTypographyProps={{ fontSize: '0.86rem', fontWeight: 600, color: '#ffffff' }}
           />
         </MenuItem>
 
@@ -510,19 +517,23 @@ export default function Header({ onDrawerToggle }) {
             setPasswordModalOpen(true);
           }}
           sx={{
-            py: 1,
+            py: 1.1,
             px: 1.6,
             borderRadius: '6px',
-            color: '#e2e8f0',
-            '&:hover': { bgcolor: '#1c1e2e', color: '#e5a93c' }
+            color: '#ffffff',
+            '&:hover': {
+              bgcolor: '#1c1e2e',
+              '& .MuiListItemIcon-root': { color: '#e5a93c' },
+              '& .MuiListItemText-primary': { color: '#e5a93c' }
+            }
           }}
         >
-          <ListItemIcon sx={{ minWidth: 32, color: 'inherit' }}>
+          <ListItemIcon sx={{ minWidth: 32, color: '#cbd5e1' }}>
             <VpnKeyOutlinedIcon sx={{ fontSize: 19 }} />
           </ListItemIcon>
           <ListItemText
             primary="Change Password"
-            primaryTypographyProps={{ fontSize: '0.84rem', fontWeight: 600 }}
+            primaryTypographyProps={{ fontSize: '0.86rem', fontWeight: 600, color: '#ffffff' }}
           />
         </MenuItem>
 
@@ -533,19 +544,23 @@ export default function Header({ onDrawerToggle }) {
             navigate('/company-settings');
           }}
           sx={{
-            py: 1,
+            py: 1.1,
             px: 1.6,
             borderRadius: '6px',
-            color: '#e2e8f0',
-            '&:hover': { bgcolor: '#1c1e2e', color: '#e5a93c' }
+            color: '#ffffff',
+            '&:hover': {
+              bgcolor: '#1c1e2e',
+              '& .MuiListItemIcon-root': { color: '#e5a93c' },
+              '& .MuiListItemText-primary': { color: '#e5a93c' }
+            }
           }}
         >
-          <ListItemIcon sx={{ minWidth: 32, color: 'inherit' }}>
+          <ListItemIcon sx={{ minWidth: 32, color: '#cbd5e1' }}>
             <BusinessOutlinedIcon sx={{ fontSize: 19 }} />
           </ListItemIcon>
           <ListItemText
             primary="Company Settings"
-            primaryTypographyProps={{ fontSize: '0.84rem', fontWeight: 600 }}
+            primaryTypographyProps={{ fontSize: '0.86rem', fontWeight: 600, color: '#ffffff' }}
           />
         </MenuItem>
 
@@ -555,7 +570,7 @@ export default function Header({ onDrawerToggle }) {
         <MenuItem
           onClick={handleLogout}
           sx={{
-            py: 1,
+            py: 1.1,
             px: 1.6,
             borderRadius: '6px',
             color: '#ef4444',
@@ -567,7 +582,7 @@ export default function Header({ onDrawerToggle }) {
           </ListItemIcon>
           <ListItemText
             primary="Log out"
-            primaryTypographyProps={{ fontSize: '0.84rem', fontWeight: 700, color: '#ef4444' }}
+            primaryTypographyProps={{ fontSize: '0.86rem', fontWeight: 700, color: '#ef4444' }}
           />
         </MenuItem>
       </Menu>
