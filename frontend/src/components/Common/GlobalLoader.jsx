@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Box, LinearProgress, Fade } from '@mui/material';
+import { Backdrop, Box, CircularProgress, Typography, Fade, LinearProgress } from '@mui/material';
 import { subscribeToLoading } from '../../api/client';
 
 /**
  * GlobalLoader
  * 
  * Automatically connected to the Axios interceptor in apiClient.
- * - Shows a glowing amber progress line at the very top of the window (z-index 999999).
- * - Shows a sleek floating indicator when an API request is in-flight.
- * - Automatically skips autocomplete queries.
+ * Displays right in the CENTER OF THE SCREEN with a sleek dark glassmorphic card
+ * so the user clearly knows data is loading / processing.
+ * Automatically skips autocomplete search requests.
  */
 export default function GlobalLoader() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Subscribe to central API loader state in client.js
     const unsubscribe = subscribeToLoading((isLoading) => {
       setLoading(isLoading);
     });
@@ -31,7 +30,7 @@ export default function GlobalLoader() {
             top: 0,
             left: 0,
             right: 0,
-            zIndex: 999999,
+            zIndex: 1000000,
             height: 3,
             pointerEvents: 'none'
           }}
@@ -39,7 +38,7 @@ export default function GlobalLoader() {
           <LinearProgress
             sx={{
               height: 3,
-              backgroundColor: 'rgba(229, 169, 60, 0.15)',
+              backgroundColor: 'rgba(229, 169, 60, 0.2)',
               '& .MuiLinearProgress-bar': {
                 background: 'linear-gradient(90deg, #f3c64f, #e5a93c, #b88019)',
                 boxShadow: '0 0 12px #e5a93c'
@@ -49,46 +48,71 @@ export default function GlobalLoader() {
         </Box>
       )}
 
-      {/* 2. Floating Glassmorphic Indicator */}
-      <Fade in={loading} timeout={{ enter: 200, exit: 250 }} unmountOnExit>
-        <Box
-          sx={{
-            position: 'fixed',
-            bottom: 24,
-            right: 24,
-            zIndex: 999999,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1.5,
-            px: 2,
-            py: 1,
-            backgroundColor: 'rgba(18, 19, 28, 0.92)',
-            backdropFilter: 'blur(8px)',
-            border: '1px solid rgba(229, 169, 60, 0.35)',
-            borderRadius: '99px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.45)',
-            pointerEvents: 'none'
-          }}
-        >
+      {/* 2. Center-Screen Glassmorphic Modal Loader */}
+      <Backdrop
+        open={loading}
+        transitionDuration={{ enter: 150, exit: 200 }}
+        sx={{
+          zIndex: 999999,
+          backgroundColor: 'rgba(12, 13, 20, 0.55)',
+          backdropFilter: 'blur(3px)'
+        }}
+      >
+        <Fade in={loading}>
           <Box
             sx={{
-              width: 14,
-              height: 14,
-              borderRadius: '50%',
-              border: '2px solid rgba(229, 169, 60, 0.3)',
-              borderTopColor: '#e5a93c',
-              animation: 'quantroSpin 0.8s linear infinite',
-              '@keyframes quantroSpin': {
-                '0%': { transform: 'rotate(0deg)' },
-                '100%': { transform: 'rotate(360deg)' }
-              }
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#141521',
+              border: '1px solid rgba(229, 169, 60, 0.35)',
+              borderRadius: '16px',
+              px: 4.5,
+              py: 3.5,
+              boxShadow: '0 24px 60px rgba(0, 0, 0, 0.7)',
+              minWidth: 220,
+              textAlign: 'center'
             }}
-          />
-          <Box sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#f8fafc', letterSpacing: '0.02em' }}>
-            Syncing...
+          >
+            {/* Spinning Gold Loader Ring */}
+            <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+              <CircularProgress
+                size={44}
+                thickness={4}
+                sx={{
+                  color: '#e5a93c',
+                  filter: 'drop-shadow(0 0 8px rgba(229, 169, 60, 0.45))'
+                }}
+              />
+            </Box>
+
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: 800,
+                color: '#ffffff',
+                fontSize: '0.98rem',
+                letterSpacing: '-0.01em',
+                mb: 0.5
+              }}
+            >
+              Loading...
+            </Typography>
+
+            <Typography
+              variant="caption"
+              sx={{
+                color: '#94a3b8',
+                fontSize: '0.76rem',
+                fontWeight: 500
+              }}
+            >
+              Please wait a moment
+            </Typography>
           </Box>
-        </Box>
-      </Fade>
+        </Fade>
+      </Backdrop>
     </>
   );
 }
