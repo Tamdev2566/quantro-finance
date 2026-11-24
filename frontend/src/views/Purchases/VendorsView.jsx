@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
+import FormLayout from '../../components/Common/FormLayout';
 import {
   Box,
   Typography,
   Button,
-  Card,
   Grid,
   TextField,
   Chip,
@@ -18,7 +18,6 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/EditOutlined';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function VendorsView() {
   const dispatch = useDispatch();
@@ -173,35 +172,27 @@ export default function VendorsView() {
 
   if (isFormOpen) {
     return (
-      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: { xs: 0.5, md: 1 }, pb: 4 }}>
-        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Button
-            startIcon={<ArrowBackIcon />}
-            onClick={() => setIsFormOpen(false)}
-            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
-          >
-            Back to Vendors Master
-          </Button>
-        </Box>
-
-        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 2 }}>
-            {editingVendor ? `Edit Vendor (${editingVendor.id})` : 'New Vendor / Supplier Master'}
-          </Typography>
-
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2.5}>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  required
-                  label="Vendor / Company Legal Name"
-                  size="small"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="e.g. Tata Steel Ltd"
-                />
-              </Grid>
+      <FormLayout
+        title={editingVendor ? `Edit Vendor (${editingVendor.id})` : 'New Vendor / Supplier Master'}
+        backLabel="Back to Vendors Master"
+        onBack={() => setIsFormOpen(false)}
+        onCancel={() => setIsFormOpen(false)}
+        onSubmit={handleSubmit}
+        saveLabel={editingVendor ? 'Update Vendor' : 'Save Vendor Master'}
+        savingLabel="Saving..."
+      >
+        <Grid container spacing={2.5}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              required
+              label="Vendor / Company Legal Name"
+              size="small"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="e.g. Tata Steel Ltd"
+            />
+          </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
@@ -290,18 +281,7 @@ export default function VendorsView() {
                 </Grid>
               )}
             </Grid>
-
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4, pt: 3, borderTop: '1px solid #f1f5f9' }}>
-              <Button onClick={() => setIsFormOpen(false)} color="inherit" sx={{ borderRadius: '4px' }}>
-                Cancel
-              </Button>
-              <Button type="submit" variant="contained" sx={{ bgcolor: '#e5a93c', borderRadius: '4px', px: 4, fontWeight: 700 }}>
-                {editingVendor ? 'Update Vendor' : 'Save Vendor Master'}
-              </Button>
-            </Box>
-          </form>
-        </Card>
-      </Box>
+      </FormLayout>
     );
   }
 

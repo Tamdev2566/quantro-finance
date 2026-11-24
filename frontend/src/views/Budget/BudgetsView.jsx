@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
+import FormLayout from '../../components/Common/FormLayout';
 import {
   Box,
-  Card,
   Typography,
   Button,
   Grid,
@@ -13,7 +13,6 @@ import {
   MenuItem,
   Chip
 } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function BudgetsView() {
@@ -131,25 +130,17 @@ export default function BudgetsView() {
 
   if (openModal) {
     return (
-      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: { xs: 0.5, md: 1 }, pb: 4 }}>
-        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Button
-            startIcon={<ArrowBackIcon />}
-            onClick={() => setOpenModal(false)}
-            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
-          >
-            Back to Budgets
-          </Button>
-        </Box>
-
-        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Box sx={{ mb: 2.5 }}>
-            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
-              Create Department Budget
-            </Typography>
-          </Box>
-
-          <Grid container spacing={2.5}>
+      <FormLayout
+        title="Create Department Budget"
+        backLabel="Back to Budgets"
+        onBack={() => setOpenModal(false)}
+        onCancel={() => setOpenModal(false)}
+        onSave={handleCreate}
+        saveLabel="Save Budget"
+        savingLabel="Saving..."
+        saveDisabled={!formData.name || !formData.accountCode || !formData.budgetAmount}
+      >
+        <Grid container spacing={2.5}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -214,22 +205,7 @@ export default function BudgetsView() {
               />
             </Grid>
           </Grid>
-
-          <Box sx={{ mt: 3.5, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-            <Button onClick={() => setOpenModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
-              Cancel
-            </Button>
-            <Button
-              onClick={handleCreate}
-              variant="contained"
-              disabled={!formData.name || !formData.accountCode || !formData.budgetAmount}
-              sx={{ bgcolor: '#e5a93c', color: '#000000', fontWeight: 700, borderRadius: '4px', '&:hover': { bgcolor: '#d49b28' } }}
-            >
-              Save Budget
-            </Button>
-          </Box>
-        </Card>
-      </Box>
+      </FormLayout>
     );
   }
 

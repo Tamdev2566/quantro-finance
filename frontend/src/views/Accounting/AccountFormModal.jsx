@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { apiClient } from '../../api/client';
+import FormLayout from '../../components/Common/FormLayout';
 import {
-  Card,
-  Button,
   Grid,
   TextField,
   MenuItem,
   FormControlLabel,
   Switch,
-  Typography,
-  Box
+  Typography
 } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ACCOUNT_CATEGORIES = {
   Assets: ['Cash', 'Bank', 'Accounts Receivable', 'Inventory', 'Fixed Assets', 'Prepaid Expenses', 'Input GST', 'Other Assets'],
@@ -89,24 +86,17 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: { xs: 0.5, md: 1 }, pb: 4 }}>
-      <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <Button
-          startIcon={<ArrowBackIcon />}
-          onClick={onClose}
-          sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
-        >
-          Back to Chart of Accounts
-        </Button>
-      </Box>
-
-      <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 2.5 }}>
-          {accountToEdit ? `Edit Ledger Account: ${accountToEdit.code} - ${accountToEdit.name}` : 'New Chart of Accounts Entry'}
-        </Typography>
-
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2.5}>
+    <FormLayout
+      title={accountToEdit ? `Edit Ledger Account: ${accountToEdit.code} - ${accountToEdit.name}` : 'New Chart of Accounts Entry'}
+      backLabel="Back to Chart of Accounts"
+      onBack={onClose}
+      onCancel={onClose}
+      onSubmit={handleSubmit(onSubmit)}
+      saveLabel="Save Account"
+      savingLabel="Saving..."
+      loading={loading}
+    >
+      <Grid container spacing={2.5}>
             <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
@@ -189,17 +179,6 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
               />
             </Grid>
           </Grid>
-
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4, pt: 3, borderTop: '1px solid #f1f5f9' }}>
-            <Button onClick={onClose} color="inherit" sx={{ borderRadius: '4px' }}>
-              Cancel
-            </Button>
-            <Button type="submit" variant="contained" disabled={loading} sx={{ bgcolor: '#e5a93c', borderRadius: '4px', px: 4, fontWeight: 700 }}>
-              {loading ? 'Saving...' : 'Save Account'}
-            </Button>
-          </Box>
-        </form>
-      </Card>
-    </Box>
+    </FormLayout>
   );
 }

@@ -3,9 +3,9 @@ import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { apiClient } from '../../api/client';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import FormLayout from '../../components/Common/FormLayout';
 import {
   Box,
-  Card,
   Button,
   Grid,
   TextField,
@@ -18,7 +18,6 @@ import {
   TableRow,
   TableCell
 } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -92,26 +91,18 @@ export default function JournalFormModal({ onClose, onSuccess }) {
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: { xs: 0.5, md: 1 }, pb: 4 }}>
-      <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <Button
-          startIcon={<ArrowBackIcon />}
-          onClick={onClose}
-          sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
-        >
-          Back to Journal Entries
-        </Button>
-      </Box>
-
-      <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-        <Box sx={{ mb: 2.5 }}>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
-            Create Double-Entry Journal Entry
-          </Typography>
-        </Box>
-
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2.5} sx={{ mb: 3 }}>
+    <FormLayout
+      title="Create Double-Entry Journal Entry"
+      backLabel="Back to Journal Entries"
+      onBack={onClose}
+      onCancel={onClose}
+      onSubmit={handleSubmit(onSubmit)}
+      saveLabel="Post Journal Entry"
+      savingLabel="Posting..."
+      loading={loading}
+      saveDisabled={!isBalanced}
+    >
+      <Grid container spacing={2.5} sx={{ mb: 3 }}>
             <Grid item xs={12} sm={3}>
               <Controller
                 name="transactionDate"
@@ -270,28 +261,6 @@ export default function JournalFormModal({ onClose, onSuccess }) {
               </Box>
             </Box>
           </Box>
-
-          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-            <Button onClick={onClose} color="inherit" sx={{ borderRadius: '4px' }}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={!isBalanced || loading}
-              sx={{
-                bgcolor: '#e5a93c',
-                color: '#000000',
-                fontWeight: 700,
-                borderRadius: '4px',
-                '&:hover': { bgcolor: '#d49b28' }
-              }}
-            >
-              {loading ? 'Posting...' : 'Post Journal Entry'}
-            </Button>
-          </Box>
-        </form>
-      </Card>
-    </Box>
+    </FormLayout>
   );
 }

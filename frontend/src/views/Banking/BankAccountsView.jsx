@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
+import FormLayout from '../../components/Common/FormLayout';
 import {
   Box,
   Typography,
@@ -19,7 +20,6 @@ import {
   TableCell,
   CircularProgress
 } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import TransferIcon from '@mui/icons-material/CompareArrows';
 import BankIcon from '@mui/icons-material/AccountBalance';
@@ -124,200 +124,154 @@ export default function BankAccountsView() {
 
   if (openTransferModal) {
     return (
-      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: { xs: 0.5, md: 1 }, pb: 4 }}>
-        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Button
-            startIcon={<ArrowBackIcon />}
-            onClick={() => setOpenTransferModal(false)}
-            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
-          >
-            Back to Bank Accounts
-          </Button>
-        </Box>
-
-        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Box sx={{ mb: 2.5 }}>
-            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
-              Internal Fund Transfer
-            </Typography>
-          </Box>
-
-          <Grid container spacing={2.5}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                select
-                fullWidth
-                size="small"
-                label="Transfer From Account"
-                value={fromCode}
-                onChange={(e) => setFromCode(e.target.value)}
-              >
-                <MenuItem value="1010">1010 - Petty Cash</MenuItem>
-                {bankAccounts.map((b) => (
-                  <MenuItem key={b.id} value={b.ledgerAccountCode}>
-                    {b.ledgerAccountCode} - {b.accountName}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                select
-                fullWidth
-                size="small"
-                label="Transfer To Account"
-                value={toCode}
-                onChange={(e) => setToCode(e.target.value)}
-              >
-                <MenuItem value="1010">1010 - Petty Cash</MenuItem>
-                {bankAccounts.map((b) => (
-                  <MenuItem key={b.id} value={b.ledgerAccountCode}>
-                    {b.ledgerAccountCode} - {b.accountName}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                size="small"
-                type="number"
-                label="Amount (₹)"
-                placeholder="0.00"
-                value={transferAmount}
-                onChange={(e) => setTransferAmount(e.target.value)}
-                inputProps={{ min: 0.01, step: 0.01 }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                size="small"
-                label="Reference / Check #"
-                placeholder="e.g. FT-2026-001"
-                value={transferRef}
-                onChange={(e) => setTransferRef(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                size="small"
-                label="Description"
-                placeholder="e.g. Cash replenishment for office"
-                value={transferDesc}
-                onChange={(e) => setTransferDesc(e.target.value)}
-              />
-            </Grid>
-          </Grid>
-
-          <Box sx={{ mt: 3.5, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-            <Button onClick={() => setOpenTransferModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
-              Cancel
-            </Button>
-            <Button
-              onClick={handleTransfer}
-              variant="contained"
-              disabled={!transferAmount || parseFloat(transferAmount) <= 0 || fromCode === toCode}
-              sx={{ bgcolor: '#e5a93c', color: '#000000', fontWeight: 700, borderRadius: '4px', '&:hover': { bgcolor: '#d49b28' } }}
+      <FormLayout
+        title="Internal Fund Transfer"
+        backLabel="Back to Bank Accounts"
+        onBack={() => setOpenTransferModal(false)}
+        onCancel={() => setOpenTransferModal(false)}
+        onSave={handleTransfer}
+        saveLabel="Execute Transfer"
+        savingLabel="Processing..."
+        saveDisabled={!transferAmount || parseFloat(transferAmount) <= 0 || fromCode === toCode}
+      >
+        <Grid container spacing={2.5}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              select
+              fullWidth
+              size="small"
+              label="Transfer From Account"
+              value={fromCode}
+              onChange={(e) => setFromCode(e.target.value)}
             >
-              Execute Transfer
-            </Button>
-          </Box>
-        </Card>
-      </Box>
+              <MenuItem value="1010">1010 - Petty Cash</MenuItem>
+              {bankAccounts.map((b) => (
+                <MenuItem key={b.id} value={b.ledgerAccountCode}>
+                  {b.ledgerAccountCode} - {b.accountName}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              select
+              fullWidth
+              size="small"
+              label="Transfer To Account"
+              value={toCode}
+              onChange={(e) => setToCode(e.target.value)}
+            >
+              <MenuItem value="1010">1010 - Petty Cash</MenuItem>
+              {bankAccounts.map((b) => (
+                <MenuItem key={b.id} value={b.ledgerAccountCode}>
+                  {b.ledgerAccountCode} - {b.accountName}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              size="small"
+              type="number"
+              label="Amount (₹)"
+              placeholder="0.00"
+              value={transferAmount}
+              onChange={(e) => setTransferAmount(e.target.value)}
+              inputProps={{ min: 0.01, step: 0.01 }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              size="small"
+              label="Reference / Check #"
+              placeholder="e.g. FT-2026-001"
+              value={transferRef}
+              onChange={(e) => setTransferRef(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              size="small"
+              label="Description"
+              placeholder="e.g. Cash replenishment for office"
+              value={transferDesc}
+              onChange={(e) => setTransferDesc(e.target.value)}
+            />
+          </Grid>
+        </Grid>
+      </FormLayout>
     );
   }
 
   if (openNewAccountModal) {
     return (
-      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: { xs: 0.5, md: 1 }, pb: 4 }}>
-        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Button
-            startIcon={<ArrowBackIcon />}
-            onClick={() => setOpenNewAccountModal(false)}
-            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
-          >
-            Back to Bank Accounts
-          </Button>
-        </Box>
-
-        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Box sx={{ mb: 2.5 }}>
-            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
-              Add Bank Account
-            </Typography>
-          </Box>
-
-          <Grid container spacing={2.5}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                size="small"
-                label="Account Title (e.g. Operating Current A/c)"
-                placeholder="e.g. HDFC Operating Current Account"
-                value={newAccData.accountName}
-                onChange={(e) => setNewAccData({ ...newAccData, accountName: e.target.value })}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                size="small"
-                label="Bank Name (e.g. Axis Bank)"
-                placeholder="e.g. HDFC Bank"
-                value={newAccData.bankName}
-                onChange={(e) => setNewAccData({ ...newAccData, bankName: e.target.value })}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                size="small"
-                label="Account Number"
-                placeholder="e.g. 50200012345678"
-                value={newAccData.accountNumber}
-                onChange={(e) => setNewAccData({ ...newAccData, accountNumber: e.target.value })}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                size="small"
-                label="IFSC Code"
-                placeholder="e.g. HDFC0001234"
-                value={newAccData.ifsc}
-                onChange={(e) => setNewAccData({ ...newAccData, ifsc: e.target.value })}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                size="small"
-                type="number"
-                label="Opening Balance (₹)"
-                placeholder="0.00"
-                value={newAccData.openingBalance}
-                onChange={(e) => setNewAccData({ ...newAccData, openingBalance: parseFloat(e.target.value || 0) })}
-              />
-            </Grid>
+      <FormLayout
+        title="Add Bank Account"
+        backLabel="Back to Bank Accounts"
+        onBack={() => setOpenNewAccountModal(false)}
+        onCancel={() => setOpenNewAccountModal(false)}
+        onSave={handleCreateAccount}
+        saveLabel="Save Bank Account"
+        savingLabel="Saving..."
+        saveDisabled={!newAccData.accountName || !newAccData.bankName || !newAccData.accountNumber}
+      >
+        <Grid container spacing={2.5}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              size="small"
+              label="Account Title (e.g. Operating Current A/c)"
+              placeholder="e.g. HDFC Operating Current Account"
+              value={newAccData.accountName}
+              onChange={(e) => setNewAccData({ ...newAccData, accountName: e.target.value })}
+            />
           </Grid>
-
-          <Box sx={{ mt: 3.5, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-            <Button onClick={() => setOpenNewAccountModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
-              Cancel
-            </Button>
-            <Button
-              onClick={handleCreateAccount}
-              variant="contained"
-              disabled={!newAccData.accountName || !newAccData.bankName || !newAccData.accountNumber}
-              sx={{ bgcolor: '#e5a93c', color: '#000000', fontWeight: 700, borderRadius: '4px', '&:hover': { bgcolor: '#d49b28' } }}
-            >
-              Save Bank Account
-            </Button>
-          </Box>
-        </Card>
-      </Box>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              size="small"
+              label="Bank Name (e.g. Axis Bank)"
+              placeholder="e.g. HDFC Bank"
+              value={newAccData.bankName}
+              onChange={(e) => setNewAccData({ ...newAccData, bankName: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              size="small"
+              label="Account Number"
+              placeholder="e.g. 50200012345678"
+              value={newAccData.accountNumber}
+              onChange={(e) => setNewAccData({ ...newAccData, accountNumber: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              size="small"
+              label="IFSC Code"
+              placeholder="e.g. HDFC0001234"
+              value={newAccData.ifsc}
+              onChange={(e) => setNewAccData({ ...newAccData, ifsc: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              size="small"
+              type="number"
+              label="Opening Balance (₹)"
+              placeholder="0.00"
+              value={newAccData.openingBalance}
+              onChange={(e) => setNewAccData({ ...newAccData, openingBalance: parseFloat(e.target.value || 0) })}
+            />
+          </Grid>
+        </Grid>
+      </FormLayout>
     );
   }
 

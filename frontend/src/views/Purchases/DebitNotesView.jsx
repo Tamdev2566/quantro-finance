@@ -3,20 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
+import FormLayout from '../../components/Common/FormLayout';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import {
   Box,
   Typography,
   Button,
-  Card,
   Grid,
   TextField,
   MenuItem,
   Chip
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function DebitNotesView() {
   const dispatch = useDispatch();
@@ -142,23 +141,16 @@ export default function DebitNotesView() {
 
   if (openModal) {
     return (
-      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: { xs: 0.5, md: 1 }, pb: 4 }}>
-        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Button
-            startIcon={<ArrowBackIcon />}
-            onClick={() => setOpenModal(false)}
-            sx={{ color: '#64748b', fontWeight: 600, textTransform: 'none', borderRadius: '4px' }}
-          >
-            Back to Debit Notes
-          </Button>
-        </Box>
-
-        <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 2.5 }}>
-            Issue Vendor Debit Note
-          </Typography>
-
-          <Grid container spacing={2.5}>
+      <FormLayout
+        title="Issue Vendor Debit Note"
+        backLabel="Back to Debit Notes"
+        onBack={() => setOpenModal(false)}
+        onCancel={() => setOpenModal(false)}
+        onSave={handleCreate}
+        saveLabel="Post Debit Note"
+        savingLabel="Posting..."
+      >
+        <Grid container spacing={2.5}>
             <Grid item xs={12} sm={8}>
               <TextField
                 select
@@ -246,17 +238,7 @@ export default function DebitNotesView() {
               />
             </Grid>
           </Grid>
-
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4, pt: 3, borderTop: '1px solid #f1f5f9' }}>
-            <Button onClick={() => setOpenModal(false)} color="inherit" sx={{ borderRadius: '4px' }}>
-              Cancel
-            </Button>
-            <Button variant="contained" onClick={handleCreate} sx={{ bgcolor: '#e5a93c', borderRadius: '4px', px: 4, fontWeight: 700 }}>
-              Post Debit Note
-            </Button>
-          </Box>
-        </Card>
-      </Box>
+      </FormLayout>
     );
   }
 
