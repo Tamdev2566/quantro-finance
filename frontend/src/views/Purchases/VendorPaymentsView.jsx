@@ -4,6 +4,7 @@ import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import FormLayout from '../../components/Common/FormLayout';
+import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
 import ConfirmDialog from '../../components/Common/ConfirmDialog';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
@@ -216,22 +217,15 @@ export default function VendorPaymentsView() {
         savingLabel="Processing..."
       >
         <Grid container spacing={2.5} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                select
-                fullWidth
-                label="Vendor"
-                size="small"
-                value={selectedVendorId}
-                onChange={(e) => setSelectedVendorId(e.target.value)}
-              >
-                {vendors.map((v) => (
-                  <MenuItem key={v.id} value={v.id}>
-                    {v.name} (Payable: ₹{(v.currentBalance || 0).toLocaleString('en-IN')})
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+          <Grid item xs={12} sm={6}>
+            <AsyncAutocomplete
+              type="vendors"
+              label="Vendor *"
+              placeholder="Type to search vendor..."
+              value={selectedVendorId}
+              onChange={(val) => setSelectedVendorId(val)}
+            />
+          </Grid>
             <Grid item xs={12} sm={3}>
               <DatePicker
                 label="Payment Date"
@@ -261,22 +255,15 @@ export default function VendorPaymentsView() {
                 <MenuItem value="Cash">Cash Disbursement</MenuItem>
               </TextField>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                select
-                fullWidth
-                label="Paid From (Bank / Cash Account)"
-                size="small"
-                value={bankAccountId}
-                onChange={(e) => setBankAccountId(e.target.value)}
-              >
-                {bankAccounts.map((b) => (
-                  <MenuItem key={b.id} value={b.id}>
-                    {b.accountName} ({b.bankName})
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+          <Grid item xs={12} sm={6}>
+            <AsyncAutocomplete
+              type="bankAccounts"
+              label="Paid From (Bank / Cash Account) *"
+              placeholder="Type to search bank account..."
+              value={bankAccountId}
+              onChange={(val) => setBankAccountId(val)}
+            />
+          </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
                 fullWidth

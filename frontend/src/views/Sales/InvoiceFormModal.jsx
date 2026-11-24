@@ -4,6 +4,7 @@ import { apiClient } from '../../api/client';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import FormLayout from '../../components/Common/FormLayout';
+import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
 import {
   Grid,
   TextField,
@@ -25,7 +26,6 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEdit = null }) {
-  const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const { register, control, handleSubmit, watch, setValue, reset, formState: { errors } } = useForm({
@@ -49,14 +49,9 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
   });
 
   const watchedItems = watch('items') || [];
-  const watchedCustomerId = watch('customerId');
   const watchedTaxInclusive = watch('isTaxInclusive');
 
   useEffect(() => {
-    apiClient.getCustomers().then((res) => {
-      setCustomers(res.data || []);
-    });
-
     if (invoiceToEdit) {
       reset({
         customerId: invoiceToEdit.customerId || '',
@@ -153,22 +148,24 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
       loading={loading}
     >
       <Grid container spacing={2.5} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                select
-                fullWidth
-                label="Customer"
-                size="small"
-                {...register('customerId', { required: 'Customer is required' })}
+        <Grid item xs={12} sm={4}>
+          <Controller
+            name="customerId"
+            control={control}
+            rules={{ required: 'Customer is required' }}
+            render={({ field }) => (
+              <AsyncAutocomplete
+                type="customers"
+                label="Customer *"
+                placeholder="Type to search customer..."
+                value={field.value}
+                onChange={(val) => field.onChange(val)}
                 error={!!errors.customerId}
-              >
-                {customers.map((c) => (
-                  <MenuItem key={c.id} value={c.id}>
-                    {c.name} ({c.state})
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+                helperText={errors.customerId?.message}
+              />
+            )}
+          />
+        </Grid>
             <Grid item xs={12} sm={2.5}>
               <Controller
                 name="invoiceDate"

@@ -4,6 +4,7 @@ import { apiClient } from '../../api/client';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import FormLayout from '../../components/Common/FormLayout';
+import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
 import {
   Grid,
   TextField,
@@ -19,8 +20,6 @@ import {
 } from '@mui/material';
 
 export default function PaymentFormModal({ open, onClose, onSuccess }) {
-  const [customers, setCustomers] = useState([]);
-  const [bankAccounts, setBankAccounts] = useState([]);
   const [unpaidInvoices, setUnpaidInvoices] = useState([]);
   const [allocations, setAllocations] = useState({});
   const [loading, setLoading] = useState(false);
@@ -39,20 +38,6 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
 
   const watchedCustomerId = watch('customerId');
   const watchedAmount = parseFloat(watch('amount') || 0);
-
-  useEffect(() => {
-    Promise.all([
-      apiClient.getCustomers(),
-      apiClient.getBankAccounts(),
-      apiClient.getInvoices()
-    ]).then(([cRes, bRes, iRes]) => {
-      setCustomers(cRes.data || []);
-      setBankAccounts(bRes.data || []);
-      if (cRes.data?.length > 0 && !watchedCustomerId) {
-        setValue('customerId', cRes.data[0].id);
-      }
-    });
-  }, []);
 
   useEffect(() => {
     if (watchedCustomerId) {
@@ -124,22 +109,24 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
       loading={loading}
     >
       <Grid container spacing={2.5} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                select
-                fullWidth
-                label="Customer"
-                size="small"
-                {...register('customerId', { required: 'Customer is required' })}
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="customerId"
+            control={control}
+            rules={{ required: 'Customer is required' }}
+            render={({ field }) => (
+              <AsyncAutocomplete
+                type="customers"
+                label="Customer *"
+                placeholder="Type to search customer..."
+                value={field.value}
+                onChange={(val) => field.onChange(val)}
                 error={!!errors.customerId}
-              >
-                {customers.map((c) => (
-                  <MenuItem key={c.id} value={c.id}>
-                    {c.name} (Balance: ₹{(c.currentBalance || 0).toLocaleString('en-IN')})
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+                helperText={errors.customerId?.message}
+              />
+            )}
+          />
+        </Grid>
 
             <Grid item xs={12} sm={6}>
               <Controller
@@ -192,22 +179,24 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
               </TextField>
             </Grid>
 
-            <Grid item xs={12} sm={4}>
-              <TextField
-                select
-                fullWidth
-                label="Deposit To (Bank Account)"
-                size="small"
-                {...register('bankAccountId', { required: 'Bank Account is required' })}
+        <Grid item xs={12} sm={4}>
+          <Controller
+            name="bankAccountId"
+            control={control}
+            rules={{ required: 'Bank Account is required' }}
+            render={({ field }) => (
+              <AsyncAutocomplete
+                type="bankAccounts"
+                label="Deposit To (Bank Account) *"
+                placeholder="Type to search bank account..."
+                value={field.value}
+                onChange={(val) => field.onChange(val)}
                 error={!!errors.bankAccountId}
-              >
-                {bankAccounts.map((b) => (
-                  <MenuItem key={b.id} value={b.id}>
-                    {b.accountName} ({b.bankName})
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+                helperText={errors.bankAccountId?.message}
+              />
+            )}
+          />
+        </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextField

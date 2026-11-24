@@ -4,6 +4,7 @@ import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import FormLayout from '../../components/Common/FormLayout';
+import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
 import {
   Box,
   Typography,
@@ -168,20 +169,13 @@ export default function BudgetsView() {
               </TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                select
-                fullWidth
-                size="small"
-                label="Ledger Account"
+              <AsyncAutocomplete
+                type="accounts"
+                label="Ledger Account *"
+                placeholder="Type code or name..."
                 value={formData.accountCode}
-                onChange={(e) => setFormData({ ...formData, accountCode: e.target.value })}
-              >
-                {accounts.map((a) => (
-                  <MenuItem key={a.code} value={a.code}>
-                    {a.code} – {a.name}
-                  </MenuItem>
-                ))}
-              </TextField>
+                onChange={(val) => setFormData({ ...formData, accountCode: val })}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField

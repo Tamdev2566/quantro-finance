@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { apiClient } from '../../api/client';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import FormLayout from '../../components/Common/FormLayout';
+import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
 import {
   Grid,
   TextField,
@@ -25,8 +26,6 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function VendorBillFormModal({ open, onClose, onSuccess }) {
-  const [vendors, setVendors] = useState([]);
-  const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm({
@@ -52,19 +51,7 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
   });
 
   const watchedItems = watch('items') || [];
-  const watchedVendorId = watch('vendorId');
   const watchedTaxInclusive = watch('isTaxInclusive');
-
-  useEffect(() => {
-    Promise.all([apiClient.getVendors(), apiClient.getAccounts()]).then(([vRes, aRes]) => {
-      setVendors(vRes.data || []);
-      const expAccs = (aRes.data || []).filter((a) => a.type === 'Expenses');
-      setAccounts(expAccs);
-      if (vRes.data?.length > 0 && !watchedVendorId) {
-        setValue('vendorId', vRes.data[0].id);
-      }
-    });
-  }, []);
 
   let subtotal = 0;
   let totalDiscount = 0;
@@ -122,49 +109,52 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
       loading={loading}
     >
       <Grid container spacing={2.5} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                select
-                fullWidth
-                label="Vendor"
-                size="small"
-                {...register('vendorId', { required: 'Vendor is required' })}
+        <Grid item xs={12} sm={4}>
+          <Controller
+            name="vendorId"
+            control={control}
+            rules={{ required: 'Vendor is required' }}
+            render={({ field }) => (
+              <AsyncAutocomplete
+                type="vendors"
+                label="Vendor *"
+                placeholder="Type to search vendor..."
+                value={field.value}
+                onChange={(val) => field.onChange(val)}
                 error={!!errors.vendorId}
-              >
-                {vendors.map((v) => (
-                  <MenuItem key={v.id} value={v.id}>
-                    {v.name} ({v.state})
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                required
-                label="Supplier Bill / Invoice #"
-                size="small"
-                placeholder="e.g. INV-SUPP-9821"
-                {...register('vendorBillNumber', { required: 'Bill number is required' })}
-                error={!!errors.vendorBillNumber}
+                helperText={errors.vendorId?.message}
               />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                select
-                fullWidth
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            fullWidth
+            required
+            label="Supplier Bill / Invoice #"
+            size="small"
+            placeholder="e.g. INV-SUPP-9821"
+            {...register('vendorBillNumber', { required: 'Bill number is required' })}
+            error={!!errors.vendorBillNumber}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Controller
+            name="expenseAccountCode"
+            control={control}
+            render={({ field }) => (
+              <AsyncAutocomplete
+                type="accounts"
+                accountType="Expenses"
                 label="Expense Account Mapping"
-                size="small"
-                {...register('expenseAccountCode')}
-              >
-                <MenuItem value="">Auto-allocate per items</MenuItem>
-                {accounts.map((a) => (
-                  <MenuItem key={a.code} value={a.code}>
-                    {a.code} - {a.name}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+                placeholder="Type code or name (e.g. 5110)..."
+                value={field.value}
+                onChange={(val) => field.onChange(val)}
+                extraOptions={[{ id: '', label: 'Auto-allocate per items' }]}
+              />
+            )}
+          />
+        </Grid>
             <Grid item xs={12} sm={3}>
               <Controller
                 name="billDate"

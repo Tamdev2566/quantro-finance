@@ -4,6 +4,7 @@ import { apiClient } from '../../api/client';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import FormLayout from '../../components/Common/FormLayout';
+import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
 import {
   Grid,
   TextField,
@@ -227,19 +228,19 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
               </TextField>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField
-                select
-                fullWidth
-                size="small"
-                label="Disbursed From (Bank / Cash Account)"
-                {...register('bankAccountId')}
-              >
-                {bankAccounts.map((b) => (
-                  <MenuItem key={b.id} value={b.id}>
-                    {b.accountName} ({b.bankName})
-                  </MenuItem>
-                ))}
-              </TextField>
+              <Controller
+                name="bankAccountId"
+                control={control}
+                render={({ field }) => (
+                  <AsyncAutocomplete
+                    type="bankAccounts"
+                    label="Disbursed From (Bank / Cash Account)"
+                    placeholder="Type to search bank account..."
+                    value={field.value}
+                    onChange={(val) => field.onChange(val)}
+                  />
+                )}
+              />
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField

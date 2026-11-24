@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { apiClient } from '../../api/client';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import FormLayout from '../../components/Common/FormLayout';
+import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
 import {
   Box,
   Button,
@@ -22,7 +23,6 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function JournalFormModal({ onClose, onSuccess }) {
-  const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const { register, control, handleSubmit, watch, formState: { errors } } = useForm({
@@ -44,12 +44,6 @@ export default function JournalFormModal({ onClose, onSuccess }) {
   });
 
   const watchedLines = watch('lines') || [];
-
-  useEffect(() => {
-    apiClient.getAccounts().then((res) => {
-      setAccounts(res.data?.filter((a) => a.isActive) || []);
-    }).catch(console.error);
-  }, []);
 
   let totalDebit = 0;
   let totalCredit = 0;
@@ -184,19 +178,21 @@ export default function JournalFormModal({ onClose, onSuccess }) {
               <TableBody>
                 {fields.map((field, index) => (
                   <TableRow key={field.id}>
-                    <TableCell>
-                      <TextField
-                        select
-                        fullWidth
-                        size="small"
-                        {...register(`lines.${index}.accountCode`, { required: true })}
-                      >
-                        {accounts.map((acc) => (
-                          <MenuItem key={acc.code} value={acc.code}>
-                            {acc.code} – {acc.name}
-                          </MenuItem>
-                        ))}
-                      </TextField>
+                    <TableCell sx={{ minWidth: 260 }}>
+                      <Controller
+                        name={`lines.${index}.accountCode`}
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field }) => (
+                          <AsyncAutocomplete
+                            type="accounts"
+                            label="Account"
+                            placeholder="Type code or name..."
+                            value={field.value}
+                            onChange={(val) => field.onChange(val)}
+                          />
+                        )}
+                      />
                     </TableCell>
                     <TableCell>
                       <TextField

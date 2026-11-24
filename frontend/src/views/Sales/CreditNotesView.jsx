@@ -4,6 +4,7 @@ import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import FormLayout from '../../components/Common/FormLayout';
+import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import {
@@ -152,24 +153,13 @@ export default function CreditNotesView() {
       >
         <Grid container spacing={2.5}>
             <Grid item xs={12} sm={8}>
-              <TextField
-                select
-                fullWidth
-                label="Select Eligible Posted Invoice"
-                size="small"
+              <AsyncAutocomplete
+                type="invoices"
+                label="Select Eligible Posted Invoice *"
+                placeholder="Type to search invoice number or customer..."
                 value={invoiceId}
-                onChange={(e) => setInvoiceId(e.target.value)}
-              >
-                {invoices.length === 0 ? (
-                  <MenuItem value="" disabled>No posted invoices found</MenuItem>
-                ) : (
-                  invoices.map((inv) => (
-                    <MenuItem key={inv.id} value={inv.id}>
-                      {inv.invoiceNumber} - {inv.customerName} (₹{inv.grandTotal?.toLocaleString('en-IN')})
-                    </MenuItem>
-                  ))
-                )}
-              </TextField>
+                onChange={(val) => setInvoiceId(val)}
+              />
             </Grid>
             <Grid item xs={12} sm={4}>
               <DatePicker

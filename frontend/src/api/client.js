@@ -30,6 +30,7 @@ export const apiClient = {
   },
 
   getDashboard: (params) => api.get('/dashboard', { params }),
+  autocomplete: (params) => api.get('/autocomplete', { params }),
 
   getAccounts: () => api.get('/accounts'),
   createAccount: (data) => api.post('/accounts', data),

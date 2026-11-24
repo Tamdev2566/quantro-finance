@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
 import FormLayout from '../../components/Common/FormLayout';
+import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
 import {
   Box,
   Typography,
@@ -136,38 +137,24 @@ export default function BankAccountsView() {
       >
         <Grid container spacing={2.5}>
           <Grid item xs={12} sm={6}>
-            <TextField
-              select
-              fullWidth
-              size="small"
+            <AsyncAutocomplete
+              type="accounts"
               label="Transfer From Account"
+              placeholder="Type code or account name..."
               value={fromCode}
-              onChange={(e) => setFromCode(e.target.value)}
-            >
-              <MenuItem value="1010">1010 - Petty Cash</MenuItem>
-              {bankAccounts.map((b) => (
-                <MenuItem key={b.id} value={b.ledgerAccountCode}>
-                  {b.ledgerAccountCode} - {b.accountName}
-                </MenuItem>
-              ))}
-            </TextField>
+              onChange={(val) => setFromCode(val)}
+              extraOptions={[{ id: '1010', label: '1010 - Petty Cash' }]}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              select
-              fullWidth
-              size="small"
+            <AsyncAutocomplete
+              type="accounts"
               label="Transfer To Account"
+              placeholder="Type code or account name..."
               value={toCode}
-              onChange={(e) => setToCode(e.target.value)}
-            >
-              <MenuItem value="1010">1010 - Petty Cash</MenuItem>
-              {bankAccounts.map((b) => (
-                <MenuItem key={b.id} value={b.ledgerAccountCode}>
-                  {b.ledgerAccountCode} - {b.accountName}
-                </MenuItem>
-              ))}
-            </TextField>
+              onChange={(val) => setToCode(val)}
+              extraOptions={[{ id: '1010', label: '1010 - Petty Cash' }]}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField

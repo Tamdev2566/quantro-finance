@@ -4,6 +4,7 @@ import { apiClient } from '../../api/client';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import FormLayout from '../../components/Common/FormLayout';
+import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import {
@@ -152,24 +153,13 @@ export default function DebitNotesView() {
       >
         <Grid container spacing={2.5}>
             <Grid item xs={12} sm={8}>
-              <TextField
-                select
-                fullWidth
-                label="Select Eligible Vendor Bill"
-                size="small"
+              <AsyncAutocomplete
+                type="bills"
+                label="Select Eligible Vendor Bill *"
+                placeholder="Type to search bill number or vendor..."
                 value={billId}
-                onChange={(e) => setBillId(e.target.value)}
-              >
-                {bills.length === 0 ? (
-                  <MenuItem value="" disabled>No posted vendor bills found</MenuItem>
-                ) : (
-                  bills.map((b) => (
-                    <MenuItem key={b.id} value={b.id}>
-                      {b.billNumber} - {b.vendorName} (₹{b.grandTotal.toLocaleString('en-IN')})
-                    </MenuItem>
-                  ))
-                )}
-              </TextField>
+                onChange={(val) => setBillId(val)}
+              />
             </Grid>
             <Grid item xs={12} sm={4}>
               <DatePicker

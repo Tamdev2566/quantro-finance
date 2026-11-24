@@ -51,6 +51,168 @@ router.get('/dashboard', asyncHandler(async (req, res) => {
   res.json({ success: true, data });
 }));
 
+// =========================================================================
+// AUTOCOMPLETE ENDPOINT
+// Returns top 5 latest data by default, or filters dynamically by query `q`
+// =========================================================================
+router.get('/autocomplete', asyncHandler(async (req, res) => {
+  const { type, q = '', limit = 5, accountType, category } = req.query;
+  const parsedLimit = parseInt(limit, 10) || 5;
+  const searchTerm = q.trim().toLowerCase();
+
+  let results = [];
+
+  switch (type) {
+    case 'accounts': {
+      let accounts = accountService.getAll().filter((a) => a.isActive !== false);
+      if (accountType) {
+        accounts = accounts.filter((a) => (a.type || '').toLowerCase() === accountType.toLowerCase());
+      }
+      if (category) {
+        accounts = accounts.filter((a) => (a.category || '').toLowerCase() === category.toLowerCase());
+      }
+      if (searchTerm) {
+        results = accounts.filter((a) =>
+          (a.code || '').toLowerCase().includes(searchTerm) ||
+          (a.name || '').toLowerCase().includes(searchTerm) ||
+          (a.category || '').toLowerCase().includes(searchTerm)
+        );
+      } else {
+        results = accounts.slice(0, parsedLimit);
+      }
+      results = results.slice(0, parsedLimit).map((a) => ({
+        id: a.code,
+        code: a.code,
+        name: a.name,
+        type: a.type,
+        category: a.category,
+        label: `${a.code} - ${a.name}`
+      }));
+      break;
+    }
+
+    case 'vendors': {
+      let vendors = vendorService.getAll().filter((v) => v.isActive !== false);
+      if (searchTerm) {
+        results = vendors.filter((v) =>
+          (v.name || '').toLowerCase().includes(searchTerm) ||
+          (v.id || '').toLowerCase().includes(searchTerm) ||
+          (v.contactPerson || '').toLowerCase().includes(searchTerm) ||
+          (v.gstin || '').toLowerCase().includes(searchTerm) ||
+          (v.phone || '').toLowerCase().includes(searchTerm)
+        );
+      } else {
+        results = [...vendors].reverse().slice(0, parsedLimit);
+      }
+      results = results.slice(0, parsedLimit).map((v) => ({
+        id: v.id,
+        name: v.name,
+        state: v.state,
+        gstin: v.gstin,
+        currentBalance: v.currentBalance || 0,
+        label: `${v.name}${v.state ? ` (${v.state})` : ''}`
+      }));
+      break;
+    }
+
+    case 'customers': {
+      let customers = customerService.getAll().filter((c) => c.isActive !== false);
+      if (searchTerm) {
+        results = customers.filter((c) =>
+          (c.name || '').toLowerCase().includes(searchTerm) ||
+          (c.id || '').toLowerCase().includes(searchTerm) ||
+          (c.contactPerson || '').toLowerCase().includes(searchTerm) ||
+          (c.gstin || '').toLowerCase().includes(searchTerm) ||
+          (c.phone || '').toLowerCase().includes(searchTerm)
+        );
+      } else {
+        results = [...customers].reverse().slice(0, parsedLimit);
+      }
+      results = results.slice(0, parsedLimit).map((c) => ({
+        id: c.id,
+        name: c.name,
+        state: c.state,
+        gstin: c.gstin,
+        currentBalance: c.currentBalance || 0,
+        label: `${c.name}${c.state ? ` (${c.state})` : ''}`
+      }));
+      break;
+    }
+
+    case 'bankAccounts':
+    case 'banks': {
+      let banks = bankingService.getAccounts();
+      if (searchTerm) {
+        results = banks.filter((b) =>
+          (b.accountName || '').toLowerCase().includes(searchTerm) ||
+          (b.bankName || '').toLowerCase().includes(searchTerm) ||
+          (b.accountNumber || '').toLowerCase().includes(searchTerm) ||
+          (b.ledgerAccountCode || '').toLowerCase().includes(searchTerm)
+        );
+      } else {
+        results = banks.slice(0, parsedLimit);
+      }
+      results = results.slice(0, parsedLimit).map((b) => ({
+        id: b.id,
+        accountName: b.accountName,
+        bankName: b.bankName,
+        ledgerAccountCode: b.ledgerAccountCode,
+        currentBalance: b.currentBalance || 0,
+        label: `${b.accountName} (${b.bankName})`
+      }));
+      break;
+    }
+
+    case 'invoices': {
+      let invoices = invoiceService.getAll();
+      if (searchTerm) {
+        results = invoices.filter((inv) =>
+          (inv.invoiceNumber || '').toLowerCase().includes(searchTerm) ||
+          (inv.customerName || '').toLowerCase().includes(searchTerm)
+        );
+      } else {
+        results = [...invoices].reverse().slice(0, parsedLimit);
+      }
+      results = results.slice(0, parsedLimit).map((inv) => ({
+        id: inv.id,
+        invoiceNumber: inv.invoiceNumber,
+        customerName: inv.customerName,
+        grandTotal: inv.grandTotal,
+        balanceDue: inv.balanceDue,
+        label: `${inv.invoiceNumber} - ${inv.customerName} (₹${(inv.grandTotal || 0).toLocaleString('en-IN')})`
+      }));
+      break;
+    }
+
+    case 'bills': {
+      let bills = vendorBillService.getAll();
+      if (searchTerm) {
+        results = bills.filter((b) =>
+          (b.billNumber || '').toLowerCase().includes(searchTerm) ||
+          (b.vendorBillNumber || '').toLowerCase().includes(searchTerm) ||
+          (b.vendorName || '').toLowerCase().includes(searchTerm)
+        );
+      } else {
+        results = [...bills].reverse().slice(0, parsedLimit);
+      }
+      results = results.slice(0, parsedLimit).map((b) => ({
+        id: b.id,
+        billNumber: b.billNumber,
+        vendorBillNumber: b.vendorBillNumber,
+        vendorName: b.vendorName,
+        grandTotal: b.grandTotal,
+        label: `${b.billNumber} (${b.vendorBillNumber || 'No Ref'}) - ${b.vendorName}`
+      }));
+      break;
+    }
+
+    default:
+      return res.status(400).json({ success: false, message: `Unknown autocomplete type: ${type}` });
+  }
+
+  res.json({ success: true, data: results });
+}));
+
 router.get('/accounts', asyncHandler(async (req, res) => {
   const accounts = accountService.getAll();
   res.json({ success: true, data: accounts });
