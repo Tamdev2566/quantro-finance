@@ -195,7 +195,7 @@ export default function DashboardView() {
         }}
       >
         <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 0.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <Typography
               variant="h4"
               sx={{
@@ -222,9 +222,6 @@ export default function DashboardView() {
               }}
             />
           </Box>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: '0.88rem' }}>
-            Real-time balance sheet movements, operating liquidity & revenue performance metrics.
-          </Typography>
         </Box>
 
         {/* Date Filter & Control Buttons */}

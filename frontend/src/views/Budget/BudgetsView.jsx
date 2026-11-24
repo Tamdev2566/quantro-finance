@@ -143,12 +143,9 @@ export default function BudgetsView() {
         </Box>
 
         <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Box sx={{ mb: 3 }}>
+          <Box sx={{ mb: 2.5 }}>
             <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
               Create Department Budget
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
-              Configure spending limits and variance thresholds for cost centers and operational departments.
             </Typography>
           </Box>
 
@@ -242,9 +239,6 @@ export default function BudgetsView() {
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Budget Management & Variance Analysis
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.2, fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
-            Set annual and department spending limits and analyze actual ledger variances in real-time
           </Typography>
         </Box>
         <Button

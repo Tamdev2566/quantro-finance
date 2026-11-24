@@ -93,9 +93,6 @@ export default function AuditLogsView() {
         <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
           Immutable Financial Audit Trail
         </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.2, fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
-          Append-only chronological audit log of all financial creations, approvals, postings, and reversals
-        </Typography>
       </Box>
 
       <Box sx={{ flexShrink: 0, mb: 1.5 }}>

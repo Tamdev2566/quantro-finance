@@ -104,12 +104,9 @@ export default function JournalFormModal({ onClose, onSuccess }) {
       </Box>
 
       <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-        <Box sx={{ mb: 3 }}>
+        <Box sx={{ mb: 2.5 }}>
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
             Create Double-Entry Journal Entry
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
-            Post a balanced manual journal voucher directly to the General Ledger. Total Debits must equal Total Credits.
           </Typography>
         </Box>
 

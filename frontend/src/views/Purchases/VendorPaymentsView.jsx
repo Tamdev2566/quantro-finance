@@ -219,11 +219,8 @@ export default function VendorPaymentsView() {
         </Box>
 
         <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 2 }}>
             Record Vendor Disbursement
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
-            Disburse supplier payment, allocate against unpaid vendor bills, and credit banking ledger
           </Typography>
 
           <Grid container spacing={2.5} sx={{ mb: 3 }}>
@@ -377,9 +374,6 @@ export default function VendorPaymentsView() {
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Vendor Payments & Disbursements
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
-            Pay supplier bills, manage Accounts Payable reductions, and record bank ledger debits
           </Typography>
         </Box>
         <Button

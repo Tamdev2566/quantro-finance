@@ -172,9 +172,6 @@ export default function VendorBillsView() {
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Vendor Bills (Accounts Payable)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
-            Record supplier invoices, match purchase orders, and claim Input Tax Credit
-          </Typography>
         </Box>
         <Button
           variant="contained"

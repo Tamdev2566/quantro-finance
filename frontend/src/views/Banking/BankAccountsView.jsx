@@ -136,12 +136,9 @@ export default function BankAccountsView() {
         </Box>
 
         <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Box sx={{ mb: 3 }}>
+          <Box sx={{ mb: 2.5 }}>
             <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
               Internal Fund Transfer
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
-              Move money between bank accounts or petty cash ledger. Creates a balanced contra journal entry automatically.
             </Typography>
           </Box>
 
@@ -246,12 +243,9 @@ export default function BankAccountsView() {
         </Box>
 
         <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Box sx={{ mb: 3 }}>
+          <Box sx={{ mb: 2.5 }}>
             <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
               Add Bank Account
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
-              Register a new operational bank or cash account with ledger linkage and opening balance.
             </Typography>
           </Box>
 
@@ -333,9 +327,6 @@ export default function BankAccountsView() {
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Bank & Cash Management
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
-            Multi-currency accounts, cash withdrawals, deposits, and internal ledger transfers
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1.2, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>

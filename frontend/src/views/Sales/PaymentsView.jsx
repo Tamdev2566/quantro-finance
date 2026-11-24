@@ -142,9 +142,6 @@ export default function PaymentsView() {
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Customer Payments Received
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
-            Multi-invoice allocation, advance handling, and double-entry bank debiting
-          </Typography>
         </Box>
         <Button
           variant="contained"

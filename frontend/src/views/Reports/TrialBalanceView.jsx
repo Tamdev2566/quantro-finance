@@ -162,9 +162,6 @@ export default function TrialBalanceView() {
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Trial Balance Report
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.3, fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
-            Verification of arithmetic accuracy across all debit and credit account balances
-          </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1.2, alignItems: 'center', flexWrap: 'wrap' }}>
           {totals.isBalanced && (

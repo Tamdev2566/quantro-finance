@@ -25,9 +25,6 @@ export default function ExpenseCategoriesView() {
         <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
           Expense Categories & Ledger Mapping
         </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
-          Standard corporate expense classifications mapped to double-entry general ledger accounts
-        </Typography>
       </Box>
 
       <Card sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>

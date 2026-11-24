@@ -185,11 +185,8 @@ export default function CustomersView() {
         </Box>
 
         <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 2 }}>
             {editingCustomer ? `Edit Customer (${editingCustomer.id})` : 'New Customer Master'}
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
-            Register client billing details, GSTIN tax credentials, and jurisdiction mapping
           </Typography>
 
           <form onSubmit={handleSubmit}>
@@ -314,9 +311,6 @@ export default function CustomersView() {
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Customer Master
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
-            GSTIN identification, state tax jurisdiction mapping, and live outstanding accounts receivable
           </Typography>
         </Box>
         <Button

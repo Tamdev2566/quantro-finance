@@ -158,9 +158,6 @@ export default function JournalEntriesView() {
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             General Journal Entries (Double-Entry Engine)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
-            Multi-line balanced accounting vouchers: strict verification of Total Debits = Total Credits
-          </Typography>
         </Box>
         <Button
           variant="contained"

@@ -225,9 +225,6 @@ export default function InvoicesView() {
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Sales Invoices (Accounts Receivable)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
-            Generate GST tax invoices, manage approval pipelines, and post double-entry receivables
-          </Typography>
         </Box>
         <Button
           variant="contained"

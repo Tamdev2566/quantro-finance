@@ -155,11 +155,8 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
       </Box>
 
       <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 2.5 }}>
           {invoiceToEdit ? `Edit Sales Invoice (${invoiceToEdit.invoiceNumber})` : 'Create New Sales Invoice'}
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
-          Prepare GST sales invoice with line items, tax rates, and double-entry validation
         </Typography>
 
         <form onSubmit={handleSubmit(onSubmit)}>

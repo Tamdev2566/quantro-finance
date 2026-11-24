@@ -182,9 +182,6 @@ export default function AccountsView() {
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Chart of Accounts
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
-            Hierarchical ledger classifications: Assets, Liabilities, Equity, Revenue, and Expenses
-          </Typography>
         </Box>
         <Button
           variant="contained"

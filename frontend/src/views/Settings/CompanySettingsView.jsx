@@ -101,12 +101,9 @@ export default function CompanySettingsView() {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: 0.5 }}>
-      <Box sx={{ mb: 3 }}>
+      <Box sx={{ mb: 2 }}>
         <Typography variant="h5" sx={{ fontWeight: 800 }}>
           Company & Financial Period Management
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b' }}>
-          Configure enterprise legal identity, state jurisdiction, monthly lock periods, and year-end closing
         </Typography>
       </Box>
 

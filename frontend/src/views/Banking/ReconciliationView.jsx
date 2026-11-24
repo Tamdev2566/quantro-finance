@@ -107,9 +107,6 @@ export default function ReconciliationView() {
         <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
           Bank Statement Reconciliation
         </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
-          Compare internal cash book journal lines against physical bank statements to identify unmatched items
-        </Typography>
       </Box>
 
       <Card sx={{ flexShrink: 0, p: 1.8, mb: 1.5 }}>

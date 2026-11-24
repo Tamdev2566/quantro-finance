@@ -127,11 +127,8 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
       </Box>
 
       <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 2.5 }}>
           Record Customer Payment Receipt
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
-          Record inward collection, allocate against open invoices, and update Accounts Receivable
         </Typography>
 
         <form onSubmit={handleSubmit(onSubmit)}>

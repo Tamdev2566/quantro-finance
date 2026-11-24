@@ -133,9 +133,6 @@ export default function ExpensesView() {
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Operating Expense Management
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
-            Record day-to-day operational expenditures, tax credits, and payment methods
-          </Typography>
         </Box>
         <Button
           variant="contained"

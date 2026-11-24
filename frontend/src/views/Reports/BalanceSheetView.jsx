@@ -144,9 +144,6 @@ export default function BalanceSheetView() {
           <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Balance Sheet (Financial Position)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
-            Audited financial status: Total Assets strictly equal Total Liabilities + Equity
-          </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap' }}>
           {data?.isBalanced && (

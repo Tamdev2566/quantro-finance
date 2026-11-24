@@ -193,9 +193,6 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Aging Analysis (Accounts Receivable & Payable)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.2, fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
-            Credit exposure and liability aging across 0-30, 31-60, 61-90, and 90+ day overdue buckets
-          </Typography>
         </Box>
 
         <ReportActionsToolbar

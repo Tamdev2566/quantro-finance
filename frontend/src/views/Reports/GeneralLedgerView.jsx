@@ -183,9 +183,6 @@ export default function GeneralLedgerView() {
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             General Ledger & Account Statements
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.3, fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
-            Real-time transaction audit trail, debit/credit entries, and incremental running balance
-          </Typography>
         </Box>
 
         <ReportActionsToolbar

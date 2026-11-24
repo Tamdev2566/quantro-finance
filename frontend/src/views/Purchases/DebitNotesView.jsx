@@ -154,11 +154,8 @@ export default function DebitNotesView() {
         </Box>
 
         <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 2.5 }}>
             Issue Vendor Debit Note
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
-            Reduce supplier liabilities, account for purchase returns, and automatically reverse Input Tax Credit
           </Typography>
 
           <Grid container spacing={2.5}>
@@ -269,9 +266,6 @@ export default function DebitNotesView() {
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Debit Notes (Vendor Liability Reductions)
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
-            Record purchase returns, vendor credit adjustments, and Input Tax Credit reversals
           </Typography>
         </Box>
         <Button

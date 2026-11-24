@@ -194,9 +194,6 @@ export default function ProfitLossView() {
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Statement of Profit & Loss
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
-            Comprehensive income statement computed dynamically from posted double-entry journal movements
-          </Typography>
         </Box>
 
         <ReportActionsToolbar

@@ -124,9 +124,6 @@ export default function CashFlowView() {
           <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Statement of Cash Flows
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
-            Operating, investing, and financing liquid movements derived from actual bank and cash journals
-          </Typography>
         </Box>
 
         <ReportActionsToolbar

@@ -101,11 +101,8 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
       </Box>
 
       <Card sx={{ p: { xs: 2.5, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5 }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', mb: 2.5 }}>
           {accountToEdit ? `Edit Ledger Account: ${accountToEdit.code} - ${accountToEdit.name}` : 'New Chart of Accounts Entry'}
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mb: 3.5 }}>
-          Define general ledger hierarchy, asset/liability classifications, and financial statement mapping
         </Typography>
 
         <form onSubmit={handleSubmit(onSubmit)}>

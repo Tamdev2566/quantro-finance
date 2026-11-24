@@ -110,9 +110,6 @@ export default function BackupRestoreView() {
           <Typography variant="h5" sx={{ fontWeight: 800 }}>
             Storage Backup, Restore & Data Migration
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b' }}>
-            Atomic snapshots of all finance JSON databases, point-in-time recovery, and portable export/import
-          </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1.5 }}>
           <Button variant="outlined" startIcon={<ExportIcon />} onClick={handleExport}>
