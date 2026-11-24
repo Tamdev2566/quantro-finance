@@ -22,7 +22,6 @@ export default function DebitNotesView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
   const [debitNotes, setDebitNotes] = useState([]);
-  const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
 
@@ -45,18 +44,8 @@ export default function DebitNotesView() {
     }
   };
 
-  const fetchBills = async () => {
-    try {
-      const res = await apiClient.getVendorBills();
-      setBills((res.data || []).filter((b) => b.status === 'Posted' || b.status === 'Partially Paid' || b.status === 'Paid'));
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
     fetchDebitNotes();
-    fetchBills();
   }, [refreshKey]);
 
   const handleOpenCreate = () => {

@@ -22,7 +22,6 @@ export default function CreditNotesView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
   const [creditNotes, setCreditNotes] = useState([]);
-  const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
 
@@ -45,18 +44,8 @@ export default function CreditNotesView() {
     }
   };
 
-  const fetchInvoices = async () => {
-    try {
-      const res = await apiClient.getInvoices();
-      setInvoices((res.data || []).filter((i) => i.status === 'Posted' || i.status === 'Paid' || i.status === 'Partially Paid'));
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
     fetchCreditNotes();
-    fetchInvoices();
   }, [refreshKey]);
 
   const handleOpenCreate = () => {

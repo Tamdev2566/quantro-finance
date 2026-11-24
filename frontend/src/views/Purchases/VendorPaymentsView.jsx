@@ -31,8 +31,6 @@ export default function VendorPaymentsView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
   const [payments, setPayments] = useState([]);
-  const [vendors, setVendors] = useState([]);
-  const [bankAccounts, setBankAccounts] = useState([]);
   const [unpaidBills, setUnpaidBills] = useState([]);
   const [allocations, setAllocations] = useState({});
   const [loading, setLoading] = useState(true);
@@ -58,20 +56,8 @@ export default function VendorPaymentsView() {
     }
   };
 
-  const fetchDependencies = async () => {
-    try {
-      const [vRes, bRes] = await Promise.all([apiClient.getVendors(), apiClient.getBankAccounts()]);
-      setVendors(vRes.data || []);
-      setBankAccounts(bRes.data || []);
-      if (bRes.data?.length > 0) setBankAccountId(bRes.data[0].id);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
     fetchPayments();
-    fetchDependencies();
   }, [refreshKey]);
 
   useEffect(() => {
@@ -102,10 +88,10 @@ export default function VendorPaymentsView() {
   }, [selectedVendorId, amount]);
 
   const handleOpenCreate = () => {
-    setSelectedVendorId(vendors[0]?.id || '');
+    setSelectedVendorId('');
     setPaymentDate(new Date().toISOString().slice(0, 10));
     setPaymentMethod('Bank Transfer');
-    setBankAccountId(bankAccounts[0]?.id || '');
+    setBankAccountId('');
     setAmount('');
     setReference('');
     setOpenModal(true);

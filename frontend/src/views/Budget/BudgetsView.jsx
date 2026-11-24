@@ -20,7 +20,6 @@ export default function BudgetsView() {
   const dispatch = useDispatch();
   const refreshKey = useSelector((state) => state.finance.refreshKey);
   const [budgetList, setBudgetList] = useState([]);
-  const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
 
@@ -36,13 +35,8 @@ export default function BudgetsView() {
   const fetchBudgets = async () => {
     try {
       setLoading(true);
-      const [bRes, aRes] = await Promise.all([
-        apiClient.getBudgetVsActual(),
-        apiClient.getAccounts()
-      ]);
+      const bRes = await apiClient.getBudgetVsActual();
       setBudgetList(bRes.data || []);
-      const expenseAccounts = (aRes.data || []).filter((a) => a.type === 'Expenses' || a.type === 'Revenue');
-      setAccounts(expenseAccounts);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
     } finally {

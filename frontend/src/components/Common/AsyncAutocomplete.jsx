@@ -34,10 +34,17 @@ export default function AsyncAutocomplete({
   sx = {}
 }) {
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(extraOptions);
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const debounceTimer = useRef(null);
+  const hasLoadedInitial = useRef(false);
+
+  // Reset cache if target entity type or filter changes
+  useEffect(() => {
+    hasLoadedInitial.current = false;
+    setOptions(extraOptions);
+  }, [type, accountType, category]);
 
   // Helper to fetch data from backend API
   const fetchOptions = async (query = '') => {
@@ -78,12 +85,7 @@ export default function AsyncAutocomplete({
     }
   };
 
-  // Initial load: fetch top 5 latest records when opened or on mount
-  useEffect(() => {
-    fetchOptions('');
-  }, [type, accountType, category]);
-
-  // If a value is provided that is not currently in options, fetch matching by value
+  // Only resolve specific value if passed initially in edit mode (not a blank/new form)
   useEffect(() => {
     if (value !== undefined && value !== null && value !== '') {
       const exists = options.some((o) => (o.id ?? o.code) === value);
@@ -94,10 +96,11 @@ export default function AsyncAutocomplete({
     }
   }, [value]);
 
-  // Handle typing with debounced API call
+  // Handle typing with debounced API call ("enter panna")
   const handleInputChange = (event, newInputValue, reason) => {
     setInputValue(newInputValue);
     if (reason === 'input') {
+      hasLoadedInitial.current = true;
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
       debounceTimer.current = setTimeout(() => {
         fetchOptions(newInputValue.trim());
@@ -118,7 +121,11 @@ export default function AsyncAutocomplete({
       open={open}
       onOpen={() => {
         setOpen(true);
-        if (!inputValue) fetchOptions('');
+        // Only fetch when user explicitly opens/selects the dropdown
+        if (!hasLoadedInitial.current) {
+          hasLoadedInitial.current = true;
+          fetchOptions(inputValue.trim());
+        }
       }}
       onClose={() => setOpen(false)}
       fullWidth={fullWidth}

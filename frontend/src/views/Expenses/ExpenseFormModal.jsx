@@ -18,7 +18,6 @@ import {
 
 export default function ExpenseFormModal({ open, onClose, onSuccess }) {
   const [categories, setCategories] = useState([]);
-  const [bankAccounts, setBankAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm({
@@ -48,12 +47,8 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
   const watchedTaxInclusive = watch('isTaxInclusive');
 
   useEffect(() => {
-    Promise.all([apiClient.getExpenseCategories(), apiClient.getBankAccounts()]).then(([cRes, bRes]) => {
+    apiClient.getExpenseCategories().then((cRes) => {
       setCategories(cRes.data || []);
-      setBankAccounts(bRes.data || []);
-      if (bRes.data?.length > 0) {
-        setValue('bankAccountId', bRes.data[0].id);
-      }
     });
   }, []);
 
