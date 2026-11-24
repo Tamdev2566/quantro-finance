@@ -173,7 +173,7 @@ export default function VendorsView() {
 
   if (isFormOpen) {
     return (
-      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: { xs: 0.5, md: 1 }, pb: 4 }}>
         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <Button
             startIcon={<ArrowBackIcon />}
