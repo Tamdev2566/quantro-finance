@@ -3,9 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { clearNotification, setCompany } from '../store';
 import { apiClient } from '../api/client';
-import { Box, Snackbar, Alert, Drawer } from '@mui/material';
+import { Box, Snackbar, Alert, Drawer, Slide } from '@mui/material';
 import Sidebar from '../components/Layout/Sidebar';
 import Header from '../components/Layout/Header';
+
+function SlideTransitionDown(props) {
+  return <Slide {...props} direction="down" />;
+}
 
 export default function MainLayout() {
   const dispatch = useDispatch();
@@ -108,18 +112,31 @@ export default function MainLayout() {
         open={Boolean(notification)}
         autoHideDuration={4000}
         onClose={() => dispatch(clearNotification())}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        TransitionComponent={SlideTransitionDown}
+        sx={{
+          top: { xs: 16, sm: 24 },
+          zIndex: 9999999
+        }}
       >
         <Alert
           onClose={() => dispatch(clearNotification())}
-          severity={notification?.severity || 'info'}
+          severity={notification?.severity || 'success'}
+          variant="filled"
           sx={{
-            width: '100%',
-            borderRadius: '4px',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
-            fontWeight: 600,
-            backgroundColor: notification?.severity === 'success' ? '#10b981' : undefined,
-            color: notification?.severity === 'success' ? '#ffffff' : undefined
+            minWidth: { xs: 280, sm: 360 },
+            maxWidth: 600,
+            borderRadius: '10px',
+            boxShadow: '0 16px 40px rgba(0, 0, 0, 0.45)',
+            fontWeight: 700,
+            fontSize: '0.88rem',
+            alignItems: 'center',
+            backgroundColor: notification?.severity === 'error' ? '#ef4444' : (notification?.severity === 'warning' ? '#f59e0b' : '#10b981'),
+            color: '#ffffff',
+            '& .MuiAlert-icon': {
+              color: '#ffffff',
+              fontSize: 22
+            }
           }}
         >
           {notification?.message}
