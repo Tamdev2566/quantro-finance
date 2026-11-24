@@ -237,13 +237,13 @@ export default function BudgetsView() {
   }
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2, mb: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ flexShrink: 0, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 1.5, mb: 1.5 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Budget Management & Variance Analysis
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.2, fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
             Set annual and department spending limits and analyze actual ledger variances in real-time
           </Typography>
         </Box>
@@ -257,12 +257,15 @@ export default function BudgetsView() {
         </Button>
       </Box>
 
-      <DataTable
-        columns={columns}
-        rows={budgetList}
-        loading={loading}
-        emptyMessage="No department budgets found. Click 'New Budget' to configure targets."
-      />
+      <Box sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <DataTable
+          columns={columns}
+          rows={budgetList}
+          loading={loading}
+          defaultPageSize={10}
+          emptyMessage="No department budgets found. Click 'New Budget' to configure targets."
+        />
+      </Box>
     </Box>
   );
 }

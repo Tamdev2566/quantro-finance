@@ -309,24 +309,26 @@ export default function VendorsView() {
   }
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 1.5, flexWrap: 'wrap', gap: 1.5, flexShrink: 0 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Vendors Master
           </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
             Supplier tax registration, procurement ledger attribution, and current accounts payable
           </Typography>
         </Box>
         <Button
           variant="contained"
+          size="small"
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
           sx={{
             bgcolor: '#e5a93c',
             borderRadius: '4px',
             fontWeight: 700,
+            fontSize: '0.82rem',
             width: { xs: '100%', sm: 'auto' },
             boxShadow: '0 4px 14px rgba(229, 169, 60, 0.3)',
             '&:hover': { bgcolor: '#b88019' }
@@ -336,12 +338,14 @@ export default function VendorsView() {
         </Button>
       </Box>
 
-      <DataTable
-        columns={columns}
-        rows={vendors}
-        loading={loading}
-        emptyMessage="No vendors registered."
-      />
+      <Box sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <DataTable
+          columns={columns}
+          rows={vendors}
+          loading={loading}
+          emptyMessage="No vendors registered."
+        />
+      </Box>
     </Box>
   );
 }

@@ -75,23 +75,29 @@ export default function MainLayout() {
           flexDirection: 'column',
           minWidth: 0,
           height: '100vh',
-          overflowY: 'auto',
-          px: { xs: 1, sm: 1.5, md: 2.5 }
+          maxHeight: '100vh',
+          overflow: 'hidden',
+          px: { xs: 1, sm: 1.5, md: 2 }
         }}
       >
-        <Header onDrawerToggle={handleDrawerToggle} />
+        <Box sx={{ flexShrink: 0 }}>
+          <Header onDrawerToggle={handleDrawerToggle} />
+        </Box>
 
         <Box
           component="main"
           sx={{
             flexGrow: 1,
-            mb: { xs: 1.5, md: 2.5 },
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: 0,
+            mb: { xs: 1, md: 1.5 },
             backgroundColor: '#ffffff',
             borderRadius: { xs: '8px', sm: '12px' },
-            p: { xs: 1.5, sm: 2.5, md: 3.5 },
+            p: { xs: 1.5, sm: 2, md: 2.2 },
             boxShadow: '0 20px 45px -15px rgba(0, 0, 0, 0.5)',
             border: '1px solid rgba(255, 255, 255, 0.05)',
-            overflowY: 'auto'
+            overflow: 'hidden'
           }}
         >
           <Outlet />

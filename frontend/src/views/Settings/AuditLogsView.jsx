@@ -88,17 +88,17 @@ export default function AuditLogsView() {
   ];
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ flexShrink: 0, mb: 1.5 }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
           Immutable Financial Audit Trail
         </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.2, fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
           Append-only chronological audit log of all financial creations, approvals, postings, and reversals
         </Typography>
       </Box>
 
-      <Box sx={{ mb: 2.5 }}>
+      <Box sx={{ flexShrink: 0, mb: 1.5 }}>
         <TextField
           size="small"
           placeholder="Search audit trail by user, action, transaction..."
@@ -119,13 +119,15 @@ export default function AuditLogsView() {
         />
       </Box>
 
-      <DataTable
-        columns={columns}
-        rows={filtered}
-        loading={loading}
-        defaultPageSize={12}
-        emptyMessage="No matching audit trail records found."
-      />
+      <Box sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <DataTable
+          columns={columns}
+          rows={filtered}
+          loading={loading}
+          defaultPageSize={10}
+          emptyMessage="No matching audit trail records found."
+        />
+      </Box>
     </Box>
   );
 }

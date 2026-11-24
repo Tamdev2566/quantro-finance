@@ -179,7 +179,7 @@ export default function DashboardView() {
   const cashInSeries = monthlyTrend.map((m) => m.cashIn || 0);
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', p: { xs: 2, sm: 3 } }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: { xs: 0.5, md: 1 }, p: { xs: 1.5, sm: 2 } }}>
 
       {/* =========================================================================
           SECTION 1: EXECUTIVE HEADER & CONTROLS

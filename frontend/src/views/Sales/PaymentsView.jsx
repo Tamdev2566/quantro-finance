@@ -136,48 +136,52 @@ export default function PaymentsView() {
   }
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5, flexWrap: 'wrap', gap: 1.5, flexShrink: 0 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Customer Payments Received
           </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8' }}>
+          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
             Multi-invoice allocation, advance handling, and double-entry bank debiting
           </Typography>
         </Box>
         <Button
           variant="contained"
+          size="small"
           startIcon={<AddIcon />}
           onClick={() => setOpenModal(true)}
           sx={{
             bgcolor: '#e5a93c',
             borderRadius: '4px',
             fontWeight: 700,
-            boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
-            '&:hover': { bgcolor: '#4b4bc0' }
+            fontSize: '0.82rem',
+            boxShadow: '0 4px 14px rgba(229, 169, 60, 0.3)',
+            '&:hover': { bgcolor: '#b88019' }
           }}
         >
           Receive Payment
         </Button>
       </Box>
 
-      <Box sx={{ display: 'flex', gap: 2, mb: 2.5 }}>
+      <Box sx={{ display: 'flex', gap: 1.5, mb: 1.5, flexShrink: 0 }}>
         <TextField
           size="small"
           placeholder="Search payments by #, customer, reference..."
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          sx={{ width: { xs: '100%', sm: 340 } }}
+          sx={{ width: { xs: '100%', sm: 320 } }}
         />
       </Box>
 
-      <DataTable
-        columns={columns}
-        rows={filtered}
-        loading={loading}
-        emptyMessage="No customer payments found."
-      />
+      <Box sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <DataTable
+          columns={columns}
+          rows={filtered}
+          loading={loading}
+          emptyMessage="No customer payments found."
+        />
+      </Box>
 
       <ConfirmDialog
         open={Boolean(confirmReversePayment)}

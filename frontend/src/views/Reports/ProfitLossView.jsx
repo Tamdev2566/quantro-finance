@@ -187,14 +187,14 @@ export default function ProfitLossView() {
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
       {/* Top Header & Export Toolbar */}
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 2, mb: 3 }}>
+      <Box sx={{ flexShrink: 0, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 1.5, mb: 1.5 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Statement of Profit & Loss
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
             Comprehensive income statement computed dynamically from posted double-entry journal movements
           </Typography>
         </Box>
@@ -207,82 +207,82 @@ export default function ProfitLossView() {
       </Box>
 
       {/* KPI Cards Grid */}
-      <Grid container spacing={2.5} sx={{ mb: 3.5 }}>
+      <Grid container spacing={1.5} sx={{ flexShrink: 0, mb: 1.5 }}>
         <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ p: 2.5, borderRadius: '6px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+          <Card sx={{ p: 1.8, borderRadius: '6px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
               <Typography variant="caption" sx={{ fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
                 Total Revenue
               </Typography>
-              <Box sx={{ p: 0.8, borderRadius: '4px', bgcolor: 'rgba(37, 99, 235, 0.1)', color: '#2563eb', display: 'flex' }}>
+              <Box sx={{ p: 0.6, borderRadius: '4px', bgcolor: 'rgba(37, 99, 235, 0.1)', color: '#2563eb', display: 'flex' }}>
                 <TrendingUpIcon fontSize="small" />
               </Box>
             </Box>
-            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+            <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a' }}>
               ₹{revTotal.toLocaleString('en-IN')}
             </Typography>
-            <Typography variant="caption" sx={{ color: '#64748b', mt: 0.5, display: 'block' }}>
+            <Typography variant="caption" sx={{ color: '#64748b', mt: 0.2, display: 'block' }}>
               100% Gross Operating Inflow
             </Typography>
           </Card>
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ p: 2.5, borderRadius: '6px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+          <Card sx={{ p: 1.8, borderRadius: '6px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
               <Typography variant="caption" sx={{ fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
                 Cost of Goods Sold (COGS)
               </Typography>
-              <Box sx={{ p: 0.8, borderRadius: '4px', bgcolor: 'rgba(245, 158, 11, 0.1)', color: '#d97706', display: 'flex' }}>
+              <Box sx={{ p: 0.6, borderRadius: '4px', bgcolor: 'rgba(245, 158, 11, 0.1)', color: '#d97706', display: 'flex' }}>
                 <TrendingDownIcon fontSize="small" />
               </Box>
             </Box>
-            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+            <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a' }}>
               ₹{cogsTotal.toLocaleString('en-IN')}
             </Typography>
-            <Typography variant="caption" sx={{ color: '#d97706', mt: 0.5, display: 'block', fontWeight: 600 }}>
+            <Typography variant="caption" sx={{ color: '#d97706', mt: 0.2, display: 'block', fontWeight: 600 }}>
               {cogsPct}% of Sales Revenue
             </Typography>
           </Card>
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ p: 2.5, borderRadius: '6px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+          <Card sx={{ p: 1.8, borderRadius: '6px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
               <Typography variant="caption" sx={{ fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
                 Gross Profit
               </Typography>
-              <Box sx={{ p: 0.8, borderRadius: '4px', bgcolor: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex' }}>
+              <Box sx={{ p: 0.6, borderRadius: '4px', bgcolor: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex' }}>
                 <AccountBalanceIcon fontSize="small" />
               </Box>
             </Box>
-            <Typography variant="h5" sx={{ fontWeight: 800, color: grossProfit >= 0 ? '#10b981' : '#ef4444' }}>
+            <Typography variant="h6" sx={{ fontWeight: 800, color: grossProfit >= 0 ? '#10b981' : '#ef4444' }}>
               ₹{grossProfit.toLocaleString('en-IN')}
             </Typography>
-            <Typography variant="caption" sx={{ color: '#10b981', mt: 0.5, display: 'block', fontWeight: 600 }}>
+            <Typography variant="caption" sx={{ color: '#10b981', mt: 0.2, display: 'block', fontWeight: 600 }}>
               Gross Margin: {grossMarginPct}%
             </Typography>
           </Card>
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ p: 2.5, borderRadius: '6px', border: '1px solid #e2e8f0', bgcolor: netProfit >= 0 ? '#f0fdf4' : '#fef2f2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+          <Card sx={{ p: 1.8, borderRadius: '6px', border: '1px solid #e2e8f0', bgcolor: netProfit >= 0 ? '#f0fdf4' : '#fef2f2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
               <Typography variant="caption" sx={{ fontWeight: 700, color: netProfit >= 0 ? '#166534' : '#991b1b', textTransform: 'uppercase' }}>
                 Net Profit
               </Typography>
               <Chip
                 size="small"
-                icon={<CheckCircleIcon sx={{ fontSize: '14px !important' }} />}
+                icon={<CheckCircleIcon sx={{ fontSize: '13px !important' }} />}
                 label={netProfit >= 0 ? 'Profitable' : 'Loss'}
                 color={netProfit >= 0 ? 'success' : 'error'}
-                sx={{ height: 22, fontSize: '0.7rem', fontWeight: 700 }}
+                sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
               />
             </Box>
-            <Typography variant="h5" sx={{ fontWeight: 800, color: netProfit >= 0 ? '#15803d' : '#b91c1c' }}>
+            <Typography variant="h6" sx={{ fontWeight: 800, color: netProfit >= 0 ? '#15803d' : '#b91c1c' }}>
               ₹{netProfit.toLocaleString('en-IN')}
             </Typography>
-            <Typography variant="caption" sx={{ color: netProfit >= 0 ? '#166534' : '#991b1b', mt: 0.5, display: 'block', fontWeight: 600 }}>
+            <Typography variant="caption" sx={{ color: netProfit >= 0 ? '#166534' : '#991b1b', mt: 0.2, display: 'block', fontWeight: 600 }}>
               Net Margin: {netMarginPct}%
             </Typography>
           </Card>
@@ -290,31 +290,31 @@ export default function ProfitLossView() {
       </Grid>
 
       {/* Main Income Statement Table Card (Styled for Screen & Print) */}
-      <Card className="printable-report" sx={{ p: { xs: 2, sm: 4 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
+      <Card className="printable-report" sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', p: { xs: 1.5, sm: 2.5 }, border: '1px solid #e2e8f0', borderRadius: '6px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)', overflow: 'hidden' }}>
         {/* Company Header */}
-        <Box sx={{ textAlign: 'center', mb: 4, pb: 2.5, borderBottom: '1px solid #e2e8f0' }}>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+        <Box sx={{ flexShrink: 0, textAlign: 'center', mb: 1.5, pb: 1, borderBottom: '1px solid #e2e8f0' }}>
+          <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a' }}>
             {companyName}
           </Typography>
-          <Typography variant="subtitle2" sx={{ color: '#475569', fontWeight: 600, mt: 0.5 }}>
+          <Typography variant="caption" sx={{ color: '#475569', fontWeight: 600, display: 'block', mt: 0.2 }}>
             Profit and Loss Statement for Financial Year 2026-2027
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 1, flexWrap: 'wrap' }}>
-            <Chip size="small" label={`GSTIN: ${company?.gstin || '27AABCA1234F1Z5'}`} variant="outlined" sx={{ fontSize: '0.75rem', fontWeight: 600 }} />
-            <Chip size="small" label={`Currency: INR (₹)`} variant="outlined" sx={{ fontSize: '0.75rem', fontWeight: 600 }} />
-            <Chip size="small" label={`Accounting Basis: Accrual / Double-Entry`} color="primary" sx={{ fontSize: '0.75rem', fontWeight: 600 }} />
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1.5, mt: 0.8, flexWrap: 'wrap' }}>
+            <Chip size="small" label={`GSTIN: ${company?.gstin || '27AABCA1234F1Z5'}`} variant="outlined" sx={{ fontSize: '0.72rem', fontWeight: 600, height: 20 }} />
+            <Chip size="small" label={`Currency: INR (₹)`} variant="outlined" sx={{ fontSize: '0.72rem', fontWeight: 600, height: 20 }} />
+            <Chip size="small" label={`Accounting Basis: Accrual / Double-Entry`} color="primary" sx={{ fontSize: '0.72rem', fontWeight: 600, height: 20 }} />
           </Box>
         </Box>
 
-        {/* Financial Table */}
-        <Box sx={{ width: '100%', overflowX: 'auto' }}>
-          <Table size="small">
-            <TableHead sx={{ bgcolor: '#0f172a' }}>
+        {/* Financial Table with Internal Scroll & Sticky Header */}
+        <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'auto' }}>
+          <Table size="small" stickyHeader>
+            <TableHead>
               <TableRow>
-                <TableCell sx={{ color: '#ffffff', fontWeight: 700, py: 1.2 }}>ACCOUNT PARTICULARS</TableCell>
-                <TableCell sx={{ color: '#ffffff', fontWeight: 700, py: 1.2 }}>CATEGORY</TableCell>
-                <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700, py: 1.2 }}>AMOUNT (₹)</TableCell>
-                <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700, py: 1.2 }}>% OF REVENUE</TableCell>
+                <TableCell sx={{ bgcolor: '#0f172a', color: '#ffffff', fontWeight: 700, py: 1 }}>ACCOUNT PARTICULARS</TableCell>
+                <TableCell sx={{ bgcolor: '#0f172a', color: '#ffffff', fontWeight: 700, py: 1 }}>CATEGORY</TableCell>
+                <TableCell align="right" sx={{ bgcolor: '#0f172a', color: '#ffffff', fontWeight: 700, py: 1 }}>AMOUNT (₹)</TableCell>
+                <TableCell align="right" sx={{ bgcolor: '#0f172a', color: '#ffffff', fontWeight: 700, py: 1 }}>% OF REVENUE</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

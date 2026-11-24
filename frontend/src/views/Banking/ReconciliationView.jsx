@@ -102,17 +102,17 @@ export default function ReconciliationView() {
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 800 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ flexShrink: 0, mb: 1.5 }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
           Bank Statement Reconciliation
         </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b' }}>
+        <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
           Compare internal cash book journal lines against physical bank statements to identify unmatched items
         </Typography>
       </Box>
 
-      <Card sx={{ p: 2.5, mb: 3 }}>
+      <Card sx={{ flexShrink: 0, p: 1.8, mb: 1.5 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={3}>
             <TextField
@@ -179,8 +179,8 @@ export default function ReconciliationView() {
         </Grid>
       </Card>
 
-      <Card sx={{ p: { xs: 1.5, sm: 2 }, mb: 3, backgroundColor: isBalanced ? '#ecfdf5' : '#fef2f2', border: `1px solid ${isBalanced ? '#a7f3d0' : '#fecaca'}` }}>
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'stretch', md: 'center' }, gap: 2 }}>
+      <Card sx={{ flexShrink: 0, p: { xs: 1.2, sm: 1.5 }, mb: 1.5, backgroundColor: isBalanced ? '#ecfdf5' : '#fef2f2', border: `1px solid ${isBalanced ? '#a7f3d0' : '#fecaca'}` }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'stretch', md: 'center' }, gap: 1.5 }}>
           <Box>
             <Typography variant="subtitle2" sx={{ fontWeight: 800, color: isBalanced ? '#065f46' : '#991b1b' }}>
               {isBalanced ? '✓ Reconciled: Zero Difference between Statement and Cleared Book' : `Difference: ₹${difference.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`}
@@ -215,16 +215,16 @@ export default function ReconciliationView() {
         </Box>
       </Card>
 
-      <Card sx={{ p: { xs: 1.5, sm: 2.5 } }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+      <Card sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', p: { xs: 1.2, sm: 1.8 }, overflow: 'hidden' }}>
+        <Box sx={{ flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
             Unreconciled & Cleared Transactions
           </Typography>
           <Button size="small" onClick={selectAll}>Select All</Button>
         </Box>
 
-        <Box sx={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-          <Table size="small" sx={{ minWidth: 650, border: '1px solid #e2e8f0' }}>
+        <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'auto', width: '100%', WebkitOverflowScrolling: 'touch' }}>
+          <Table size="small" stickyHeader sx={{ minWidth: 650, border: '1px solid #e2e8f0' }}>
             <TableHead sx={{ backgroundColor: '#f8fafc' }}>
               <TableRow>
                 <TableCell padding="checkbox">

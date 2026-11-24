@@ -328,17 +328,17 @@ export default function BankAccountsView() {
   }
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 1.5, flexWrap: 'wrap', gap: 1.5 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Bank & Cash Management
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
             Multi-currency accounts, cash withdrawals, deposits, and internal ledger transfers
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>
+        <Box sx={{ display: 'flex', gap: 1.2, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>
           <Button
             variant="outlined"
             startIcon={<TransferIcon />}
@@ -358,31 +358,31 @@ export default function BankAccountsView() {
         </Box>
       </Box>
 
-      <Grid container spacing={2.5} sx={{ mb: 3 }}>
+      <Grid container spacing={1.5} sx={{ flexShrink: 0, mb: 1.5 }}>
         {bankAccounts.map((b) => (
           <Grid item xs={12} sm={6} md={4} key={b.id}>
             <Card
               onClick={() => setSelectedAccountId(b.id)}
               sx={{
                 cursor: 'pointer',
-                p: 2.5,
+                p: 1.8,
                 borderRadius: '4px',
                 border: selectedAccountId === b.id ? '2px solid #e5a93c' : '1px solid #e2e8f0',
                 boxShadow: selectedAccountId === b.id ? '0 4px 16px rgba(229, 169, 60, 0.2)' : '0 1px 3px rgba(0,0,0,0.05)',
                 transition: 'all 0.15s ease'
               }}
             >
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
-                <BankIcon sx={{ color: '#e5a93c', fontSize: 28 }} />
-                <Chip label={b.currency} size="small" sx={{ fontWeight: 700, borderRadius: '4px' }} />
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                <BankIcon sx={{ color: '#e5a93c', fontSize: 24 }} />
+                <Chip label={b.currency} size="small" sx={{ fontWeight: 700, borderRadius: '4px', height: 20, fontSize: '0.7rem' }} />
               </Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
                 {b.accountName}
               </Typography>
-              <Typography variant="caption" sx={{ color: '#64748b', display: 'block', mb: 1.5 }}>
+              <Typography variant="caption" sx={{ color: '#64748b', display: 'block', mb: 0.8 }}>
                 {b.bankName} • {b.accountNumber}
               </Typography>
-              <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+              <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a' }}>
                 ₹{(b.currentBalance || 0).toLocaleString('en-IN')}
               </Typography>
             </Card>
@@ -390,24 +390,24 @@ export default function BankAccountsView() {
         ))}
       </Grid>
 
-      <Card sx={{ border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)' }}>
-        <Box sx={{ p: 2.5, borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+      <Card sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', border: '1px solid #e2e8f0', borderRadius: '4px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.03)', overflow: 'hidden' }}>
+        <Box sx={{ flexShrink: 0, p: 1.5, borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
             Transaction Feed – {selectedAccount?.accountName || 'All'}
           </Typography>
-          <Chip label={`${accountTransactions.length} items`} size="small" sx={{ borderRadius: '4px' }} />
+          <Chip label={`${accountTransactions.length} items`} size="small" sx={{ borderRadius: '4px', height: 20, fontSize: '0.72rem' }} />
         </Box>
-        <Box sx={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-          <Table size="small">
-            <TableHead sx={{ bgcolor: '#151621' }}>
+        <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <Table size="small" stickyHeader>
+            <TableHead>
               <TableRow>
-                <TableCell sx={{ color: '#ffffff', fontWeight: 700 }}>Date</TableCell>
-                <TableCell sx={{ color: '#ffffff', fontWeight: 700 }}>Reference</TableCell>
-                <TableCell sx={{ color: '#ffffff', fontWeight: 700 }}>Description</TableCell>
-                <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700 }}>Deposit (₹)</TableCell>
-                <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700 }}>Withdrawal (₹)</TableCell>
-                <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 700 }}>Balance (₹)</TableCell>
-                <TableCell align="center" sx={{ color: '#ffffff', fontWeight: 700 }}>Status</TableCell>
+                <TableCell sx={{ bgcolor: '#151621', color: '#ffffff', fontWeight: 700, py: 1 }}>Date</TableCell>
+                <TableCell sx={{ bgcolor: '#151621', color: '#ffffff', fontWeight: 700, py: 1 }}>Reference</TableCell>
+                <TableCell sx={{ bgcolor: '#151621', color: '#ffffff', fontWeight: 700, py: 1 }}>Description</TableCell>
+                <TableCell align="right" sx={{ bgcolor: '#151621', color: '#ffffff', fontWeight: 700, py: 1 }}>Deposit (₹)</TableCell>
+                <TableCell align="right" sx={{ bgcolor: '#151621', color: '#ffffff', fontWeight: 700, py: 1 }}>Withdrawal (₹)</TableCell>
+                <TableCell align="right" sx={{ bgcolor: '#151621', color: '#ffffff', fontWeight: 700, py: 1 }}>Balance (₹)</TableCell>
+                <TableCell align="center" sx={{ bgcolor: '#151621', color: '#ffffff', fontWeight: 700, py: 1 }}>Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

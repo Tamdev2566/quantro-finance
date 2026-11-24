@@ -152,49 +152,53 @@ export default function JournalEntriesView() {
   }
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 1.5, flexWrap: 'wrap', gap: 1.5, flexShrink: 0 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             General Journal Entries (Double-Entry Engine)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
             Multi-line balanced accounting vouchers: strict verification of Total Debits = Total Credits
           </Typography>
         </Box>
         <Button
           variant="contained"
+          size="small"
           startIcon={<AddIcon />}
           onClick={() => setOpenCreateModal(true)}
           sx={{
             bgcolor: '#e5a93c',
             borderRadius: '4px',
             fontWeight: 700,
+            fontSize: '0.82rem',
             width: { xs: '100%', sm: 'auto' },
-            boxShadow: '0 4px 14px rgba(91, 91, 214, 0.3)',
-            '&:hover': { bgcolor: '#4b4bc0' }
+            boxShadow: '0 4px 14px rgba(229, 169, 60, 0.3)',
+            '&:hover': { bgcolor: '#b88019' }
           }}
         >
           New Manual Journal
         </Button>
       </Box>
 
-      <Box sx={{ display: 'flex', gap: 2, mb: 2.5 }}>
+      <Box sx={{ display: 'flex', gap: 1.5, mb: 1.5, flexShrink: 0 }}>
         <TextField
           size="small"
           placeholder="Search by journal #, description, type..."
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          sx={{ width: { xs: '100%', sm: 340 } }}
+          sx={{ width: { xs: '100%', sm: 320 } }}
         />
       </Box>
 
-      <DataTable
-        columns={columns}
-        rows={filtered}
-        loading={loading}
-        emptyMessage="No journal entries found."
-      />
+      <Box sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <DataTable
+          columns={columns}
+          rows={filtered}
+          loading={loading}
+          emptyMessage="No journal entries found."
+        />
+      </Box>
 
       <Dialog open={Boolean(selectedJournal)} onClose={() => setSelectedJournal(null)} maxWidth="md" fullWidth>
         <DialogTitle sx={{ fontWeight: 800 }}>

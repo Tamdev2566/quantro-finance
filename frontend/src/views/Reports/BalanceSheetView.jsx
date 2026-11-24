@@ -138,13 +138,13 @@ export default function BalanceSheetView() {
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 2, mb: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ flexShrink: 0, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 1.5, mb: 1.5 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Balance Sheet (Financial Position)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+          <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
             Audited financial status: Total Assets strictly equal Total Liabilities + Equity
           </Typography>
         </Box>
@@ -154,7 +154,7 @@ export default function BalanceSheetView() {
               icon={<BalancedIcon />}
               label="Balanced: Assets = Liabilities + Equity"
               color="success"
-              sx={{ fontWeight: 600, fontSize: '0.8rem' }}
+              sx={{ fontWeight: 600, fontSize: '0.78rem', height: 26 }}
             />
           )}
           <ReportActionsToolbar
@@ -165,21 +165,22 @@ export default function BalanceSheetView() {
         </Box>
       </Box>
 
-      <Card className="printable-report" sx={{ p: { xs: 2, sm: 3.5 }, border: '1px solid #e2e8f0', borderRadius: '6px' }}>
-        <Box sx={{ textAlign: 'center', mb: 3, pb: 2, borderBottom: '1px solid #e2e8f0' }}>
-          <Typography variant="h5" sx={{ fontWeight: 800 }}>
+      <Card className="printable-report" sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', p: { xs: 1.5, sm: 2.5 }, border: '1px solid #e2e8f0', borderRadius: '6px', overflow: 'hidden' }}>
+        <Box sx={{ flexShrink: 0, textAlign: 'center', mb: 1.5, pb: 1, borderBottom: '1px solid #e2e8f0' }}>
+          <Typography variant="h6" sx={{ fontWeight: 800 }}>
             {company?.legalName || company?.name || 'Quantro Finance'}
           </Typography>
-          <Typography variant="subtitle2" sx={{ color: '#64748b', fontWeight: 600, mt: 0.5 }}>
+          <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, display: 'block', mt: 0.2 }}>
             Balance Sheet as on {data?.asOfDate || new Date().toISOString().slice(0, 10)}
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 1, flexWrap: 'wrap' }}>
-            <Chip size="small" label={`GSTIN: ${company?.gstin || '27AABCA1234F1Z5'}`} variant="outlined" sx={{ fontSize: '0.75rem', fontWeight: 600 }} />
-            <Chip size="small" label={`Currency: INR (₹)`} variant="outlined" sx={{ fontSize: '0.75rem', fontWeight: 600 }} />
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1.5, mt: 0.8, flexWrap: 'wrap' }}>
+            <Chip size="small" label={`GSTIN: ${company?.gstin || '27AABCA1234F1Z5'}`} variant="outlined" sx={{ fontSize: '0.72rem', fontWeight: 600, height: 20 }} />
+            <Chip size="small" label={`Currency: INR (₹)`} variant="outlined" sx={{ fontSize: '0.72rem', fontWeight: 600, height: 20 }} />
           </Box>
         </Box>
 
-        <Grid container spacing={3}>
+        <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', pr: 0.5 }}>
+          <Grid container spacing={2.5}>
           <Grid item xs={12} md={6}>
             <Box sx={{ border: '1px solid #e2e8f0', borderRadius: '6px', p: { xs: 1.5, sm: 2.5 }, overflowX: 'auto' }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#2563eb', mb: 1 }}>
@@ -272,7 +273,8 @@ export default function BalanceSheetView() {
             </Box>
           </Grid>
         </Grid>
-      </Card>
-    </Box>
-  );
+      </Box>
+    </Card>
+  </Box>
+);
 }

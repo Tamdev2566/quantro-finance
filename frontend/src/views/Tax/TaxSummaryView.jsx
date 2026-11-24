@@ -114,17 +114,17 @@ export default function TaxSummaryView() {
   ];
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ flexShrink: 0, mb: 1.5 }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
           GST Tax Summary & Filings Overview
         </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+        <Typography variant="body2" sx={{ color: '#64748b', mt: 0.2, fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
           Configurable Indian GST: CGST, SGST, IGST tax breakdown and Input Tax Credit (ITC) reconciliation
         </Typography>
       </Box>
 
-      <Grid container spacing={2.5} sx={{ mb: 3 }}>
+      <Grid container spacing={1.5} sx={{ flexShrink: 0, mb: 1.5 }}>
         <Grid item xs={12} sm={4}>
           <StatCard
             title="Total Input Tax Credit (ITC)"
@@ -154,14 +154,15 @@ export default function TaxSummaryView() {
         </Grid>
       </Grid>
 
-      <Box sx={{ mb: 2 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#0f172a', mb: 1.5 }}>
+      <Box sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#0f172a', mb: 1, flexShrink: 0 }}>
           GST Transaction Ledger & Invoices
         </Typography>
         <DataTable
           columns={columns}
           rows={records}
           loading={loading}
+          defaultPageSize={10}
           emptyMessage="No tax records found for the current period."
         />
       </Box>

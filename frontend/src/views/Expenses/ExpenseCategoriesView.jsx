@@ -20,25 +20,26 @@ export default function ExpenseCategoriesView() {
   }, []);
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 800 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ flexShrink: 0, mb: 1.5 }}>
+        <Typography variant="h5" sx={{ fontWeight: 800, fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
           Expense Categories & Ledger Mapping
         </Typography>
-        <Typography variant="body2" sx={{ color: '#64748b' }}>
+        <Typography variant="body2" sx={{ color: '#64748b', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
           Standard corporate expense classifications mapped to double-entry general ledger accounts
         </Typography>
       </Box>
 
-      <Card sx={{ p: 2 }}>
-        <Table size="small">
-          <TableHead sx={{ backgroundColor: '#f8fafc' }}>
-            <TableRow>
-              <TableCell sx={{ fontWeight: 700 }}>Category Name</TableCell>
-              <TableCell sx={{ fontWeight: 700 }}>Default General Ledger Account</TableCell>
-              <TableCell align="center" sx={{ fontWeight: 700 }}>Status</TableCell>
-            </TableRow>
-          </TableHead>
+      <Card sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
+          <Table size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ bgcolor: '#0f172a', color: '#ffffff', fontWeight: 700, py: 1 }}>Category Name</TableCell>
+                <TableCell sx={{ bgcolor: '#0f172a', color: '#ffffff', fontWeight: 700, py: 1 }}>Default General Ledger Account</TableCell>
+                <TableCell align="center" sx={{ bgcolor: '#0f172a', color: '#ffffff', fontWeight: 700, py: 1 }}>Status</TableCell>
+              </TableRow>
+            </TableHead>
           <TableBody>
             {categories.map((c) => (
               <TableRow key={c.name}>
@@ -51,6 +52,7 @@ export default function ExpenseCategoriesView() {
             ))}
           </TableBody>
         </Table>
+        </Box>
       </Card>
     </Box>
   );

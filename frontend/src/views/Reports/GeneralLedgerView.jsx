@@ -177,13 +177,13 @@ export default function GeneralLedgerView() {
   ];
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 2, mb: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 1.5, mb: 1.5, flexShrink: 0 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             General Ledger & Account Statements
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.3, fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
             Real-time transaction audit trail, debit/credit entries, and incremental running balance
           </Typography>
         </Box>
@@ -197,15 +197,16 @@ export default function GeneralLedgerView() {
 
       <Card
         sx={{
-          p: { xs: 2, sm: 2.5 },
-          mb: 3,
+          p: { xs: 1.2, sm: 1.5 },
+          mb: 1.5,
+          flexShrink: 0,
           borderRadius: '6px',
-          boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.03)',
+          boxShadow: '0 2px 10px -2px rgba(15, 23, 42, 0.03)',
           border: '1px solid #e2e8f0'
         }}
       >
-        <Grid container spacing={3} alignItems="center">
-          <Grid item xs={12} sm={5}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} sm={4}>
             <TextField
               select
               fullWidth
@@ -222,29 +223,29 @@ export default function GeneralLedgerView() {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12} sm={7}>
-            <Box sx={{ display: 'flex', gap: { xs: 2, sm: 4 }, justifyContent: { xs: 'space-between', sm: 'flex-end' }, flexWrap: 'wrap' }}>
+          <Grid item xs={12} sm={8}>
+            <Box sx={{ display: 'flex', gap: { xs: 1.5, sm: 3 }, justifyContent: { xs: 'space-between', sm: 'flex-end' }, flexWrap: 'wrap' }}>
               <Box>
-                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600 }}>Opening Balance</Typography>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#0f172a' }}>
+                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.72rem' }}>Opening Balance</Typography>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#0f172a', fontSize: '0.92rem' }}>
                   ₹{ledgerData?.openingBalance?.toLocaleString('en-IN') || '0.00'}
                 </Typography>
               </Box>
               <Box>
-                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600 }}>Total Debits</Typography>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#e5a93c' }}>
+                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.72rem' }}>Total Debits</Typography>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#e5a93c', fontSize: '0.92rem' }}>
                   ₹{ledgerData?.totalDebit?.toLocaleString('en-IN') || '0.00'}
                 </Typography>
               </Box>
               <Box>
-                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600 }}>Total Credits</Typography>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#e5a93c' }}>
+                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.72rem' }}>Total Credits</Typography>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#e5a93c', fontSize: '0.92rem' }}>
                   ₹{ledgerData?.totalCredit?.toLocaleString('en-IN') || '0.00'}
                 </Typography>
               </Box>
               <Box>
-                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600 }}>Closing Balance</Typography>
-                <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#10b981' }}>
+                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.72rem' }}>Closing Balance</Typography>
+                <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#10b981', fontSize: '0.92rem' }}>
                   ₹{ledgerData?.closingBalance?.toLocaleString('en-IN') || '0.00'}
                 </Typography>
               </Box>
@@ -253,12 +254,12 @@ export default function GeneralLedgerView() {
         </Grid>
       </Card>
 
-      <Box className="printable-report">
+      <Box className="printable-report" sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <DataTable
           columns={columns}
           rows={entries}
           loading={loading}
-          defaultPageSize={25}
+          defaultPageSize={10}
           emptyMessage="No ledger entries recorded for this account."
         />
       </Box>

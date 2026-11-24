@@ -156,27 +156,29 @@ export default function TrialBalanceView() {
   ];
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 2, mb: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 1.5, mb: 1.5, flexShrink: 0 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.35rem' } }}>
             Trial Balance Report
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.3, fontSize: { xs: '0.78rem', sm: '0.84rem' } }}>
             Verification of arithmetic accuracy across all debit and credit account balances
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', gap: 1.2, alignItems: 'center', flexWrap: 'wrap' }}>
           {totals.isBalanced && (
             <Chip
-              icon={<BalancedIcon sx={{ color: '#10b981 !important' }} />}
+              icon={<BalancedIcon sx={{ color: '#10b981 !important', fontSize: 16 }} />}
               label="Debit & Credit Balanced"
+              size="small"
               sx={{
-                fontWeight: 600,
+                fontWeight: 700,
                 backgroundColor: '#f0fdf4',
                 color: '#16a34a',
                 borderRadius: '4px',
-                fontSize: '0.8rem'
+                fontSize: '0.74rem',
+                height: 26
               }}
             />
           )}
@@ -190,48 +192,49 @@ export default function TrialBalanceView() {
 
       <Card
         sx={{
-          p: { xs: 2, sm: 2.5 },
-          mb: 3,
+          p: { xs: 1.2, sm: 1.5 },
+          mb: 1.5,
+          flexShrink: 0,
           backgroundColor: '#ffffff',
           borderRadius: '6px',
           border: '1px solid #e2e8f0',
-          boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.03)'
+          boxShadow: '0 2px 10px -2px rgba(15, 23, 42, 0.03)'
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600 }}>Period Total Debits</Typography>
-            <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#e5a93c' }}>
+            <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.72rem' }}>Period Total Debits</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#e5a93c', fontSize: '0.95rem' }}>
               ₹{totals.periodDebit?.toLocaleString('en-IN') || '0.00'}
             </Typography>
           </Box>
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600 }}>Period Total Credits</Typography>
-            <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#e5a93c' }}>
+            <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.72rem' }}>Period Total Credits</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#e5a93c', fontSize: '0.95rem' }}>
               ₹{totals.periodCredit?.toLocaleString('en-IN') || '0.00'}
             </Typography>
           </Box>
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600 }}>Closing Total Debits</Typography>
-            <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#10b981' }}>
+            <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.72rem' }}>Closing Total Debits</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#10b981', fontSize: '0.95rem' }}>
               ₹{totals.closingDebit?.toLocaleString('en-IN') || '0.00'}
             </Typography>
           </Box>
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600 }}>Closing Total Credits</Typography>
-            <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#10b981' }}>
+            <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.72rem' }}>Closing Total Credits</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#10b981', fontSize: '0.95rem' }}>
               ₹{totals.closingCredit?.toLocaleString('en-IN') || '0.00'}
             </Typography>
           </Box>
         </Box>
       </Card>
 
-      <Box className="printable-report">
+      <Box className="printable-report" sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <DataTable
           columns={columns}
           rows={rows}
           loading={loading}
-          defaultPageSize={25}
+          defaultPageSize={10}
           emptyMessage="No trial balance figures generated yet."
         />
       </Box>

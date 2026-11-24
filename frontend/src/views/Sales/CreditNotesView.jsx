@@ -265,13 +265,13 @@ export default function CreditNotesView() {
   }
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3, flexWrap: 'wrap', gap: 2 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: 1.5, flexWrap: 'wrap', gap: 1.5 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Credit Notes (Receivable Reductions)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+          <Typography variant="body2" sx={{ color: '#94a3b8', fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
             Sales returns, dispute resolutions, and automated reversal of revenues and tax liabilities
           </Typography>
         </Box>
@@ -292,12 +292,15 @@ export default function CreditNotesView() {
         </Button>
       </Box>
 
-      <DataTable
-        columns={columns}
-        rows={creditNotes}
-        loading={loading}
-        emptyMessage="No credit notes issued."
-      />
+      <Box sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <DataTable
+          columns={columns}
+          rows={creditNotes}
+          loading={loading}
+          defaultPageSize={10}
+          emptyMessage="No credit notes issued."
+        />
+      </Box>
     </Box>
   );
 }

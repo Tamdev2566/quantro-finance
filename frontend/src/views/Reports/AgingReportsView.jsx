@@ -187,13 +187,13 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
   ];
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 2, mb: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ flexShrink: 0, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 1.5, mb: 1.5 }}>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+          <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.25rem', sm: '1.45rem' } }}>
             Aging Analysis (Accounts Receivable & Payable)
           </Typography>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.2, fontSize: { xs: '0.8rem', sm: '0.85rem' } }}>
             Credit exposure and liability aging across 0-30, 31-60, 61-90, and 90+ day overdue buckets
           </Typography>
         </Box>
@@ -212,12 +212,16 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
         scrollButtons="auto"
         allowScrollButtonsMobile
         sx={{
-          mb: 3,
+          flexShrink: 0,
+          mb: 1.5,
+          minHeight: 38,
           '& .MuiTab-root': {
             borderRadius: '4px',
             textTransform: 'none',
             fontWeight: 600,
-            fontSize: '0.9rem',
+            fontSize: '0.85rem',
+            minHeight: 38,
+            py: 0.5,
             mr: 1
           },
           '& .Mui-selected': {
@@ -230,11 +234,11 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
           }
         }}
       >
-        <Tab icon={<Receipt />} iconPosition="start" label="Customer Receivables Aging" />
-        <Tab icon={<ShoppingCart />} iconPosition="start" label="Vendor Payables Aging" />
+        <Tab icon={<Receipt sx={{ fontSize: 18 }} />} iconPosition="start" label="Customer Receivables Aging" />
+        <Tab icon={<ShoppingCart sx={{ fontSize: 18 }} />} iconPosition="start" label="Vendor Payables Aging" />
       </Tabs>
 
-      <Grid container spacing={2.5} sx={{ mb: 3 }}>
+      <Grid container spacing={1.5} sx={{ flexShrink: 0, mb: 1.5 }}>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard title="0–30 Days (Current)" value={summary.current || 0} color="#10b981" />
         </Grid>
@@ -249,11 +253,12 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
         </Grid>
       </Grid>
 
-      <Box className="printable-report">
+      <Box className="printable-report" sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <DataTable
           columns={columns}
           rows={rows}
           loading={loading}
+          defaultPageSize={10}
           emptyMessage="No overdue aging balances found in this ledger."
         />
       </Box>

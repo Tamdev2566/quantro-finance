@@ -44,16 +44,24 @@ export default function DataTable({
         borderRadius: { xs: '4px', sm: '6px' },
         border: '1px solid #e2e8f0',
         boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.05)',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        minHeight: 0,
         overflow: 'hidden'
       }}
     >
       <TableContainer
         sx={{
-          maxHeight: 620,
+          flex: 1,
+          minHeight: 0,
+          overflowY: 'auto',
           overflowX: 'auto',
           WebkitOverflowScrolling: 'touch',
-          '&::-webkit-scrollbar': { height: '6px' },
-          '&::-webkit-scrollbar-thumb': { backgroundColor: '#cbd5e1', borderRadius: '4px' }
+          '&::-webkit-scrollbar': { width: '6px', height: '6px' },
+          '&::-webkit-scrollbar-track': { background: '#f8fafc' },
+          '&::-webkit-scrollbar-thumb': { backgroundColor: '#cbd5e1', borderRadius: '4px' },
+          '&::-webkit-scrollbar-thumb:hover': { backgroundColor: '#94a3b8' }
         }}
       >
         <Table stickyHeader sx={{ minWidth: { xs: 550, sm: 650 } }}>
@@ -67,11 +75,12 @@ export default function DataTable({
                     backgroundColor: '#12131c !important',
                     color: '#ffffff !important',
                     fontWeight: 800,
-                    fontSize: '0.78rem',
-                    letterSpacing: '0.05em',
+                    fontSize: '0.74rem',
+                    letterSpacing: '0.04em',
                     textTransform: 'uppercase',
                     borderBottom: '2px solid #e5a93c',
-                    py: 1.8,
+                    py: 1.1,
+                    px: 1.5,
                     width: col.width || 'auto',
                     minWidth: col.minWidth || 'auto',
                     ...col.headerStyle
@@ -85,13 +94,13 @@ export default function DataTable({
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={columns.length} sx={{ py: 8, textAlign: 'center' }}>
-                  <CircularProgress size={32} sx={{ color: '#e5a93c' }} />
+                <TableCell colSpan={columns.length} sx={{ py: 6, textAlign: 'center' }}>
+                  <CircularProgress size={30} sx={{ color: '#e5a93c' }} />
                 </TableCell>
               </TableRow>
             ) : paginatedRows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={columns.length} sx={{ py: 8, textAlign: 'center', color: '#94a3b8' }}>
+                <TableCell colSpan={columns.length} sx={{ py: 6, textAlign: 'center', color: '#94a3b8' }}>
                   <Typography variant="body2">{emptyMessage}</Typography>
                 </TableCell>
               </TableRow>
@@ -110,9 +119,10 @@ export default function DataTable({
                       key={cIdx}
                       align={col.align || 'left'}
                       sx={{
-                        py: 1.6,
+                        py: 0.95,
+                        px: 1.5,
                         borderBottom: '1px solid #f1f5f9',
-                        fontSize: '0.86rem',
+                        fontSize: '0.84rem',
                         color: '#0f172a',
                         ...(typeof col.cellStyle === 'function' ? col.cellStyle(row) : col.cellStyle)
                       }}
@@ -141,21 +151,23 @@ export default function DataTable({
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           sx={{
+            flexShrink: 0,
             borderTop: '1px solid #f1f5f9',
             backgroundColor: '#ffffff',
             color: '#64748b',
             '& .MuiTablePagination-toolbar': {
               flexWrap: 'wrap',
               px: { xs: 1, sm: 2 },
-              minHeight: 48,
+              minHeight: 40,
               gap: { xs: 0.5, sm: 1 }
             },
             '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
-              fontSize: '0.8rem',
+              fontSize: '0.78rem',
               fontWeight: 600
             },
             '& .MuiTablePagination-actions button': {
               color: '#12131c',
+              p: 0.5,
               '&:hover': {
                 backgroundColor: 'rgba(229, 169, 60, 0.15)',
                 color: '#e5a93c'

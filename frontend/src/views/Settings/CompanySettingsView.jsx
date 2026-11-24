@@ -100,7 +100,7 @@ export default function CompanySettingsView() {
   const sampleMonths = ['2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10', '2026-11', '2026-12', '2027-01', '2027-02', '2027-03'];
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+    <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto', height: '100%', overflowY: 'auto', pr: 0.5 }}>
       <Box sx={{ mb: 3 }}>
         <Typography variant="h5" sx={{ fontWeight: 800 }}>
           Company & Financial Period Management
