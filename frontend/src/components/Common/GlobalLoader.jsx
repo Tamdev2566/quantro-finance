@@ -38,10 +38,10 @@ export default function GlobalLoader() {
           <LinearProgress
             sx={{
               height: 3,
-              backgroundColor: 'rgba(255, 255, 255, 0.15)',
+              backgroundColor: 'rgba(229, 169, 60, 0.2)',
               '& .MuiLinearProgress-bar': {
-                backgroundColor: 'var(--theme-10, #e5a93c)',
-                boxShadow: '0 0 12px var(--theme-10, #e5a93c)'
+                background: 'linear-gradient(90deg, #f3c64f, #e5a93c, #b88019)',
+                boxShadow: '0 0 12px #e5a93c'
               }
             }}
           />
@@ -65,12 +65,12 @@ export default function GlobalLoader() {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: 'var(--theme-60-sidebar, #141521)',
-              border: '1px solid var(--theme-10, #e5a93c)',
+              backgroundColor: '#141521',
+              border: '1px solid rgba(229, 169, 60, 0.35)',
               borderRadius: '16px',
               px: 4.5,
               py: 3.5,
-              boxShadow: '0 28px 64px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+              boxShadow: '0 16px 40px rgba(0, 0, 0, 0.5)',
               minWidth: 220,
               textAlign: 'center'
             }}
@@ -81,8 +81,8 @@ export default function GlobalLoader() {
                 size={44}
                 thickness={4}
                 sx={{
-                  color: 'var(--theme-10, #e5a93c)',
-                  filter: 'drop-shadow(0 0 8px rgba(0, 0, 0, 0.45))'
+                  color: '#e5a93c',
+                  filter: 'drop-shadow(0 0 8px rgba(229, 169, 60, 0.45))'
                 }}
               />
             </Box>

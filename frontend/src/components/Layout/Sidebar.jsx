@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout, showNotification } from '../../store';
-import { getThemeConfig } from '../../theme';
 import { authService } from '../../services/authService';
 import {
   Box,
@@ -35,8 +34,6 @@ export default function Sidebar({ onItemClick }) {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const colorTheme = useSelector((state) => state.ui?.colorTheme || 'default');
-  const t = getThemeConfig(colorTheme);
 
   const [openSections, setOpenSections] = useState({
     sales: true,
@@ -84,13 +81,13 @@ export default function Sidebar({ onItemClick }) {
           pl: 3.5,
           mb: 0.3,
           borderRadius: '4px',
-          backgroundColor: active ? `${t.accentSoft} !important` : 'transparent',
-          color: active ? t.accent : t.sidebarMuted,
-          border: active ? `1px solid ${t.accentBorder}` : '1px solid transparent',
+          backgroundColor: active ? 'rgba(229, 169, 60, 0.15) !important' : 'transparent',
+          color: active ? '#e5a93c' : '#94a3b8',
+          border: active ? '1px solid rgba(229, 169, 60, 0.35)' : '1px solid transparent',
           transition: 'all 0.15s ease-in-out',
           '&:hover': {
-            backgroundColor: active ? t.accentSoft : 'rgba(255, 255, 255, 0.06)',
-            color: active ? t.accent : t.sidebarText
+            backgroundColor: active ? 'rgba(229, 169, 60, 0.22)' : 'rgba(255, 255, 255, 0.04)',
+            color: active ? '#e5a93c' : '#ffffff'
           }
         }}
       >
@@ -99,7 +96,7 @@ export default function Sidebar({ onItemClick }) {
           primaryTypographyProps={{
             fontSize: '0.84rem',
             fontWeight: active ? 700 : 500,
-            color: active ? t.accent : 'inherit'
+            color: active ? '#e5a93c' : 'inherit'
           }}
         />
         {badge && (
@@ -110,8 +107,8 @@ export default function Sidebar({ onItemClick }) {
               height: 18,
               fontSize: '0.65rem',
               fontWeight: 800,
-              bgcolor: active ? t.accent : 'rgba(255,255,255,0.1)',
-              color: active ? t.accentContrast : '#cbd5e1',
+              bgcolor: active ? '#e5a93c' : 'rgba(255,255,255,0.1)',
+              color: active ? '#000000' : '#cbd5e1',
               borderRadius: '4px'
             }}
           />
@@ -172,14 +169,13 @@ export default function Sidebar({ onItemClick }) {
         flexShrink: 0,
         height: '100%',
         maxHeight: '100vh',
-        background: t.sidebarBg,
+        backgroundColor: '#0c0d14',
         p: 2,
         boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        borderRight: '1px solid rgba(255, 255, 255, 0.07)',
-        boxShadow: '6px 0 28px rgba(0, 0, 0, 0.45), inset -1px 0 0 rgba(255, 255, 255, 0.03)',
+        borderRight: '1px solid rgba(255, 255, 255, 0.06)',
         overflow: 'hidden'
       }}
     >
@@ -193,11 +189,11 @@ export default function Sidebar({ onItemClick }) {
               width: 36,
               height: 36,
               borderRadius: '6px',
-              background: `linear-gradient(135deg, ${t.accentLight} 0%, ${t.accent} 50%, ${t.accentDark} 100%)`,
+              background: 'linear-gradient(135deg, #f3c64f 0%, #d49b28 50%, #b88019 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: `0 4px 16px ${t.accentBorder}`
+              boxShadow: '0 4px 16px rgba(229, 169, 60, 0.4)'
             }}
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -265,16 +261,16 @@ export default function Sidebar({ onItemClick }) {
             px: 2,
             mb: 1.5,
             borderRadius: '4px',
-            backgroundColor: isCurrent('/dashboard') ? `${t.accentSoft} !important` : 'transparent',
-            border: isCurrent('/dashboard') ? `1px solid ${t.accentBorder}` : '1px solid transparent',
-            color: isCurrent('/dashboard') ? t.accent : t.sidebarMuted,
+            backgroundColor: isCurrent('/dashboard') ? '#191b26 !important' : 'transparent',
+            border: isCurrent('/dashboard') ? '1px solid rgba(229, 169, 60, 0.4)' : '1px solid transparent',
+            color: isCurrent('/dashboard') ? '#e5a93c' : '#94a3b8',
             '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 0.08)',
-              color: t.sidebarText
+              backgroundColor: '#191b26',
+              color: '#ffffff'
             }
           }}
         >
-          <ListItemIcon sx={{ minWidth: 32, color: isCurrent('/dashboard') ? t.accent : t.sidebarMuted, '& svg': { fontSize: 19 } }}>
+          <ListItemIcon sx={{ minWidth: 32, color: isCurrent('/dashboard') ? '#e5a93c' : '#94a3b8', '& svg': { fontSize: 19 } }}>
             <HomeIcon />
           </ListItemIcon>
           <ListItemText
@@ -282,7 +278,7 @@ export default function Sidebar({ onItemClick }) {
             primaryTypographyProps={{
               fontSize: '0.9rem',
               fontWeight: isCurrent('/dashboard') ? 700 : 500,
-              color: isCurrent('/dashboard') ? t.accent : 'inherit'
+              color: isCurrent('/dashboard') ? '#e5a93c' : 'inherit'
             }}
           />
         </ListItemButton>
