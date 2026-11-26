@@ -179,7 +179,8 @@ export default function VendorBillsView() {
           startIcon={<AddIcon />}
           onClick={() => setOpenCreateModal(true)}
           sx={{
-            bgcolor: '#e5a93c',
+            bgcolor: 'var(--theme-10, #e5a93c)',
+            color: 'var(--theme-10-contrast, #0f172a)',
             borderRadius: '4px',
             fontWeight: 700,
             fontSize: '0.82rem',

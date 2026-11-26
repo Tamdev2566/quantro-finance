@@ -38,10 +38,10 @@ export default function GlobalLoader() {
           <LinearProgress
             sx={{
               height: 3,
-              backgroundColor: 'rgba(229, 169, 60, 0.2)',
+              backgroundColor: 'rgba(255, 255, 255, 0.15)',
               '& .MuiLinearProgress-bar': {
-                background: 'linear-gradient(90deg, #f3c64f, #e5a93c, #b88019)',
-                boxShadow: '0 0 12px #e5a93c'
+                backgroundColor: 'var(--theme-10, #e5a93c)',
+                boxShadow: '0 0 12px var(--theme-10, #e5a93c)'
               }
             }}
           />
@@ -65,8 +65,8 @@ export default function GlobalLoader() {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: '#141521',
-              border: '1px solid rgba(229, 169, 60, 0.35)',
+              backgroundColor: 'var(--theme-60-sidebar, #141521)',
+              border: '1px solid var(--theme-10, #e5a93c)',
               borderRadius: '16px',
               px: 4.5,
               py: 3.5,
@@ -75,14 +75,14 @@ export default function GlobalLoader() {
               textAlign: 'center'
             }}
           >
-            {/* Spinning Gold Loader Ring */}
+            {/* Spinning Accent Loader Ring */}
             <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
               <CircularProgress
                 size={44}
                 thickness={4}
                 sx={{
-                  color: '#e5a93c',
-                  filter: 'drop-shadow(0 0 8px rgba(229, 169, 60, 0.45))'
+                  color: 'var(--theme-10, #e5a93c)',
+                  filter: 'drop-shadow(0 0 8px rgba(0, 0, 0, 0.45))'
                 }}
               />
             </Box>

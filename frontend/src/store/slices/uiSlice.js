@@ -1,12 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const getInitialColorTheme = () => {
+  try {
+    return localStorage.getItem('quantro_color_theme') || 'default';
+  } catch (e) {
+    return 'default';
+  }
+};
+
 const uiSlice = createSlice({
   name: 'ui',
   initialState: {
     currentScreen: 'dashboard',
     activeTab: 0,
     notification: null,
-    themeMode: 'light'
+    themeMode: 'light',
+    colorTheme: getInitialColorTheme()
   },
   reducers: {
     setScreen: (state, action) => {
@@ -27,6 +36,12 @@ const uiSlice = createSlice({
     },
     toggleThemeMode: (state) => {
       state.themeMode = state.themeMode === 'light' ? 'dark' : 'light';
+    },
+    setColorTheme: (state, action) => {
+      state.colorTheme = action.payload;
+      try {
+        localStorage.setItem('quantro_color_theme', action.payload);
+      } catch (e) {}
     }
   }
 });
@@ -36,7 +51,8 @@ export const {
   setActiveTab,
   showNotification,
   clearNotification,
-  toggleThemeMode
+  toggleThemeMode,
+  setColorTheme
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

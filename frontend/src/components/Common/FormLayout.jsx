@@ -168,8 +168,8 @@ export default function FormLayout({
                 variant="contained"
                 disabled={loading || saveDisabled}
                 sx={{
-                  bgcolor: '#e5a93c',
-                  color: '#0f172a',
+                  bgcolor: 'var(--theme-10, #e5a93c)',
+                  color: 'var(--theme-10-contrast, #0f172a)',
                   fontWeight: 700,
                   borderRadius: '6px',
                   px: 3.5,
@@ -177,7 +177,7 @@ export default function FormLayout({
                   textTransform: 'none',
                   fontSize: '0.875rem',
                   boxShadow: 'none',
-                  '&:hover': { bgcolor: '#d4982e', boxShadow: 'none' }
+                  '&:hover': { bgcolor: 'var(--theme-10-dark, #b88019)', boxShadow: 'none' }
                 }}
               >
                 {loading ? savingLabel : saveLabel}

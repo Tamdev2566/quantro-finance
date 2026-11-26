@@ -40,9 +40,9 @@ export default function DataTable({
       elevation={0}
       sx={{
         width: '100%',
-        backgroundColor: '#ffffff',
+        backgroundColor: 'var(--theme-30-card, #ffffff)',
         borderRadius: { xs: '4px', sm: '6px' },
-        border: '1px solid #e2e8f0',
+        border: '1px solid var(--theme-30-border, #e2e8f0)',
         boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.05)',
         display: 'flex',
         flexDirection: 'column',
@@ -72,7 +72,7 @@ export default function DataTable({
                   key={idx}
                   align={col.align || 'left'}
                   sx={{
-                    backgroundColor: '#12131c !important',
+                    backgroundColor: 'var(--theme-60-sidebar, #12131c) !important',
                     color: '#ffffff !important',
                     fontWeight: 800,
                     fontSize: '0.74rem',

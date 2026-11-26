@@ -5,7 +5,8 @@ import uiReducer, {
   setActiveTab,
   showNotification,
   clearNotification,
-  toggleThemeMode
+  toggleThemeMode,
+  setColorTheme
 } from './slices/uiSlice';
 import financeReducer, {
   setDashboardFilter,
@@ -52,7 +53,8 @@ export {
   clearNotification,
   triggerRefresh,
   setCompany,
-  toggleThemeMode
+  toggleThemeMode,
+  setColorTheme
 };
 
 export default store;
