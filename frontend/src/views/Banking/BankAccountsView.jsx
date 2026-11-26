@@ -283,7 +283,7 @@ export default function BankAccountsView() {
             variant="contained"
             startIcon={<AddIcon />}
             onClick={() => setOpenNewAccountModal(true)}
-            sx={{ flex: { xs: 1, sm: 'none' }, borderRadius: '6px', textTransform: 'none', bgcolor: '#e5a93c', color: '#000', fontWeight: 700, boxShadow: '0 4px 12px rgba(229, 169, 60, 0.3)', '&:hover': { bgcolor: '#d49b28' } }}
+            sx={{ flex: { xs: 1, sm: 'none' }, borderRadius: '6px', textTransform: 'none', bgcolor: 'var(--theme-10, #e5a93c)', color: 'var(--theme-10-contrast, #000)', fontWeight: 700, boxShadow: '0 4px 12px rgba(15, 23, 42, 0.15)', '&:hover': { bgcolor: 'var(--theme-10-dark, #d49b28)' } }}
           >
             Add Bank Account
           </Button>

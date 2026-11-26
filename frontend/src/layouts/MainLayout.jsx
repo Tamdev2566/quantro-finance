@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { clearNotification, setCompany } from '../store';
+import { getThemeConfig } from '../theme';
 import { authService } from '../services/authService';
 import { settingsService } from '../services/settingsService';
 import { Box, Snackbar, Alert, Drawer, Slide } from '@mui/material';
@@ -16,6 +17,8 @@ export default function MainLayout() {
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.ui?.notification ?? state.finance?.notification);
   const user = useSelector((state) => state.auth?.user ?? state.finance?.user);
+  const colorTheme = useSelector((state) => state.ui?.colorTheme || 'default');
+  const t = getThemeConfig(colorTheme);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -37,8 +40,9 @@ export default function MainLayout() {
         display: 'flex',
         height: '100vh',
         maxHeight: '100vh',
-        backgroundColor: '#0c0d14',
-        overflow: 'hidden'
+        backgroundColor: t.shellBg,
+        overflow: 'hidden',
+        transition: 'background-color 0.25s ease'
       }}
     >
       <Box
@@ -64,7 +68,7 @@ export default function MainLayout() {
             width: 260,
             height: '100vh',
             boxSizing: 'border-box',
-            backgroundColor: '#0c0d14',
+            backgroundColor: t.shellBg,
             borderRight: '1px solid rgba(255, 255, 255, 0.08)',
             overflow: 'hidden'
           }
@@ -97,12 +101,13 @@ export default function MainLayout() {
             flexDirection: 'column',
             minHeight: 0,
             mb: { xs: 1, md: 1.5 },
-            background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+            background: t.canvasGradient,
             borderRadius: { xs: '10px', sm: '14px' },
             p: { xs: 1.5, sm: 2, md: 2.2 },
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.55), 0 8px 20px -4px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
             border: '1px solid rgba(255, 255, 255, 0.14)',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            transition: 'background 0.25s ease'
           }}
         >
           <Outlet />

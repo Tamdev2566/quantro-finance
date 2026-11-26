@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { triggerRefresh, showNotification, logout } from '../../store';
+import { triggerRefresh, showNotification, logout, setColorTheme } from '../../store';
 import { authService } from '../../services/authService';
+import { THEME_LIST, getThemeConfig } from '../../theme';
 import {
   Box,
   Typography,
@@ -43,15 +44,24 @@ import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import PaletteOutlinedIcon from '@mui/icons-material/PaletteOutlined';
+import CheckIcon from '@mui/icons-material/Check';
+import { Tooltip } from '@mui/material';
 
 export default function Header({ onDrawerToggle }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth?.user ?? state.finance?.user);
+  const colorTheme = useSelector((state) => state.ui?.colorTheme || 'default');
+  const t = getThemeConfig(colorTheme);
 
   // Profile menu anchor state
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
+
+  // Theme selector menu anchor state
+  const [themeAnchorEl, setThemeAnchorEl] = useState(null);
+  const isThemeMenuOpen = Boolean(themeAnchorEl);
 
   // Modal dialog states
   const [profileModalOpen, setProfileModalOpen] = useState(false);
@@ -285,23 +295,42 @@ export default function Header({ onDrawerToggle }) {
             display: { xs: 'none', md: 'flex' },
             alignItems: 'center',
             gap: 1.2,
-            background: 'linear-gradient(145deg, #1a1c29 0%, #141520 100%)',
+            background: t.headerControlBg,
             borderRadius: '6px',
-            border: '1px solid #232537',
+            border: `1px solid ${t.headerBorder}`,
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
             px: 2,
             py: 0.8,
             cursor: 'pointer',
             transition: 'all 0.15s ease',
-            '&:hover': { borderColor: '#e5a93c' }
+            '&:hover': { borderColor: t.accent }
           }}
         >
-          <CalendarTodayOutlinedIcon sx={{ color: '#94a3b8', fontSize: 16 }} />
+          <CalendarTodayOutlinedIcon sx={{ color: t.sidebarMuted, fontSize: 16 }} />
           <Typography variant="body2" sx={{ color: '#cbd5e1', fontSize: '0.82rem', fontWeight: 500 }}>
             FY 2026-2027 (Active)
           </Typography>
-          <KeyboardArrowDownIcon sx={{ color: '#94a3b8', fontSize: 18 }} />
+          <KeyboardArrowDownIcon sx={{ color: t.sidebarMuted, fontSize: 18 }} />
         </Box>
+
+        {/* Theme Switcher Button */}
+        <Tooltip title="Change Theme">
+          <IconButton
+            onClick={(e) => setThemeAnchorEl(e.currentTarget)}
+            sx={{
+              width: 40,
+              height: 40,
+              background: isThemeMenuOpen ? t.headerControlHover : t.headerControlBg,
+              border: `1px solid ${isThemeMenuOpen ? t.accent : t.headerBorder}`,
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+              borderRadius: '6px',
+              color: isThemeMenuOpen ? t.accent : t.sidebarMuted,
+              '&:hover': { background: t.headerControlHover, color: t.accent, borderColor: t.accent }
+            }}
+          >
+            <PaletteOutlinedIcon sx={{ fontSize: 19 }} />
+          </IconButton>
+        </Tooltip>
 
         {/* Refresh Button */}
         <IconButton
@@ -312,12 +341,12 @@ export default function Header({ onDrawerToggle }) {
           sx={{
             width: 40,
             height: 40,
-            background: 'linear-gradient(145deg, #1a1c29 0%, #141520 100%)',
-            border: '1px solid #232537',
+            background: t.headerControlBg,
+            border: `1px solid ${t.headerBorder}`,
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
             borderRadius: '6px',
-            color: '#94a3b8',
-            '&:hover': { background: '#1e202f', color: '#e5a93c' }
+            color: t.sidebarMuted,
+            '&:hover': { background: t.headerControlHover, color: t.accent }
           }}
         >
           <RefreshIcon sx={{ fontSize: 18 }} />
@@ -328,20 +357,20 @@ export default function Header({ onDrawerToggle }) {
           sx={{
             width: 40,
             height: 40,
-            background: 'linear-gradient(145deg, #1a1c29 0%, #141520 100%)',
-            border: '1px solid #232537',
+            background: t.headerControlBg,
+            border: `1px solid ${t.headerBorder}`,
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
             borderRadius: '6px',
-            color: '#94a3b8',
-            '&:hover': { background: '#1e202f', color: '#e5a93c' }
+            color: t.sidebarMuted,
+            '&:hover': { background: t.headerControlHover, color: t.accent }
           }}
         >
           <Badge
             variant="dot"
             sx={{
               '& .MuiBadge-badge': {
-                backgroundColor: '#e5a93c',
-                boxShadow: '0 0 8px #e5a93c'
+                backgroundColor: t.accent,
+                boxShadow: `0 0 8px ${t.accent}`
               }
             }}
           >
@@ -356,17 +385,17 @@ export default function Header({ onDrawerToggle }) {
             display: 'flex',
             alignItems: 'center',
             gap: 1.2,
-            background: isMenuOpen ? '#1e202f' : 'linear-gradient(145deg, #1a1c29 0%, #141520 100%)',
+            background: isMenuOpen ? t.headerControlHover : t.headerControlBg,
             borderRadius: '6px',
-            border: `1px solid ${isMenuOpen ? '#e5a93c' : '#232537'}`,
+            border: `1px solid ${isMenuOpen ? t.accent : t.headerBorder}`,
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
             p: 0.6,
             px: 1.2,
             cursor: 'pointer',
             transition: 'all 0.15s ease',
             '&:hover': {
-              borderColor: '#e5a93c',
-              background: '#1e202f'
+              borderColor: t.accent,
+              background: t.headerControlHover
             }
           }}
         >
@@ -401,6 +430,90 @@ export default function Header({ onDrawerToggle }) {
           />
         </Box>
       </Box>
+
+      {/* =========================================================================
+          THEME SELECTOR MENU
+          ========================================================================= */}
+      <Menu
+        anchorEl={themeAnchorEl}
+        open={isThemeMenuOpen}
+        onClose={() => setThemeAnchorEl(null)}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        PaperProps={{
+          sx: {
+            width: 300,
+            mt: 1.2,
+            bgcolor: t.darkCardBg,
+            color: '#ffffff',
+            border: `1px solid ${t.headerBorder}`,
+            borderRadius: '10px',
+            boxShadow: '0 16px 40px rgba(0, 0, 0, 0.55)',
+            p: 1
+          }
+        }}
+      >
+        <Box sx={{ px: 1.4, py: 0.8, pb: 1 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 800, color: '#ffffff', fontSize: '0.88rem' }}>
+            Select Color Theme
+          </Typography>
+          <Typography variant="caption" sx={{ color: t.sidebarMuted, fontSize: '0.72rem' }}>
+            Choose a luxury palette for your workspace
+          </Typography>
+        </Box>
+        <Divider sx={{ borderColor: t.headerBorder, mb: 0.8 }} />
+        {THEME_LIST.map((themeItem) => {
+          const isSelected = colorTheme === themeItem.id;
+          return (
+            <MenuItem
+              key={themeItem.id}
+              onClick={() => {
+                dispatch(setColorTheme(themeItem.id));
+                setThemeAnchorEl(null);
+                dispatch(showNotification({ message: `Theme changed to ${themeItem.name}`, severity: 'success' }));
+              }}
+              sx={{
+                py: 1.1,
+                px: 1.4,
+                mb: 0.4,
+                borderRadius: '8px',
+                bgcolor: isSelected ? t.accentSoft : 'transparent',
+                border: `1px solid ${isSelected ? t.accentBorder : 'transparent'}`,
+                '&:hover': {
+                  bgcolor: isSelected ? t.accentSoft : 'rgba(255,255,255,0.06)'
+                }
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: 1.5 }}>
+                <Box sx={{ minWidth: 0, flex: 1 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 700, color: isSelected ? t.accent : '#ffffff', fontSize: '0.84rem' }}>
+                    {themeItem.name}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: t.sidebarMuted, fontSize: '0.68rem', display: 'block', whiteSpace: 'normal', lineHeight: 1.3 }}>
+                    {themeItem.description}
+                  </Typography>
+                </Box>
+
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
+                  {themeItem.swatches.map((hex, i) => (
+                    <Box
+                      key={i}
+                      sx={{
+                        width: i === 0 ? 18 : i === 1 ? 14 : 11,
+                        height: 18,
+                        borderRadius: '4px',
+                        backgroundColor: hex,
+                        border: '1px solid rgba(255,255,255,0.28)'
+                      }}
+                    />
+                  ))}
+                  {isSelected && <CheckIcon sx={{ fontSize: 17, color: t.accent, ml: 0.5 }} />}
+                </Box>
+              </Box>
+            </MenuItem>
+          );
+        })}
+      </Menu>
 
       {/* =========================================================================
           PROFILE DROPDOWN MENU

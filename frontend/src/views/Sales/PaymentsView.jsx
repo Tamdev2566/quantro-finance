@@ -149,7 +149,8 @@ export default function PaymentsView() {
           startIcon={<AddIcon />}
           onClick={() => setOpenModal(true)}
           sx={{
-            bgcolor: '#e5a93c',
+            bgcolor: 'var(--theme-10, #e5a93c)',
+            color: 'var(--theme-10-contrast, #0f172a)',
             borderRadius: '4px',
             fontWeight: 700,
             fontSize: '0.82rem',

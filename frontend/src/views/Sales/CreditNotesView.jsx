@@ -235,7 +235,8 @@ export default function CreditNotesView() {
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
           sx={{
-            bgcolor: '#e5a93c',
+            bgcolor: 'var(--theme-10, #e5a93c)',
+            color: 'var(--theme-10-contrast, #0f172a)',
             borderRadius: '4px',
             fontWeight: 700,
             width: { xs: '100%', sm: 'auto' },
