@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { salesService } from '../../services/salesService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import FormLayout from '../../components/Common/FormLayout';
@@ -35,7 +35,7 @@ export default function CreditNotesView() {
   const fetchCreditNotes = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getCreditNotes();
+      const res = await salesService.getCreditNotes();
       setCreditNotes(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -65,7 +65,7 @@ export default function CreditNotesView() {
     }
 
     try {
-      await apiClient.createCreditNote({
+      await salesService.createCreditNote({
         invoiceId,
         noteDate,
         reason,

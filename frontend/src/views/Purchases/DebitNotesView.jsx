@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { purchasesService } from '../../services/purchasesService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import FormLayout from '../../components/Common/FormLayout';
@@ -35,7 +35,7 @@ export default function DebitNotesView() {
   const fetchDebitNotes = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getDebitNotes();
+      const res = await purchasesService.getDebitNotes();
       setDebitNotes(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -65,7 +65,7 @@ export default function DebitNotesView() {
     }
 
     try {
-      await apiClient.createDebitNote({
+      await purchasesService.createDebitNote({
         billId,
         noteDate,
         reason,

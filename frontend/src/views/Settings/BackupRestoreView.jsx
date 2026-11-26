@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { settingsService } from '../../services/settingsService';
 import { showNotification } from '../../store';
 import ConfirmDialog from '../../components/Common/ConfirmDialog';
 import {
@@ -31,7 +31,7 @@ export default function BackupRestoreView() {
   const fetchBackups = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getBackups();
+      const res = await settingsService.getBackups();
       setBackups(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -46,7 +46,7 @@ export default function BackupRestoreView() {
 
   const handleCreateBackup = async () => {
     try {
-      const res = await apiClient.createBackup();
+      const res = await settingsService.createBackup();
       dispatch(showNotification({
         message: `Backup created: ${res.data?.backupId} (${res.data?.filesCount} files)`,
         severity: 'success'
@@ -60,7 +60,7 @@ export default function BackupRestoreView() {
   const handleRestore = async () => {
     if (!confirmRestoreId) return;
     try {
-      await apiClient.restoreBackup({ backupId: confirmRestoreId });
+      await settingsService.restoreBackup({ backupId: confirmRestoreId });
       dispatch(showNotification({ message: `Successfully restored storage from ${confirmRestoreId}`, severity: 'success' }));
       setConfirmRestoreId(null);
       fetchBackups();
@@ -71,7 +71,7 @@ export default function BackupRestoreView() {
 
   const handleExport = async () => {
     try {
-      const res = await apiClient.exportData();
+      const res = await settingsService.exportData();
       const jsonStr = JSON.stringify(res, null, 2);
       const blob = new Blob([jsonStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -93,7 +93,7 @@ export default function BackupRestoreView() {
     reader.onload = async (evt) => {
       try {
         const bundle = JSON.parse(evt.target.result);
-        await apiClient.importData(bundle);
+        await settingsService.importData(bundle);
         dispatch(showNotification({ message: 'Finance data bundle imported successfully!', severity: 'success' }));
         fetchBackups();
       } catch (err) {

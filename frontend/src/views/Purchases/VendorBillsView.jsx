@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { purchasesService } from '../../services/purchasesService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import VendorBillFormModal from './VendorBillFormModal';
@@ -32,7 +32,7 @@ export default function VendorBillsView() {
   const fetchBills = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getVendorBills();
+      const res = await purchasesService.getVendorBills();
       setBills(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -47,7 +47,7 @@ export default function VendorBillsView() {
 
   const handleApprove = async (id) => {
     try {
-      await apiClient.approveVendorBill(id);
+      await purchasesService.approveVendorBill(id);
       dispatch(showNotification({ message: 'Vendor Bill approved', severity: 'success' }));
       fetchBills();
     } catch (err) {
@@ -58,7 +58,7 @@ export default function VendorBillsView() {
   const handlePost = async () => {
     if (!confirmPostBill) return;
     try {
-      await apiClient.postVendorBill(confirmPostBill.id);
+      await purchasesService.postVendorBill(confirmPostBill.id);
       dispatch(showNotification({ message: `Bill ${confirmPostBill.billNumber} posted to Accounts Payable & General Ledger!`, severity: 'success' }));
       setConfirmPostBill(null);
       fetchBills();

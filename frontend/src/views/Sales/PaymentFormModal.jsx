@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { apiClient } from '../../api/client';
+import { salesService } from '../../services/salesService';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import FormLayout from '../../components/Common/FormLayout';
@@ -41,7 +41,7 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
 
   useEffect(() => {
     if (watchedCustomerId) {
-      apiClient.getInvoices().then((res) => {
+      salesService.getInvoices().then((res) => {
         const matching = (res.data || []).filter(
           (inv) => inv.customerId === watchedCustomerId &&
                    (inv.status === 'Posted' || inv.status === 'Partially Paid') &&
@@ -82,7 +82,7 @@ export default function PaymentFormModal({ open, onClose, onSuccess }) {
         .filter(([_, amt]) => parseFloat(amt) > 0)
         .map(([invoiceId, amount]) => ({ invoiceId, amount: parseFloat(amount) }));
 
-      await apiClient.createPayment({
+      await salesService.createPayment({
         ...formData,
         amount: parseFloat(formData.amount),
         allocations: allocPayload

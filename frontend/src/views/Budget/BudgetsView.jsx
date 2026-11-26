@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { budgetService } from '../../services/budgetService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import FormLayout from '../../components/Common/FormLayout';
@@ -35,7 +35,7 @@ export default function BudgetsView() {
   const fetchBudgets = async () => {
     try {
       setLoading(true);
-      const bRes = await apiClient.getBudgetVsActual();
+      const bRes = await budgetService.getBudgetVsActual();
       setBudgetList(bRes.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -50,7 +50,7 @@ export default function BudgetsView() {
 
   const handleCreate = async () => {
     try {
-      await apiClient.createBudget({
+      await budgetService.createBudget({
         ...formData,
         budgetAmount: parseFloat(formData.budgetAmount)
       });

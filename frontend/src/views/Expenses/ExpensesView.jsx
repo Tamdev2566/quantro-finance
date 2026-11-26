@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { expensesService } from '../../services/expensesService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import ExpenseFormModal from './ExpenseFormModal';
@@ -26,7 +26,7 @@ export default function ExpensesView() {
   const fetchExpenses = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getExpenses();
+      const res = await expensesService.getExpenses();
       setExpenses(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));

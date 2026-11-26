@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { apiClient } from '../../api/client';
+import { purchasesService } from '../../services/purchasesService';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import FormLayout from '../../components/Common/FormLayout';
@@ -87,7 +87,7 @@ export default function VendorBillFormModal({ open, onClose, onSuccess }) {
   const onSubmit = async (formData) => {
     try {
       setLoading(true);
-      await apiClient.createVendorBill(formData);
+      await purchasesService.createVendorBill(formData);
       onSuccess('Vendor Bill created successfully as Draft');
       onClose();
     } catch (err) {

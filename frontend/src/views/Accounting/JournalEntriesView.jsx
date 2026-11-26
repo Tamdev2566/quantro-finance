@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { accountingService } from '../../services/accountingService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import JournalFormModal from './JournalFormModal';
@@ -40,7 +40,7 @@ export default function JournalEntriesView() {
   const fetchJournals = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getJournals();
+      const res = await accountingService.getJournals();
       setJournals(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -56,7 +56,7 @@ export default function JournalEntriesView() {
   const handleReverse = async () => {
     if (!confirmReverse) return;
     try {
-      await apiClient.reverseJournal(confirmReverse.id, { reason: 'Controller Correction' });
+      await accountingService.reverseJournal(confirmReverse.id, { reason: 'Controller Correction' });
       dispatch(showNotification({ message: `Journal ${confirmReverse.journalNumber} reversed`, severity: 'success' }));
       setConfirmReverse(null);
       fetchJournals();

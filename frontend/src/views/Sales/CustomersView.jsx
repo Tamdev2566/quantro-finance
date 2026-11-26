@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { salesService } from '../../services/salesService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import FormLayout from '../../components/Common/FormLayout';
@@ -42,7 +42,7 @@ export default function CustomersView() {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getCustomers();
+      const res = await salesService.getCustomers();
       setCustomers(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -91,10 +91,10 @@ export default function CustomersView() {
     e.preventDefault();
     try {
       if (editingCustomer) {
-        await apiClient.updateCustomer(editingCustomer.id, formData);
+        await salesService.updateCustomer(editingCustomer.id, formData);
         dispatch(showNotification({ message: 'Customer updated successfully', severity: 'success' }));
       } else {
-        await apiClient.createCustomer(formData);
+        await salesService.createCustomer(formData);
         dispatch(showNotification({ message: 'Customer registered successfully', severity: 'success' }));
       }
       setIsFormOpen(false);

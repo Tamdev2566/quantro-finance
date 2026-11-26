@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { purchasesService } from '../../services/purchasesService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import FormLayout from '../../components/Common/FormLayout';
@@ -47,7 +47,7 @@ export default function VendorPaymentsView() {
   const fetchPayments = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getVendorPayments();
+      const res = await purchasesService.getVendorPayments();
       setPayments(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -62,7 +62,7 @@ export default function VendorPaymentsView() {
 
   useEffect(() => {
     if (selectedVendorId) {
-      apiClient.getVendorBills().then((res) => {
+      purchasesService.getVendorBills().then((res) => {
         const matching = (res.data || []).filter(
           (b) => b.vendorId === selectedVendorId && (b.status === 'Posted' || b.status === 'Partially Paid') && b.outstandingAmount > 0
         );
@@ -108,7 +108,7 @@ export default function VendorPaymentsView() {
         .filter(([_, amt]) => parseFloat(amt) > 0)
         .map(([billId, amt]) => ({ billId, amount: parseFloat(amt) }));
 
-      await apiClient.createVendorPayment({
+      await purchasesService.createVendorPayment({
         vendorId: selectedVendorId,
         paymentDate,
         paymentMethod,
@@ -129,7 +129,7 @@ export default function VendorPaymentsView() {
   const handleReverse = async () => {
     if (!confirmReverse) return;
     try {
-      await apiClient.reverseVendorPayment(confirmReverse.id, { reason: 'Controller disbursement void' });
+      await purchasesService.reverseVendorPayment(confirmReverse.id, { reason: 'Controller disbursement void' });
       dispatch(showNotification({ message: 'Vendor disbursement reversed successfully!', severity: 'info' }));
       setConfirmReverse(null);
       fetchPayments();

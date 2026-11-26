@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { reportsService } from '../../services/reportsService';
 import { showNotification } from '../../store';
 import StatCard from '../../components/Common/StatCard';
 import DataTable from '../../components/Common/DataTable';
@@ -24,7 +24,7 @@ export default function TaxSummaryView() {
   const fetchTax = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getTaxSummary();
+      const res = await reportsService.getTaxSummary();
       setTaxData(res.data);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));

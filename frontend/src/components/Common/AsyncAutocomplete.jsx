@@ -6,7 +6,7 @@ import {
   Box,
   Typography
 } from '@mui/material';
-import { apiClient } from '../../api/client';
+import { commonService } from '../../services/commonService';
 
 /**
  * AsyncAutocomplete
@@ -58,7 +58,7 @@ export default function AsyncAutocomplete({
       if (accountType) params.accountType = accountType;
       if (category) params.category = category;
 
-      const res = await apiClient.autocomplete(params);
+      const res = await commonService.autocomplete(params);
       const fetched = res.data || [];
 
       // Combine with extraOptions if applicable

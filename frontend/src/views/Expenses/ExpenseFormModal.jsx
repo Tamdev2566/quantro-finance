@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { apiClient } from '../../api/client';
+import { expensesService } from '../../services/expensesService';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import FormLayout from '../../components/Common/FormLayout';
@@ -47,7 +47,7 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
   const watchedTaxInclusive = watch('isTaxInclusive');
 
   useEffect(() => {
-    apiClient.getExpenseCategories().then((cRes) => {
+    expensesService.getExpenseCategories().then((cRes) => {
       setCategories(cRes.data || []);
     });
   }, []);
@@ -72,7 +72,7 @@ export default function ExpenseFormModal({ open, onClose, onSuccess }) {
   const onSubmit = async (formData) => {
     try {
       setLoading(true);
-      await apiClient.createExpense({
+      await expensesService.createExpense({
         ...formData,
         amount: parseFloat(formData.amount),
         taxRate: parseFloat(formData.taxRate || 0),

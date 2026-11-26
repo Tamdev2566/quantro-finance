@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { apiClient } from '../../api/client';
+import { accountingService } from '../../services/accountingService';
 import FormLayout from '../../components/Common/FormLayout';
 import {
   Grid,
@@ -71,10 +71,10 @@ export default function AccountFormModal({ open, accountToEdit, onClose, onSucce
     try {
       setLoading(true);
       if (accountToEdit) {
-        await apiClient.updateAccount(accountToEdit.code, formData);
+        await accountingService.updateAccount(accountToEdit.code, formData);
         onSuccess('Account updated successfully');
       } else {
-        await apiClient.createAccount(formData);
+        await accountingService.createAccount(formData);
         onSuccess('Account created in Chart of Accounts');
       }
       onClose();

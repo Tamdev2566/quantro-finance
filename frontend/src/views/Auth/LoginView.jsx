@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { loginSuccess, showNotification } from '../../store';
-import { apiClient } from '../../api/client';
+import { authService } from '../../services/authService';
 import {
   Box,
   Typography,
@@ -57,9 +57,9 @@ export default function LoginView() {
     setError(null);
 
     try {
-      const res = await apiClient.login({ email: cleanEmail, password });
+      const res = await authService.login({ email: cleanEmail, password });
       if (res.success && res.data?.user) {
-        apiClient.setAuthUser(res.data.user);
+        authService.setAuthUser(res.data.user);
         dispatch(loginSuccess(res.data.user));
         dispatch(
           showNotification({
@@ -112,7 +112,7 @@ export default function LoginView() {
           permissions: ['ADMIN', 'APPROVE', 'POST', 'REPORTS', 'SETTINGS']
         };
 
-        apiClient.setAuthUser(fallbackUser);
+        authService.setAuthUser(fallbackUser);
         dispatch(loginSuccess(fallbackUser));
         dispatch(
           showNotification({

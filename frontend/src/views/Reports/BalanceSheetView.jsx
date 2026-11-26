@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { reportsService } from '../../services/reportsService';
 import { showNotification } from '../../store';
 import {
   Box,
@@ -29,7 +29,7 @@ export default function BalanceSheetView() {
   const fetchBalanceSheet = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getBalanceSheet();
+      const res = await reportsService.getBalanceSheet();
       setData(res.data);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));

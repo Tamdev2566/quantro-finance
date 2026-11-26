@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiClient } from '../../api/client';
+import { expensesService } from '../../services/expensesService';
 import {
   Box,
   Typography,
@@ -16,7 +16,7 @@ export default function ExpenseCategoriesView() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    apiClient.getExpenseCategories().then((res) => setCategories(res.data || []));
+    expensesService.getExpenseCategories().then((res) => setCategories(res.data || []));
   }, []);
 
   return (

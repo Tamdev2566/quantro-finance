@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { reportsService } from '../../services/reportsService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import {
@@ -24,7 +24,7 @@ export default function TrialBalanceView() {
   const fetchTrialBalance = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getTrialBalance();
+      const res = await reportsService.getTrialBalance();
       setReport(res.data);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));

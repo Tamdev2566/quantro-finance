@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { accountingService } from '../../services/accountingService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import AccountFormModal from './AccountFormModal';
@@ -34,7 +34,7 @@ export default function AccountsView() {
   const fetchAccounts = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getAccounts();
+      const res = await accountingService.getAccounts();
       setAccounts(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -50,7 +50,7 @@ export default function AccountsView() {
   const handleDelete = async () => {
     if (!accountToDelete) return;
     try {
-      await apiClient.deleteAccount(accountToDelete.code);
+      await accountingService.deleteAccount(accountToDelete.code);
       dispatch(showNotification({ message: `Account ${accountToDelete.code} deleted`, severity: 'success' }));
       setAccountToDelete(null);
       fetchAccounts();

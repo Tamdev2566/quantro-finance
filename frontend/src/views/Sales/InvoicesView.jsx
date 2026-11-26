@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { salesService } from '../../services/salesService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import InvoiceFormModal from './InvoiceFormModal';
@@ -41,7 +41,7 @@ export default function InvoicesView() {
   const fetchInvoices = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getInvoices();
+      const res = await salesService.getInvoices();
       setInvoices(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -56,7 +56,7 @@ export default function InvoicesView() {
 
   const handleApprove = async (id) => {
     try {
-      await apiClient.approveInvoice(id);
+      await salesService.approveInvoice(id);
       dispatch(showNotification({ message: 'Invoice approved successfully', severity: 'success' }));
       fetchInvoices();
     } catch (err) {
@@ -67,7 +67,7 @@ export default function InvoicesView() {
   const handlePost = async () => {
     if (!confirmPostInv) return;
     try {
-      await apiClient.postInvoice(confirmPostInv.id);
+      await salesService.postInvoice(confirmPostInv.id);
       dispatch(showNotification({ message: `Invoice ${confirmPostInv.invoiceNumber} posted to General Ledger!`, severity: 'success' }));
       setConfirmPostInv(null);
       fetchInvoices();
@@ -79,7 +79,7 @@ export default function InvoicesView() {
   const handleDelete = async () => {
     if (!confirmDeleteInv) return;
     try {
-      await apiClient.deleteInvoice(confirmDeleteInv.id);
+      await salesService.deleteInvoice(confirmDeleteInv.id);
       dispatch(showNotification({ message: `Invoice ${confirmDeleteInv.invoiceNumber} deleted.`, severity: 'info' }));
       setConfirmDeleteInv(null);
       fetchInvoices();

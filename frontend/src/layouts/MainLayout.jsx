@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { clearNotification, setCompany } from '../store';
-import { apiClient } from '../api/client';
+import { authService } from '../services/authService';
+import { settingsService } from '../services/settingsService';
 import { Box, Snackbar, Alert, Drawer, Slide } from '@mui/material';
 import Sidebar from '../components/Layout/Sidebar';
 import Header from '../components/Layout/Header';
@@ -23,9 +24,9 @@ export default function MainLayout() {
 
   useEffect(() => {
     if (user) {
-      apiClient.setAuthUser(user);
+      authService.setAuthUser(user);
     }
-    apiClient.getCompany().then((res) => {
+    settingsService.getCompany().then((res) => {
       if (res.data) dispatch(setCompany(res.data));
     }).catch(console.error);
   }, [user]);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { reportsService } from '../../services/reportsService';
 import { showNotification } from '../../store';
 import StatCard from '../../components/Common/StatCard';
 import DataTable from '../../components/Common/DataTable';
@@ -30,8 +30,8 @@ export default function AgingReportsView({ defaultType = 'receivables' }) {
     try {
       setLoading(true);
       const [rRes, pRes] = await Promise.all([
-        apiClient.getReceivablesAging(),
-        apiClient.getPayablesAging()
+        reportsService.getReceivablesAging(),
+        reportsService.getPayablesAging()
       ]);
       setRecData(rRes.data);
       setPayData(pRes.data);

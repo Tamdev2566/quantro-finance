@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { apiClient } from '../../api/client';
+import { salesService } from '../../services/salesService';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import FormLayout from '../../components/Common/FormLayout';
@@ -122,10 +122,10 @@ export default function InvoiceFormModal({ open, onClose, onSuccess, invoiceToEd
     try {
       setLoading(true);
       if (invoiceToEdit) {
-        await apiClient.updateInvoice(invoiceToEdit.id, formData);
+        await salesService.updateInvoice(invoiceToEdit.id, formData);
         onSuccess(`Invoice ${invoiceToEdit.invoiceNumber} updated successfully`);
       } else {
-        await apiClient.createInvoice(formData);
+        await salesService.createInvoice(formData);
         onSuccess('Invoice created successfully as Draft');
       }
       onClose();

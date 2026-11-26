@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { apiClient } from '../../api/client';
+import { accountingService } from '../../services/accountingService';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import FormLayout from '../../components/Common/FormLayout';
@@ -69,7 +69,7 @@ export default function JournalFormModal({ onClose, onSuccess }) {
         description: l.description || formData.description
       }));
 
-      await apiClient.createJournal({
+      await accountingService.createJournal({
         ...formData,
         lines: parsedLines,
         transactionType: 'MANUAL',

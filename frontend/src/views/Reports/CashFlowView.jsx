@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { reportsService } from '../../services/reportsService';
 import { showNotification } from '../../store';
 import {
   Box,
@@ -27,7 +27,7 @@ export default function CashFlowView() {
   const fetchCashFlow = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getCashFlow();
+      const res = await reportsService.getCashFlow();
       setData(res.data);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));

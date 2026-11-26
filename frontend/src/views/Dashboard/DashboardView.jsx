@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { apiClient } from '../../api/client';
+import { dashboardService } from '../../services/dashboardService';
 import { showNotification } from '../../store';
 import {
   Box,
@@ -107,7 +107,7 @@ export default function DashboardView() {
       if (isManual) setRefreshing(true);
       else setLoading(true);
 
-      const res = await apiClient.getDashboard({ filter: selectedFilter });
+      const res = await dashboardService.getDashboard({ filter: selectedFilter });
       setData(res.data);
     } catch (err) {
       dispatch(showNotification({ message: err.message || 'Failed to load dashboard metrics', severity: 'error' }));

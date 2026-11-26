@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { purchasesService } from '../../services/purchasesService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import FormLayout from '../../components/Common/FormLayout';
@@ -42,7 +42,7 @@ export default function VendorsView() {
   const fetchVendors = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getVendors();
+      const res = await purchasesService.getVendors();
       setVendors(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -91,10 +91,10 @@ export default function VendorsView() {
     e.preventDefault();
     try {
       if (editingVendor) {
-        await apiClient.updateVendor(editingVendor.id, formData);
+        await purchasesService.updateVendor(editingVendor.id, formData);
         dispatch(showNotification({ message: 'Vendor updated successfully', severity: 'success' }));
       } else {
-        await apiClient.createVendor(formData);
+        await purchasesService.createVendor(formData);
         dispatch(showNotification({ message: 'Vendor registered successfully', severity: 'success' }));
       }
       setIsFormOpen(false);

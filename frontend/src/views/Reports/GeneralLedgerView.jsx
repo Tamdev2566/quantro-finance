@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { reportsService } from '../../services/reportsService';
+import { accountingService } from '../../services/accountingService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import {
@@ -25,7 +26,7 @@ export default function GeneralLedgerView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    apiClient.getAccounts().then((res) => {
+    accountingService.getAccounts().then((res) => {
       const accs = res.data || [];
       setAccounts(accs);
       if (accs.length > 0 && !accs.find((a) => a.code === selectedAccountCode)) {
@@ -38,7 +39,7 @@ export default function GeneralLedgerView() {
     if (!selectedAccountCode) return;
     try {
       setLoading(true);
-      const res = await apiClient.getGeneralLedger({ accountCode: selectedAccountCode });
+      const res = await reportsService.getGeneralLedger({ accountCode: selectedAccountCode });
       setLedgerData(res.data);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));

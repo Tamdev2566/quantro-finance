@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { bankingService } from '../../services/bankingService';
 import { showNotification } from '../../store';
 import FormLayout from '../../components/Common/FormLayout';
 import AsyncAutocomplete from '../../components/Common/AsyncAutocomplete';
@@ -54,8 +54,8 @@ export default function BankAccountsView() {
     try {
       setLoading(true);
       const [accRes, txnRes] = await Promise.all([
-        apiClient.getBankAccounts(),
-        apiClient.getBankTransactions()
+        bankingService.getBankAccounts(),
+        bankingService.getBankTransactions()
       ]);
       const accounts = accRes.data || [];
       setBankAccounts(accounts);
@@ -83,7 +83,7 @@ export default function BankAccountsView() {
       return;
     }
     try {
-      await apiClient.transferFunds({
+      await bankingService.transferFunds({
         fromAccountCode: fromCode,
         toAccountCode: toCode,
         amount: amt,
@@ -103,7 +103,7 @@ export default function BankAccountsView() {
 
   const handleCreateAccount = async () => {
     try {
-      await apiClient.createBankAccount(newAccData);
+      await bankingService.createBankAccount(newAccData);
       dispatch(showNotification({ message: 'Bank account added successfully', severity: 'success' }));
       setOpenNewAccountModal(false);
       setNewAccData({

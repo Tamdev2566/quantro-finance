@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { triggerRefresh, showNotification, logout } from '../../store';
-import { apiClient } from '../../api/client';
+import { authService } from '../../services/authService';
 import {
   Box,
   Typography,
@@ -77,7 +77,7 @@ export default function Header({ onDrawerToggle }) {
 
   const handleLogout = () => {
     handleCloseMenu();
-    apiClient.logout().catch(() => {});
+    authService.logout().catch(() => {});
     dispatch(logout());
     dispatch(showNotification({ message: 'Signed out successfully', severity: 'info' }));
     navigate('/login');
@@ -104,7 +104,7 @@ export default function Header({ onDrawerToggle }) {
 
     setPwLoading(true);
     try {
-      await apiClient.changePassword({
+      await authService.changePassword({
         email: user?.email || 'admin@apex.corp',
         currentPassword,
         newPassword

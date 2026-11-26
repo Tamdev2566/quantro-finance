@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout, showNotification } from '../../store';
-import { apiClient } from '../../api/client';
+import { authService } from '../../services/authService';
 import {
   Box,
   Typography,
@@ -51,7 +51,7 @@ export default function Sidebar({ onItemClick }) {
 
   const handleLogout = () => {
     if (onItemClick) onItemClick();
-    apiClient.logout().catch(() => {});
+    authService.logout().catch(() => {});
     dispatch(logout());
     dispatch(showNotification({ message: 'Signed out successfully', severity: 'info' }));
     navigate('/login');

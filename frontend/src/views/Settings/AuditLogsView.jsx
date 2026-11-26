@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { settingsService } from '../../services/settingsService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import {
@@ -22,7 +22,7 @@ export default function AuditLogsView() {
   const fetchLogs = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getAuditLogs();
+      const res = await settingsService.getAuditLogs();
       setLogs(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));

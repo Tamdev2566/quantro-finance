@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { settingsService } from '../../services/settingsService';
 import { showNotification, setCompany } from '../../store';
 import ConfirmDialog from '../../components/Common/ConfirmDialog';
 import {
@@ -36,8 +36,8 @@ export default function CompanySettingsView() {
     try {
       setLoading(true);
       const [cRes, pRes] = await Promise.all([
-        apiClient.getCompany(),
-        apiClient.getPeriods()
+        settingsService.getCompany(),
+        settingsService.getPeriods()
       ]);
       setCompanyData(cRes.data || {});
       setPeriods(pRes.data || []);
@@ -55,7 +55,7 @@ export default function CompanySettingsView() {
 
   const handleSaveCompany = async () => {
     try {
-      await apiClient.updateCompany(companyData);
+      await settingsService.updateCompany(companyData);
       dispatch(showNotification({ message: 'Company settings updated successfully', severity: 'success' }));
       fetchSettings();
     } catch (err) {
@@ -65,7 +65,7 @@ export default function CompanySettingsView() {
 
   const handleToggleMonthLock = async (periodId, month, isLocked) => {
     try {
-      await apiClient.lockMonth(periodId, { month, lock: !isLocked });
+      await settingsService.lockMonth(periodId, { month, lock: !isLocked });
       dispatch(showNotification({ message: `Month ${month} ${!isLocked ? 'locked' : 'unlocked'}`, severity: 'success' }));
       fetchSettings();
     } catch (err) {
@@ -76,7 +76,7 @@ export default function CompanySettingsView() {
   const handleCloseFiscalYear = async () => {
     if (!confirmClosePeriod) return;
     try {
-      const res = await apiClient.closeFiscalYear(confirmClosePeriod.id);
+      const res = await settingsService.closeFiscalYear(confirmClosePeriod.id);
       dispatch(showNotification({
         message: `Fiscal Year closed! Net profit of ₹${res.data?.netProfit?.toLocaleString('en-IN')} transferred to Retained Earnings (3020)`,
         severity: 'success'

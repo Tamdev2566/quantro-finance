@@ -3,35 +3,27 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import MainLayout from '../layouts/MainLayout';
 import ProtectedRoute from '../components/Auth/ProtectedRoute';
-
 import LoginView from '../views/Auth/LoginView';
 
-import DashboardView from '../views/Dashboard/DashboardView';
-import InvoicesView from '../views/Sales/InvoicesView';
-import PaymentsView from '../views/Sales/PaymentsView';
-import CreditNotesView from '../views/Sales/CreditNotesView';
-import CustomersView from '../views/Sales/CustomersView';
-import VendorBillsView from '../views/Purchases/VendorBillsView';
-import VendorPaymentsView from '../views/Purchases/VendorPaymentsView';
-import DebitNotesView from '../views/Purchases/DebitNotesView';
-import VendorsView from '../views/Purchases/VendorsView';
-import ExpensesView from '../views/Expenses/ExpensesView';
-import ExpenseCategoriesView from '../views/Expenses/ExpenseCategoriesView';
-import AccountsView from '../views/Accounting/AccountsView';
-import JournalEntriesView from '../views/Accounting/JournalEntriesView';
-import GeneralLedgerView from '../views/Reports/GeneralLedgerView';
-import TrialBalanceView from '../views/Reports/TrialBalanceView';
-import BankAccountsView from '../views/Banking/BankAccountsView';
-import ReconciliationView from '../views/Banking/ReconciliationView';
-import TaxSummaryView from '../views/Tax/TaxSummaryView';
-import ProfitLossView from '../views/Reports/ProfitLossView';
-import BalanceSheetView from '../views/Reports/BalanceSheetView';
-import CashFlowView from '../views/Reports/CashFlowView';
-import AgingReportsView from '../views/Reports/AgingReportsView';
-import BudgetsView from '../views/Budget/BudgetsView';
-import CompanySettingsView from '../views/Settings/CompanySettingsView';
-import BackupRestoreView from '../views/Settings/BackupRestoreView';
-import AuditLogsView from '../views/Settings/AuditLogsView';
+import dashboardRoutes from './modules/dashboardRoutes';
+import salesRoutes from './modules/salesRoutes';
+import purchasesRoutes from './modules/purchasesRoutes';
+import expensesRoutes from './modules/expensesRoutes';
+import accountingRoutes from './modules/accountingRoutes';
+import bankingRoutes from './modules/bankingRoutes';
+import reportsRoutes from './modules/reportsRoutes';
+import settingsRoutes from './modules/settingsRoutes';
+
+const protectedRoutesConfig = [
+  ...dashboardRoutes,
+  ...salesRoutes,
+  ...purchasesRoutes,
+  ...expensesRoutes,
+  ...accountingRoutes,
+  ...bankingRoutes,
+  ...reportsRoutes,
+  ...settingsRoutes
+];
 
 export default function AppRoutes() {
   return (
@@ -41,43 +33,10 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<DashboardView />} />
 
-          <Route path="/invoices" element={<InvoicesView />} />
-          <Route path="/payments" element={<PaymentsView />} />
-          <Route path="/credit-notes" element={<CreditNotesView />} />
-          <Route path="/customers" element={<CustomersView />} />
-          <Route path="/customer-master" element={<CustomersView />} />
-          <Route path="/receivables-aging" element={<AgingReportsView defaultType="receivables" />} />
-
-          <Route path="/vendor-bills" element={<VendorBillsView />} />
-          <Route path="/vendor-payments" element={<VendorPaymentsView />} />
-          <Route path="/debit-notes" element={<DebitNotesView />} />
-          <Route path="/vendors" element={<VendorsView />} />
-          <Route path="/payables-aging" element={<AgingReportsView defaultType="payables" />} />
-
-          <Route path="/expenses" element={<ExpensesView />} />
-          <Route path="/expense-categories" element={<ExpenseCategoriesView />} />
-
-          <Route path="/accounts" element={<AccountsView />} />
-          <Route path="/journals" element={<JournalEntriesView />} />
-
-          <Route path="/bank-accounts" element={<BankAccountsView />} />
-          <Route path="/reconciliation" element={<ReconciliationView />} />
-
-          <Route path="/tax" element={<TaxSummaryView />} />
-
-          <Route path="/general-ledger" element={<GeneralLedgerView />} />
-          <Route path="/trial-balance" element={<TrialBalanceView />} />
-          <Route path="/profit-loss" element={<ProfitLossView />} />
-          <Route path="/balance-sheet" element={<BalanceSheetView />} />
-          <Route path="/cash-flow" element={<CashFlowView />} />
-
-          <Route path="/budgets" element={<BudgetsView />} />
-
-          <Route path="/company-settings" element={<CompanySettingsView />} />
-          <Route path="/backup-restore" element={<BackupRestoreView />} />
-          <Route path="/audit-logs" element={<AuditLogsView />} />
+          {protectedRoutesConfig.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
 
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>

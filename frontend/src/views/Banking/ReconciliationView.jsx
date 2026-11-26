@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { bankingService } from '../../services/bankingService';
 import { showNotification } from '../../store';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
@@ -38,7 +38,7 @@ export default function ReconciliationView() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    apiClient.getBankAccounts().then((res) => {
+    bankingService.getBankAccounts().then((res) => {
       setBankAccounts(res.data || []);
       if (res.data?.length > 0 && !selectedAccountId) {
         setSelectedAccountId(res.data[0].id);
@@ -48,7 +48,7 @@ export default function ReconciliationView() {
 
   useEffect(() => {
     if (selectedAccountId) {
-      apiClient.getBankTransactions({ bankAccountId: selectedAccountId }).then((res) => {
+      bankingService.getBankTransactions({ bankAccountId: selectedAccountId }).then((res) => {
         setTransactions(res.data || []);
         const alreadyMatched = (res.data || []).filter((t) => t.reconciled).map((t) => t.id);
         setSelectedTxnIds(alreadyMatched);
@@ -85,7 +85,7 @@ export default function ReconciliationView() {
   const handleCompleteReconciliation = async () => {
     try {
       setLoading(true);
-      await apiClient.reconcileBank({
+      await bankingService.reconcileBank({
         bankAccountId: selectedAccountId,
         periodStart,
         periodEnd,

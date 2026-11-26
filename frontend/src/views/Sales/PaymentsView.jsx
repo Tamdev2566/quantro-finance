@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiClient } from '../../api/client';
+import { salesService } from '../../services/salesService';
 import { showNotification } from '../../store';
 import DataTable from '../../components/Common/DataTable';
 import PaymentFormModal from './PaymentFormModal';
@@ -29,7 +29,7 @@ export default function PaymentsView() {
   const fetchPayments = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.getPayments();
+      const res = await salesService.getPayments();
       setPayments(res.data || []);
     } catch (err) {
       dispatch(showNotification({ message: err.message, severity: 'error' }));
@@ -45,7 +45,7 @@ export default function PaymentsView() {
   const handleReverse = async () => {
     if (!confirmReversePayment) return;
     try {
-      await apiClient.reversePayment(confirmReversePayment.id, {
+      await salesService.reversePayment(confirmReversePayment.id, {
         reason: 'Payment reversal by controller'
       });
       dispatch(showNotification({ message: `Payment ${confirmReversePayment.paymentNumber} reversed successfully`, severity: 'success' }));
