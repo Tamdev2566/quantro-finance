@@ -101,11 +101,11 @@ export default function FormLayout({
           flex: 1,
           minHeight: 0,
           overflowY: 'auto',
-          backgroundColor: '#ffffff',
-          border: '1px solid #e2e8f0',
-          borderRadius: '8px',
+          background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+          border: '1px solid rgba(226, 232, 240, 0.9)',
+          borderRadius: '10px',
           p: noCardPadding ? 0 : { xs: 2.5, sm: 3.5 },
-          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.04)',
+          boxShadow: '0 12px 32px -8px rgba(15, 23, 42, 0.09), 0 4px 12px -2px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
           // Hidden scrollbar styling across all modern browsers
           scrollbarWidth: 'none', // Firefox
           msOverflowStyle: 'none', // IE and Edge
@@ -168,16 +168,16 @@ export default function FormLayout({
                 variant="contained"
                 disabled={loading || saveDisabled}
                 sx={{
-                  bgcolor: 'var(--theme-10, #e5a93c)',
-                  color: 'var(--theme-10-contrast, #0f172a)',
+                  bgcolor: '#e5a93c',
+                  color: '#0f172a',
                   fontWeight: 700,
                   borderRadius: '6px',
                   px: 3.5,
                   py: 0.8,
                   textTransform: 'none',
                   fontSize: '0.875rem',
-                  boxShadow: 'none',
-                  '&:hover': { bgcolor: 'var(--theme-10-dark, #b88019)', boxShadow: 'none' }
+                  boxShadow: '0 4px 12px -2px rgba(229, 169, 60, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35)',
+                  '&:hover': { bgcolor: '#d4982e', boxShadow: '0 6px 16px -2px rgba(229, 169, 60, 0.45)' }
                 }}
               >
                 {loading ? savingLabel : saveLabel}
